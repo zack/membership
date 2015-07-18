@@ -1,5 +1,6 @@
-%h1 @member.derby_name
+%h1 #{@member.derby_name}
 
-Legal Name: @member.legal_name
-Debry Name: @member.derby_name
-Email Address: @member.email_address
+%ul
+  %li Legal Name: #{@member.legal_name}
+  %li Debry Name: #{@member.derby_name}
+  %li Email Address: #{@member.email_address}
