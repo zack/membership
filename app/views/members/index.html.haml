@@ -1,87 +1,91 @@
-- provide(:title, 'All Members')
-%h1 Membership List
-= raw @groups.collect { |group| link_to group,
-  controller => :members_controller, :action => :index, :query => group }.join(' | ')
+#index
+  %h1 Boston Derby Dames Membership
+  = link_to 'all', controller => :members_controller, :action => :index
+  |
+  = raw @groups.collect { |group| link_to group,
+    controller => :members_controller, :action => :index, :query => group }.join(' | ')
 
-%table#member_table
-  %tr
-    %th.derby_name Derby Name
-    %th.email_address Email Address
-    %th.legal_name_first First Name
-    %th.legal_name_last Last Name
-    %th.number Number
-    %th.wftda_number WFTDA Number
-    %th.nickname Nickname
-    %th.group Group
-    %th.signed_wftda_waiver Signed WFTDA Waiver
-    %th.signed_wftda_confidentiality Signed WFTDA Confidentiality
-    %th.signed_league_bylaws Signed League Bylaws
-    %th.wftda_id WFTDA ID
-    %th.forum_name Forum Name
-    %th.year_joined Year Joined
-    %th.year_left Year Left
-    %th.reason_left Reason Left
-    %th.phone_number Phone Numberj
-    %th.emergency_contact_name_first Emergency Contact First Name
-    %th.emergency_contact_name_last Emergency Contact Last Name
-    %th.emergency_contact_phone Emergency Contact Phone Number
-    %th.emergency_contact_relation Emergency Contact Relation
-    %th.date_of_birth Date of Birth
-    %th.address_state Address, State
-    %th.address_street Address, Street Address
-    %th.address_city Address, City
-    %th.address_zip Address, Zip
-    %th.primary_insurance Primary Insurance
-    %th.status Status
-    %th.on_massacre On Massacre
-    %th.on_travel_team On Travel Team
-    %th.league_job League Job
-    %th.purchased_wftda_insurance Purchased WFTDA Insurance
-    %th.passed_wftda_test Passed WFTDA Test
-    %th.google_doc_access Google Doc Access
-    %th.official Official
-    %th.wftda_certification WFTDA Certification Level
-    %th.skating_official Ref or NSO
-  - @members.each do |member|
+  %table#member_table
     %tr
-      %td.derby_name= link_to member.derby_name, member
-      %td.email_address= member.email_address
-      %td.legal_name_first= member.legal_name_first
-      %td.legal_name_last= member.legal_name_last
-      %td.number= member.number
-      %td.wftda_number= member.wftda_number
-      %td.nickname= member.nickname
-      %td.group= member.group.join(', ')
-      %td.signed_wftda_waiver= member.signed_wftda_waiver
-      %td.signed_wftda_confidentiality= member.signed_wftda_confidentiality
-      %td.signed_league_bylaws= member.signed_league_bylaws
-      %td.wftda_id= member.wftda_id
-      %td.forum_name= member.forum_name
-      %td.year_joined= member.year_joined
-      %td.year_left= member.year_left
-      %td.reason_left= member.reason_left
-      %td.phone_number= member.phone_number
-      %td.emergency_contact_name_first= member.emergency_contact_name_first
-      %td.emergency_contact_name_last= member.emergency_contact_name_last
-      %td.emergency_contact_phone= member.emergency_contact_phone
-      %td.emergency_contact_relation= member.emergency_contact_relation
-      %td.date_of_birth= member.date_of_birth
-      %td.address_state= member.address_state
-      %td.address_street= member.address_state
-      %td.address_city= member.address_city
-      %td.address_zip= member.address_zip
-      %td.primary_insurance= member.primary_insurance
-      %td.status= member.status
-      %td.on_massacre= member.on_massacre
-      %td.on_travel_team= member.on_travel_team
-      %td.league_job= member.league_job
-      %td.purchased_wftda_insurance= member.purchased_wftda_insurance
-      %td.passed_wftda_test= member.passed_wftda_test
-      %td.google_doc_access= member.google_doc_access
-      %td.official= member.official
-      %td.wftda_certification= member.wftda_certification
-      %td.skating_official
-        - if member.skating_official
-          ref
-        - else
-          nso
+      %th.derby_name Derby Name
+      %th.email_address Email Address
+      %th.legal_name_first First Name
+      %th.legal_name_last Last Name
+      %th.number Number
+      %th.wftda_number WFTDA Number
+      %th.nickname Nickname
+      %th.group Group
+      %th.signed_wftda_waiver Signed WFTDA Waiver
+      %th.signed_wftda_confidentiality Signed WFTDA Confidentiality
+      %th.signed_league_bylaws Signed League Bylaws
+      %th.wftda_id WFTDA ID
+      %th.forum_name Forum Name
+      %th.year_joined Year Joined
+      %th.year_left Year Left
+      %th.reason_left Reason Left
+      %th.phone_number Phone Number
+      %th.emergency_contact_name_first Emergency Contact First Name
+      %th.emergency_contact_name_last Emergency Contact Last Name
+      %th.emergency_contact_phone Emergency Contact Phone Number
+      %th.emergency_contact_relation Emergency Contact Relation
+      %th.date_of_birth Date of Birth
+      %th.address_state Address, State
+      %th.address_street Address, Street Address
+      %th.address_city Address, City
+      %th.address_zip Address, Zip
+      %th.primary_insurance Primary Insurance
+      %th.status Status
+      %th.on_massacre On Massacre
+      %th.on_travel_team On Travel Team
+      %th.league_job League Job
+      %th.purchased_wftda_insurance Purchased WFTDA Insurance
+      %th.passed_wftda_test Passed WFTDA Test
+      %th.google_doc_access Google Doc Access
+      %th.official Official
+      %th.wftda_certification WFTDA Certification Level
+      %th.skating_official Ref or NSO
+    - @members.each do |member|
+      %tr
+        %td.derby_name= link_to member.derby_name, member
+        %td.email_address= member.email_address
+        %td.legal_name_first= member.legal_name_first
+        %td.legal_name_last= member.legal_name_last
+        %td.number= member.number
+        %td.wftda_number= member.wftda_number
+        %td.nickname= member.nickname
+        %td.group= member.group.join(', ')
+        %td.signed_wftda_waiver= member.signed_wftda_waiver
+        %td.signed_wftda_confidentiality= member.signed_wftda_confidentiality
+        %td.signed_league_bylaws= member.signed_league_bylaws
+        %td.wftda_id= member.wftda_id
+        %td.forum_name= member.forum_name
+        %td.year_joined= member.year_joined
+        %td.year_left= member.year_left
+        %td.reason_left= member.reason_left
+        %td.phone_number= member.phone_number
+        %td.emergency_contact_name_first= member.emergency_contact_name_first
+        %td.emergency_contact_name_last= member.emergency_contact_name_last
+        %td.emergency_contact_phone= member.emergency_contact_phone
+        %td.emergency_contact_relation= member.emergency_contact_relation
+        %td.date_of_birth= member.date_of_birth
+        %td.address_state= member.address_state
+        %td.address_street= member.address_state
+        %td.address_city= member.address_city
+        %td.address_zip= member.address_zip
+        %td.primary_insurance= member.primary_insurance
+        %td.status= member.status
+        %td.on_massacre= member.on_massacre
+        %td.on_travel_team= member.on_travel_team
+        %td.league_job= member.league_job
+        %td.purchased_wftda_insurance= member.purchased_wftda_insurance
+        %td.passed_wftda_test= member.passed_wftda_test
+        %td.google_doc_access= member.google_doc_access
+        %td.official= member.official
+        %td.wftda_certification
+          - if member.official && member.wftda_certification > 0
+            = member.wftda_certification
+        %td.skating_official
+          - if member.skating_official
+            ref
+          - elsif member.official
+            nso

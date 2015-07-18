@@ -1,3 +1,26 @@
-// Place all the styles related to the Static controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+#index {
+  #member_table {
+    width: 100%;
+    border-collapse: collapse;
+    white-space: nowrap;
+    td, th{
+      border: 1px solid #bbb;
+    }
+    td {
+      &.flag {
+        &.warning {
+          background-color: red;
+        }
+        &.error {
+          background-color: yellow;
+        }
+      }
+    }
+    th {
+      background-color: #999;
+    }
+    tr:nth-child(odd) {
+      background-color: #ddd;
+    }
+  }
+}

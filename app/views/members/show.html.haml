@@ -9,7 +9,7 @@
   %li Number: #{@member.number}
   %li WFTDA Number: #{@member.wftda_number}
   %li Nickname: #{@member.nickname}
-  %li Group: #{@member.group}
+  %li Group: #{@member.group.join(', ')}
   %li Signed WFTDA Waiver: #{@member.signed_wftda_waiver}
   %li Signed WFTDA Confidentiality: #{@member.signed_wftda_confidentiality}
   %li Signed League Bylaws: #{@member.signed_league_bylaws}
@@ -37,9 +37,10 @@
   %li Passed WFTDA Test: #{@member.passed_wftda_test}
   %li Google Doc Access: #{@member.google_doc_access}
   %li Official: #{@member.official}
-  %li WFTDA Certification Level: #{@member.wftda_certification}
-  %li
-    - if @member.skating_official
-      ref
-    - else
-      nso
+  - if @member.official
+    %li WFTDA Certification Level: #{@member.wftda_certification}
+    %li
+      - if @member.skating_official
+        ref
+      - else
+        nso

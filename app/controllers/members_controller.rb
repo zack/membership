@@ -1,5 +1,5 @@
 class MembersController < ApplicationController
-  attr_accessor :legal_name, :derby_name, :email_address
+  #attr_accessor :legal_name, :derby_name, :email_address
 
   GROUPS = ['cosmonaughties', 'arkham_horrors', 'nutcrackers',
             'wicked_pissahs', 'travel_team', 'travel_and_recreational',
@@ -18,9 +18,9 @@ class MembersController < ApplicationController
     @member = Member.new
   end
 
-  def edit
-    @member = Member.find(params[:id])
-  end
+  #def edit
+    #@member = Member.find(params[:id])
+  #end
 
   def create
     @member = Member.new(member_params)
@@ -36,12 +36,9 @@ class MembersController < ApplicationController
     @member = Member.find(params[:id])
   end
 
-  def group
-  end
-
   private
 
-    def member_params
-      params.require(:user).permit(:legal_name, :derby_name, :email_address)
-    end
+    #def member_params
+      #params.require(:user).permit(:legal_name, :derby_name, :email_address)
+    #end
 end

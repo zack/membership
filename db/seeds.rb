@@ -1,5 +1,4 @@
 100.times do |n|
-  retired = [true, false].sample
   derby_name = Faker::Name.name
   email_address = Faker::Internet.email
   legal_name_first = Faker::Name.first_name
@@ -8,16 +7,14 @@
   wftda_number = Faker::Number.number(3) if [true, false].sample
   nickname = Faker::Name.first_name
   group = ['cosmonaughties', 'arkham_horrors', 'nutcrackers',
-            'wicked_pissahs', 'travel_team', 'travel_and_recreational',
-            'officials', 'other', 'former'].sample(2)
+           'wicked_pissahs', 'travel_team', 'travel_and_recreational',
+           'other'].sample(rand(2)+1)
   signed_wftda_waiver = [true, false].sample
   signed_wftda_confidentiality = [true, false].sample
   signed_league_bylaws = [true, false].sample
   wftda_id = Faker::Number.number(3)
   forum_name = Faker::Name.first_name
   year_joined = Faker::Number.between(2004, 2015)
-  year_left = Faker::Number.between(2004,2015) if retired
-  reason_left = Faker::Lorem.sentence if retired
   phone_number = Faker::PhoneNumber.phone_number
   emergency_contact_name_first = Faker::Name.first_name
   emergency_contact_name_last = Faker::Name.last_name
@@ -29,20 +26,35 @@
   address_city = Faker::Address.city
   address_zip = Faker::Address.zip
   primary_insurance = Faker::Address.zip
-  status = if retired
-              'Inactive'
-           else
-              'Active'
-           end
   on_massacre = [true, false].sample
   on_travel_team = [true, false].sample
   league_job = Faker::Lorem.word
   purchased_wftda_insurance = [true, false].sample
   passed_wftda_test = [true, false].sample
   google_doc_access = [true, false].sample
-  official = [true, false].sample
-  wftda_certification = Faker::Number.between(1, 5)
-  skating_official = [true, false].sample
+
+  if [true, false].sample
+    if [true, false].sample
+      group.push('officials')
+    else
+      group = ['officials']
+    end
+    wftda_certification = Faker::Number.between(0, 5)
+    official = true
+    skating_official = [true, false].sample
+  else
+    official = false
+  end
+
+  if [true, false].sample
+    group = ['former']
+    status = 'Inactive'
+    year_left = Faker::Number.between(year_joined,2015)
+    reason_left = Faker::Lorem.sentence
+  else
+    status = 'Active'
+  end
+
   Member.create!( derby_name: derby_name,
     email_address: email_address,
     legal_name_first: legal_name_first,
