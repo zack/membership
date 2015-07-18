@@ -1,2 +1,7 @@
-%h1 Members#index
-%p Find me in app/views/members/index.html.haml
+- provide(:title, 'All Members')
+%h1 Membership List
+
+%ul.members
+  - @members.each do |member|
+    %li
+      = link_to member.derby_name, member
