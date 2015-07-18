@@ -1,8 +1,7 @@
 - provide(:title, 'All Members')
 %h1 Membership List
-- @groups.each do |group|
-  = link_to group, controller => :members_controller, :action => :index, :query => group
-  |
+= raw @groups.collect { |group| link_to group,
+  controller => :members_controller, :action => :index, :query => group }.join(' | ')
 
 %table#member_table
   %tr
@@ -52,7 +51,7 @@
       %td.number= member.number
       %td.wftda_number= member.wftda_number
       %td.nickname= member.nickname
-      %td.group= member.group
+      %td.group= member.group.join(', ')
       %td.signed_wftda_waiver= member.signed_wftda_waiver
       %td.signed_wftda_confidentiality= member.signed_wftda_confidentiality
       %td.signed_league_bylaws= member.signed_league_bylaws
