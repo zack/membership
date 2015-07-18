@@ -7,7 +7,9 @@
   number = Faker::Number.hexadecimal(3).upcase
   wftda_number = Faker::Number.number(3) if [true, false].sample
   nickname = Faker::Name.first_name
-  group = ['Home Team', 'Travel Team', 'Officials'].sample
+  group = ['cosmonaughties', 'arkham_horrors', 'nutcrackers',
+            'wicked_pissahs', 'travel_team', 'travel_and_recreational',
+            'officials', 'other', 'former'].sample(2)
   signed_wftda_waiver = [true, false].sample
   signed_wftda_confidentiality = [true, false].sample
   signed_league_bylaws = [true, false].sample

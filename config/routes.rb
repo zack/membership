@@ -4,5 +4,7 @@ Rails.application.routes.draw do
 
   get 'contact' => 'static#contact'
 
+  get 'members/group'
+
   resources :members
 end

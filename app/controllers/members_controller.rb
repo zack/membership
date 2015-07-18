@@ -1,8 +1,17 @@
 class MembersController < ApplicationController
   attr_accessor :legal_name, :derby_name, :email_address
 
+  GROUPS = ['cosmonaughties', 'arkham_horrors', 'nutcrackers',
+            'wicked_pissahs', 'travel_team', 'travel_and_recreational',
+            'officials', 'other', 'former']
+
   def index
-    @members = Member.all
+    if params[:query]
+      @members = Member.all.select { |m| m.group.include? params[:query] }
+    else
+      @members = Member.all
+    end
+    @groups = GROUPS
   end
 
   def new
@@ -25,6 +34,9 @@ class MembersController < ApplicationController
 
   def show
     @member = Member.find(params[:id])
+  end
+
+  def group
   end
 
   private

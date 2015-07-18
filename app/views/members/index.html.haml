@@ -1,5 +1,8 @@
 - provide(:title, 'All Members')
 %h1 Membership List
+- @groups.each do |group|
+  = link_to group, controller => :members_controller, :action => :index, :query => group
+  |
 
 %table#member_table
   %tr
