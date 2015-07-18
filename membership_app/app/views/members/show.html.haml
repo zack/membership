@@ -1,4 +1,5 @@
 %h1 #{@member.derby_name}
+= link_to 'edit', controller => :members_controller, :action => :edit
 
 %ul
   %li Legal Name: #{@member.legal_name}
