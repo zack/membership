@@ -1,14 +1,14 @@
 class CreateMembers < ActiveRecord::Migration
   def change
     create_table :members do |t|
-      t.string  :name
+      t.string  :name, null: false
       t.string  :nickname
       t.string  :phone_number
-      t.string  :forum_handle
+      t.string  :forum_handle, unique: true
       t.text    :address
       t.date    :date_of_birth
 
-      t.string  :wftda_id
+      t.string  :wftda_id, unique: true
       t.string  :primary_insurance
 
       t.boolean :signed_wftda_waiver

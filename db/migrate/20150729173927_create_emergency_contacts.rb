@@ -1,11 +1,11 @@
 class CreateEmergencyContacts < ActiveRecord::Migration
   def change
     create_table :emergency_contacts do |t|
-      t.belongs_to :person
+      t.belongs_to :person, index: true
 
-      t.string :name
-      t.string :phone_number
-      t.text   :addres
+      t.string :name, null: false
+      t.string :phone_number, null: false
+      t.text   :address
       t.string :relationship
 
       t.timestamps null: false
