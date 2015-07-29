@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'jobs/new'
+
   get 'team_captains/new'
 
   get 'team_players/new'
