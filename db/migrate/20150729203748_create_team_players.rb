@@ -9,6 +9,6 @@ class CreateTeamPlayers < ActiveRecord::Migration
 
       t.timestamps null: false
     end
-    add_index :team_player, [:team_id, :player_id], :unique => true
+    add_index :team_players, [:team_id, :player_id], :unique => true
   end
 end

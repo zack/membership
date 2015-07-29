@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'team_captains/new'
+
   get 'team_players/new'
 
   get 'teams/new'
