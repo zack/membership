@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'committee_members/new'
+
   get 'pillars/new'
 
   get 'committees/new'
