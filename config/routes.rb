@@ -6,7 +6,7 @@ Rails.application.routes.draw do
 
   get 'committees/new'
 
-  get 'person_jobs/new'
+  get 'member_jobs/new'
 
   get 'jobs/new'
 
