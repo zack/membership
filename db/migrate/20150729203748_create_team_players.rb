@@ -4,8 +4,8 @@ class CreateTeamPlayers < ActiveRecord::Migration
       t.references :team, null: false
       t.references :player, null: false
 
-      t.date :date_joined
-      t.date :date_left
+      t.date       :date_joined
+      t.date       :date_left
 
       t.timestamps null: false
     end
