@@ -7,4 +7,6 @@
 !/log/.keep
 /tmp
 
-app/views/static/contact.html.haml
+.*.swp
+.*.swo
+.*.un~
