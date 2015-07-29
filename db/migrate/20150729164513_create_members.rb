@@ -1,9 +1,6 @@
 class CreateMembers < ActiveRecord::Migration
   def change
     create_table :members do |t|
-
-      t.references :emergency_contact
-
       t.string  :name
       t.string  :nickname
       t.string  :phone_number

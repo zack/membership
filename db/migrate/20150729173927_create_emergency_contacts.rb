@@ -1,7 +1,6 @@
 class CreateEmergencyContacts < ActiveRecord::Migration
   def change
     create_table :emergency_contacts do |t|
-
       t.belongs_to :person
 
       t.string :name
