@@ -7,6 +7,6 @@ class EmergencyContact < ActiveRecord::Base
 
   def valid_phone_number
     digits = :phone_number.delete('^0-9')
-    errors.add :phone_number, if digits.length != 10
+    errors.add :phone_number if digits.length != 10
   end
 end

@@ -1,8 +1,8 @@
 class Job < ActiveRecord::Base
   belongs_to :committee
-  has_one :member, through :member_jobs
+  has_one :member, through: :member_jobs
 
-  validates :name, presence: { case_sensitive: false }
+  validates :name, presence: true
   validate :valid_date_destroyed
 
   def valid_date_destroyed
