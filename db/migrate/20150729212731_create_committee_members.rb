@@ -1,8 +1,8 @@
 class CreateCommitteeMembers < ActiveRecord::Migration
   def change
     create_table :committee_members do |t|
-      t.references :committee
-      t.references :member
+      t.references :committee, index: true
+      t.references :member, index: true
 
       t.date       :date_started
       t.date       :date_ended

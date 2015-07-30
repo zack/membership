@@ -1,8 +1,8 @@
 class CreateTeamPlayers < ActiveRecord::Migration
   def change
     create_table :team_players do |t|
-      t.references :team, null: false
-      t.references :player, null: false
+      t.references :team, null: false, index: true
+      t.references :player, null: false, index: true
 
       t.date       :date_joined
       t.date       :date_left

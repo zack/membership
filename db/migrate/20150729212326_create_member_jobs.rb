@@ -1,8 +1,8 @@
 class CreateMemberJobs < ActiveRecord::Migration
   def change
     create_table :member_jobs do |t|
-      t.references :member
-      t.references :job
+      t.references :member, index: true
+      t.references :job, index: true
 
       t.date       :date_started
       t.date       :date_ended
