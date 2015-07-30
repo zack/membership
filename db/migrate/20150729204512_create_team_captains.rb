@@ -1,7 +1,7 @@
 class CreateTeamCaptains < ActiveRecord::Migration
   def change
     create_table :team_captains do |t|
-      t.references :team_player, unique: true, null: false
+      t.references :team_player, unique: true, null: false, index: true
 
       t.date       :date_started
       t.date       :date_ended

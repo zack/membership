@@ -1,7 +1,7 @@
 class CreateCommittees < ActiveRecord::Migration
   def change
     create_table :committees do |t|
-      t.belongs_to :pillar
+      t.belongs_to :pillar, index: true
 
       t.string     :name, unique: true, null: false
 
