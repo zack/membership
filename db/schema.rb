@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150729212731) do
+ActiveRecord::Schema.define(version: 20150730220322) do
 
   create_table "committee_members", force: :cascade do |t|
     t.integer  "committee_id"
@@ -52,8 +52,8 @@ ActiveRecord::Schema.define(version: 20150729212731) do
     t.string   "name",           null: false
     t.boolean  "is_full_time"
     t.integer  "hours_per_week"
-    t.date     "date_created"
-    t.date     "date_destroyed"
+    t.date     "date_started"
+    t.date     "date_ended"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
   end
@@ -126,12 +126,12 @@ ActiveRecord::Schema.define(version: 20150729212731) do
   add_index "team_captains", ["team_player_id"], name: "index_team_captains_on_team_player_id"
 
   create_table "team_players", force: :cascade do |t|
-    t.integer  "team_id",     null: false
-    t.integer  "player_id",   null: false
-    t.date     "date_joined"
-    t.date     "date_left"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.integer  "team_id",      null: false
+    t.integer  "player_id",    null: false
+    t.date     "date_started"
+    t.date     "date_ended"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
   add_index "team_players", ["player_id"], name: "index_team_players_on_player_id"
