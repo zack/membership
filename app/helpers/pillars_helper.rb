@@ -1,0 +1,2 @@
+module PillarsHelper
+end
