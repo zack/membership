@@ -1,19 +1,20 @@
 source 'https://rubygems.org'
 
-gem 'rails',        '4.2.2'
-gem 'sass-rails',   '5.0.2'
-gem 'uglifier',     '2.5.3'
-gem 'coffee-rails', '4.1.0'
-gem 'jquery-rails', '4.0.3'
-gem 'haml-rails',   '~> 0.9'
-gem 'faker'
-gem 'underscore-rails'
+gem 'rails',            '4.2.2'
+gem 'sass-rails',       '5.0.2'
+gem 'uglifier',         '2.5.3'
+gem 'coffee-rails',     '4.1.0'
+gem 'jquery-rails',     '4.0.3'
+gem 'haml-rails',       '~> 0.9'
+gem 'faker',            '~> 1.0'
+gem 'underscore-rails', '~> 1.0'
 
 group :development, :test do
   gem 'sqlite3',     '1.3.9'
   gem 'byebug',      '3.4.0'
   gem 'web-console', '2.0.0.beta3'
   gem 'spring',      '1.1.3'
+  gem 'rspec-rails', '~> 3.0'
 end
 
 group :test do
