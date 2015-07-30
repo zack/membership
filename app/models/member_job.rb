@@ -3,9 +3,7 @@ class MemberJob < ActiveRecord::Base
   belongs_to :job
 
   validates :job_id, uniqueness: { scope: :member_id }
-  validate :valid_date_ended
-
-  def valid_date_ended
-    errors.add :date_ended if :date_ended <= :date_started
-  end
+  validates_date :date_ended, :after => :date_started,
+                              :allow_nil => true,
+                              :if => :date_started
 end

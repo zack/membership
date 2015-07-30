@@ -3,10 +3,7 @@ class Job < ActiveRecord::Base
   has_one :member, through: :member_jobs
 
   validates :name, presence: true
-  validate :valid_date_destroyed
-
-  def valid_date_destroyed
-    errors.add :date_destroyed if :date_destroyed <= :date_created
-  end
-
+  validates_date :date_ended, :after => :date_started,
+                              :allow_nil => true,
+                              :if => :date_started
 end
