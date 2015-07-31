@@ -16,8 +16,9 @@ group :development, :test do
   gem 'spring',               '1.1.3'
   gem 'rspec-rails',          '~> 3.0'
   gem 'validates_timeliness', '~> 3.0'
-  gem 'pry-rails'
-  gem 'awesome_print'
+  gem 'pry-rails',            '~> 0.0'
+  gem 'awesome_print',        '~> 1.0'
+  gem 'shoulda-matchers',     '~> 2.0'
 end
 
 group :test do
