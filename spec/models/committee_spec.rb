@@ -3,7 +3,7 @@ describe Committee do
     context 'is valid' do
       it 'with a name' do
         expect(Committee.count).to eq(0)
-        Committee.create(name: 'Laurie')
+        Committee.create(name: 'Communications')
         expect(Committee.count).to eq(1)
       end
     end
@@ -17,15 +17,15 @@ describe Committee do
 
       it 'with a duplicate name' do
         expect(Committee.count).to eq(0)
-        Committee.create(name: 'Azar')
-        Committee.create(name: 'Azar')
+        Committee.create(name: 'Communications')
+        Committee.create(name: 'Communications')
         expect(Committee.count).to eq(1)
       end
 
       it 'with a duplicate name regardless of case' do
         expect(Committee.count).to eq(0)
-        Committee.create(name: 'kerry')
-        Committee.create(name: 'KERRY')
+        Committee.create(name: 'communications')
+        Committee.create(name: 'COMMUNICATIONS')
         expect(Committee.count).to eq(1)
       end
     end
