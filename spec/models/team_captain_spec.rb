@@ -32,8 +32,8 @@ describe TeamCaptain do
                          date_ended: Date.today)
         expect(TeamCaptain.count).to eq(1)
       end
-
     end
+
     context 'is invalid' do
       it 'with duplicate team_player_id' do
         expect(TeamCaptain.count).to eq(0)
