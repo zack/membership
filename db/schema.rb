@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150731032310) do
+ActiveRecord::Schema.define(version: 20150731152609) do
 
   create_table "committee_members", force: :cascade do |t|
     t.integer  "committee_id"
@@ -80,7 +80,7 @@ ActiveRecord::Schema.define(version: 20150731032310) do
     t.string   "forum_handle"
     t.text     "address"
     t.date     "date_of_birth"
-    t.string   "wftda_id"
+    t.string   "wftda_id_number"
     t.string   "primary_insurance"
     t.boolean  "signed_wftda_waiver"
     t.boolean  "signed_wftda_confidentiality"
