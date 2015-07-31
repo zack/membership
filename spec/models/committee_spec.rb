@@ -8,7 +8,7 @@ describe Committee do
       end
     end
 
-    context 'invalid' do
+    context 'is invalid' do
       it 'without a name' do
         expect(Committee.count).to eq(0)
         Committee.create()
