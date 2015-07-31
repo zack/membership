@@ -16,6 +16,7 @@ group :development, :test do
   gem 'spring',               '1.1.3'
   gem 'rspec-rails',          '~> 3.0'
   gem 'validates_timeliness', '~> 3.0'
+  gem 'pry-rails'
 end
 
 group :test do
