@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150730220322) do
+ActiveRecord::Schema.define(version: 20150731032310) do
 
   create_table "committee_members", force: :cascade do |t|
     t.integer  "committee_id"
@@ -61,8 +61,8 @@ ActiveRecord::Schema.define(version: 20150730220322) do
   add_index "jobs", ["committee_id"], name: "index_jobs_on_committee_id"
 
   create_table "member_jobs", force: :cascade do |t|
-    t.integer  "member_id"
-    t.integer  "job_id"
+    t.integer  "member_id",    null: false
+    t.integer  "job_id",       null: false
     t.date     "date_started"
     t.date     "date_ended"
     t.datetime "created_at",   null: false
