@@ -44,6 +44,12 @@ describe MemberJob do
 
     end
     context 'is invalid' do
+      it 'without any ids' do
+        expect(MemberJob.count).to eq(0)
+        MemberJob.create()
+        expect(MemberJob.count).to eq(0)
+      end
+
       it 'without a member_id' do
         expect(MemberJob.count).to eq(0)
         MemberJob.create(job_id: 1)
