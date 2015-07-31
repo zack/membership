@@ -4,12 +4,6 @@ class Player < ActiveRecord::Base
 
   validates :name, presence: true, uniqueness: { scope: :number,
     case_sensitive: false}
-  validates :number, presence: true
-  validate :valid_number
-
-  def valid_number
-    errors.add :number unless :number.length <= 4 &&
-                              :number.length >= 1 &&
-                              :number =~ /\d/
-  end
+  validates :number, presence: true,
+                     format: { with: /\A(?=[a-zA-Z]*\d)(?=[a-zA-Z]*).{1,4}\z/ }
 end
