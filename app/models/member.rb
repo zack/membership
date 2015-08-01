@@ -2,7 +2,8 @@ class Member < ActiveRecord::Base
   has_many :players
   has_many :emergency_contacts
   has_many :jobs, through: :member_jobs
-  has_and_belongs_to_many :committees
+  has_many :committee_members
+  has_many :committees, through: :committee_members
 
   validates :name, presence: true
   validates :forum_handle, uniqueness: { case_sensitive: false }
