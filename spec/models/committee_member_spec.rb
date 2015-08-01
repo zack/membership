@@ -41,6 +41,7 @@ describe CommitteeMember do
                              date_started: 123)
       expect(CommitteeMember.count).to eq(0)
     end
+
     it 'should fail with a string for an end_date' do
       expect(CommitteeMember.count).to eq(0)
       CommitteeMember.create(member_id: 1,
