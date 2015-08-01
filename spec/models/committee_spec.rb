@@ -1,33 +1,29 @@
 describe Committee do
-  describe 'validation' do
-    context 'is valid' do
-      it 'with a name' do
-        expect(Committee.count).to eq(0)
-        Committee.create(name: 'Communications')
-        expect(Committee.count).to eq(1)
-      end
+  describe 'assocations' do
+    it 'belongs to a pillar' do
+      should belong_to(:pillar)
     end
 
-    context 'is invalid' do
-      it 'without a name' do
-        expect(Committee.count).to eq(0)
-        Committee.create()
-        expect(Committee.count).to eq(0)
-      end
+    it 'has many jobs' do
+      should have_many(:jobs)
+    end
 
-      it 'with a duplicate name' do
-        expect(Committee.count).to eq(0)
-        Committee.create(name: 'Communications')
-        Committee.create(name: 'Communications')
-        expect(Committee.count).to eq(1)
-      end
+    it 'has many committee_members' do
+      should have_many(:committee_members)
+    end
 
-      it 'with a duplicate name regardless of case' do
-        expect(Committee.count).to eq(0)
-        Committee.create(name: 'communications')
-        Committee.create(name: 'COMMUNICATIONS')
-        expect(Committee.count).to eq(1)
-      end
+    it 'has many members through committee_members' do
+      should have_many(:members).through(:committee_members)
+    end
+  end
+
+  describe 'validations' do
+    it 'should validate presence of name' do
+      should validate_presence_of(:name)
+    end
+
+    it 'should validate uniquness of name' do
+      should validate_uniqueness_of(:name).case_insensitive
     end
   end
 end
