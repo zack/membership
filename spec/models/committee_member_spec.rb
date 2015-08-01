@@ -25,7 +25,7 @@ describe CommitteeMember do
       should validate_uniqueness_of(:member_id).scoped_to(:committee_id)
     end
 
-    # Should can't test these
+    # Shoulda can't test these
     it 'should fail with a string for an start_date' do
       expect(CommitteeMember.count).to eq(0)
       CommitteeMember.create(member_id: 1,

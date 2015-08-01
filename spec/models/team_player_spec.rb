@@ -17,7 +17,7 @@ describe TeamPlayer do
     # Because of a weird corner case in the should libary
     subject { TeamPlayer.new(team_id: 1, player_id: 1) }
 
-    it 'should validate the presence of a team id' do
+    it 'should validate the presence of a team_id' do
       should validate_presence_of(:team_id)
     end
 
@@ -29,7 +29,7 @@ describe TeamPlayer do
       should validate_uniqueness_of(:player_id).scoped_to(:team_id)
     end
 
-    # Should can't test these
+    # Shoulda can't test these
     it 'should fail with a string for an start_date' do
       expect(TeamPlayer.count).to eq(0)
       TeamPlayer.create(team_id: 1,
