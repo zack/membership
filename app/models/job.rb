@@ -1,5 +1,6 @@
 class Job < ActiveRecord::Base
   belongs_to :committee
+  has_one :member_job
   has_one :member, through: :member_jobs
 
   validates :name, presence: true

@@ -1,6 +1,7 @@
 class Member < ActiveRecord::Base
   has_many :players
   has_many :emergency_contacts
+  has_many :member_jobs
   has_many :jobs, through: :member_jobs
   has_many :committee_members
   has_many :committees, through: :committee_members
