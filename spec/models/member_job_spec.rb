@@ -1,82 +1,28 @@
 describe MemberJob do
-  describe 'validation' do
-    context 'is valid' do
-      it 'with duplicate member_id' do
-        expect(MemberJob.count).to eq(0)
-        MemberJob.create(member_id: 1, job_id: 1)
-        MemberJob.create(member_id: 1, job_id: 2)
-        expect(MemberJob.count).to eq(2)
-      end
-
-      it 'with duplicate job_id' do
-        expect(MemberJob.count).to eq(0)
-        MemberJob.create(member_id: 1, job_id: 1)
-        MemberJob.create(member_id: 2, job_id: 1)
-        expect(MemberJob.count).to eq(2)
-      end
-
-      it 'with no start date or end date' do
-        expect(MemberJob.count).to eq(0)
-        MemberJob.create(member_id: 1, job_id: 1)
-        expect(MemberJob.count).to eq(1)
-      end
-
-      it 'with a start date and no end date' do
-        expect(MemberJob.count).to eq(0)
-        MemberJob.create(member_id: 1, job_id: 1, date_started: Date.today)
-        expect(MemberJob.count).to eq(1)
-      end
-
-      it 'with an end date and no start date' do
-        expect(MemberJob.count).to eq(0)
-        MemberJob.create(member_id: 1, job_id: 1, date_ended: Date.today)
-        expect(MemberJob.count).to eq(1)
-      end
-
-      it 'with an end date after a start date' do
-        expect(MemberJob.count).to eq(0)
-        MemberJob.create(member_id: 1,
-                         job_id: 1,
-                         date_started: Date.today - 1,
-                         date_ended: Date.today)
-        expect(MemberJob.count).to eq(1)
-      end
-
+  describe 'associations' do
+    it 'should belong to member' do
+      should belong_to(:member)
     end
-    context 'is invalid' do
-      it 'without any ids' do
-        expect(MemberJob.count).to eq(0)
-        MemberJob.create()
-        expect(MemberJob.count).to eq(0)
-      end
 
-      it 'without a member_id' do
-        expect(MemberJob.count).to eq(0)
-        MemberJob.create(job_id: 1)
-        expect(MemberJob.count).to eq(0)
-      end
+    it 'should belong to job' do
+      should belong_to(:job)
+    end
+  end
 
-      it 'without a job_id' do
-        expect(MemberJob.count).to eq(0)
-        MemberJob.create(member_id: 1)
-        expect(MemberJob.count).to eq(0)
-      end
+  describe 'validations' do
+    # Because of a weird corner case in the should libary
+    subject { MemberJob.new(member_id: 1) }
 
-      it 'with duplicate member_id and job_id' do
-        expect(MemberJob.count).to eq(0)
-        MemberJob.create(member_id: 1, job_id: 1)
-        MemberJob.create(member_id: 1, job_id: 1)
-        expect(MemberJob.count).to eq(1)
-      end
+    it 'should validate presence of job_id' do
+      should validate_presence_of(:job_id)
+    end
 
-      it 'with an end date before a start date' do
-        expect(MemberJob.count).to eq(0)
-        MemberJob.create(member_id: 1,
-                         job_id: 1,
-                         date_started: Date.today,
-                         date_ended: Date.today - 1)
-        expect(MemberJob.count).to eq(0)
-      end
+    it 'should validate a unique job_id with member_id' do
+      should validate_uniqueness_of(:job_id).scoped_to(:member_id)
+    end
+
+    it 'should validate the presence of member_id' do
+      should validate_presence_of(:member_id)
     end
   end
 end
