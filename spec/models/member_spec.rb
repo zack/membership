@@ -1,117 +1,64 @@
 describe Member do
-  describe 'validation' do
-    context 'is valid' do
-      it 'with a name' do
-        expect(Member.count).to eq(0)
-        Member.create(name: 'Avela')
-        expect(Member.count).to eq(1)
-      end
-
-      it 'with a unique forum handle' do
-        expect(Member.count).to eq(0)
-        Member.create(name: 'Avela', forum_handle: 'avela932')
-        expect(Member.count).to eq(1)
-      end
-
-      it 'with a unique wftda_id_number' do
-        expect(Member.count).to eq(0)
-        Member.create(name: 'Avela', wftda_id_number: 10484)
-        expect(Member.count).to eq(1)
-      end
-
-      it 'with a start year and no end year' do
-        expect(Member.count).to eq(0)
-        Member.create!(name: 'Avela', year_joined: 2015)
-        expect(Member.count).to eq(1)
-      end
-
-      it 'with an end year and no start year' do
-        expect(Member.count).to eq(0)
-        Member.create(name: 'Avela', year_left: 2015)
-        expect(Member.count).to eq(1)
-      end
-
-      it 'with an end year identical to a start year' do
-        expect(Member.count).to eq(0)
-        Member.create(name: 'Avela',
-                      year_joined: 2015,
-                      year_left: 2015)
-        expect(Member.count).to eq(1)
-      end
-
-      it 'with an end year after a start year' do
-        expect(Member.count).to eq(0)
-        Member.create(name: 'Avela',
-                      year_joined: 2014,
-                      year_left: 2015)
-        expect(Member.count).to eq(1)
-      end
+  describe 'associations' do
+    it 'has many players' do
+      should have_many(:players)
     end
 
-    context 'is invalid' do
-      it 'without a name' do
-        expect(Member.count).to eq(0)
-        Member.create()
-        expect(Member.count).to eq(0)
-      end
+    it 'has many emergency_contacts' do
+      should have_many(:emergency_contacts)
+    end
 
-      it 'with a duplicate forum handle, ignoring case' do
-        expect(Member.count).to eq(0)
-        Member.create(name: 'Avela', forum_handle: 'a932')
-        Member.create(name: 'Arnie', forum_handle: 'A932')
-        expect(Member.count).to eq(1)
-      end
+    it 'should have many member_jobs' do
+      should have_many(:member_jobs)
+    end
 
-      it 'with a duplicate wftda_id_number' do
-        expect(Member.count).to eq(0)
-        Member.create(name: 'Alex', wftda_id_number: 10484)
-        Member.create(name: 'Tyrone', wftda_id_number: 10484)
-        expect(Member.count).to eq(1)
-      end
+    it 'should have many jobs through member_jobs' do
+      should have_many(:jobs).through(:member_jobs)
+    end
 
-      it 'with a non-numerical wftda_id_number' do
-        expect(Member.count).to eq(0)
-        Member.create(name: 'Andy', wftda_id_number: 'identifier')
-        expect(Member.count).to eq(0)
-      end
+    it 'should have many committee_members' do
+      should have_many(:committee_members)
+    end
 
-      it 'with a non-integer wftda_id_number' do
-        expect(Member.count).to eq(0)
-        Member.create(name: 'Andy', wftda_id_number: 10484.1)
-        expect(Member.count).to eq(0)
-      end
+    it 'should have many committees through commmittee_members' do
+      should have_many(:committees).through(:committee_members)
+    end
+  end
+  describe 'validations' do
+    # Because of a weird corner case in the should libary
+    subject { Member.new(name: 'Trish') }
 
-      it 'with a non-numerical year_joined' do
-        expect(Member.count).to eq(0)
-        Member.create(name: 'Alice', year_joined: 'identifier')
-        expect(Member.count).to eq(0)
-      end
+    it 'validate presence of name' do
+      should validate_presence_of(:name)
+    end
 
-      it 'with a non-numerical year_left' do
-        expect(Member.count).to eq(0)
-        Member.create(name: 'Kenny', year_left: 'identifier')
-        expect(Member.count).to eq(0)
-      end
+    it 'validates uniqueness of forum_handle' do
+      should validate_uniqueness_of(:forum_handle).case_insensitive.allow_nil
+    end
 
-      it 'with a non-integer year_joined' do
-        expect(Member.count).to eq(0)
-        Member.create(name: 'Anu', year_joined: 2015.1)
-        expect(Member.count).to eq(0)
-      end
+    it 'should validate the uniqueness of wftda_id_number' do
+      should validate_uniqueness_of(:wftda_id_number).allow_nil
+    end
 
-      it 'with a non-integer year_left' do
-        expect(Member.count).to eq(0)
-        Member.create(name: 'Treshma', year_left: 2015.1)
-        expect(Member.count).to eq(0)
-      end
+    it 'should validate numericality of wftda_id_number' do
+      should validate_numericality_of(:wftda_id_number).allow_nil
+    end
 
-      it 'with an end year before a start year' do
-        expect(Member.count).to eq(0)
-        Member.create(name: 'Avela',
-                      year_joined: 2015,
-                      year_left: 2014)
-        expect(Member.count).to eq(0)
-      end
+    it 'should validate numericality and integerness of year_joined' do
+      should validate_numericality_of(:year_joined).only_integer.allow_nil
+    end
+
+    it 'should validate numericality and integerness of year_left' do
+      should validate_numericality_of(:year_left).only_integer.allow_nil
+    end
+
+    # Shoulda can't test greater_or_equal_to against other attributes
+    it 'should fail with an end year before a start year' do
+      expect(Member.count).to eq(0)
+      Member.create(name: 'Avela',
+                    year_joined: 2015,
+                    year_left: 2014)
+      expect(Member.count).to eq(0)
     end
   end
 end
