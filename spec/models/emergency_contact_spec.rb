@@ -1,49 +1,24 @@
 describe EmergencyContact do
-  describe 'validation' do
-    context 'is valid' do
-      it 'with a name and phone_number' do
-        expect(EmergencyContact.count).to eq(0)
-        EmergencyContact.create(name: 'Sean', phone_number: '7814430314')
-        expect(EmergencyContact.count).to eq(1)
-      end
+  describe 'associations' do
+    it 'should belong to member' do
+      should belong_to(:member)
+    end
+  end
+
+  describe 'validations' do
+    it 'validates the presence of name' do
+      should validate_presence_of(:name)
     end
 
-    context 'is invalid' do
-      it 'without a name' do
-        expect(EmergencyContact.count).to eq(0)
-        EmergencyContact.create(phone_number: '7814430314')
-        expect(EmergencyContact.count).to eq(0)
-      end
+    it 'should validate the presence of phone number' do
+      should validate_presence_of(:phone_number)
+    end
 
-      it 'without a phone_number' do
-        expect(EmergencyContact.count).to eq(0)
-        EmergencyContact.create(name: 'Gregg')
-        expect(EmergencyContact.count).to eq(0)
-      end
-
-      it 'with a phone number too shoart' do
-        expect(EmergencyContact.count).to eq(0)
-        EmergencyContact.create(phone_number: '012345678')
-        expect(EmergencyContact.count).to eq(0)
-      end
-
-      it 'with a phone number too long' do
-        expect(EmergencyContact.count).to eq(0)
-        EmergencyContact.create(phone_number: '01234567890')
-        expect(EmergencyContact.count).to eq(0)
-      end
-
-      it 'with a phone number with a letter' do
-        expect(EmergencyContact.count).to eq(0)
-        EmergencyContact.create(phone_number: '012345678A')
-        expect(EmergencyContact.count).to eq(0)
-      end
-
-      it 'with a phone number with punctuation' do
-        expect(EmergencyContact.count).to eq(0)
-        EmergencyContact.create(phone_number: '0123456+.-')
-        expect(EmergencyContact.count).to eq(0)
-      end
+    it 'should validate the format of phone number' do
+      should allow_value('0003334444').for(:phone_number)
+      should_not allow_value('003334444').for(:phone_number)
+      should_not allow_value('00003334444').for(:phone_number)
+      should_not allow_value('R0003334444').for(:phone_number)
     end
   end
 end
