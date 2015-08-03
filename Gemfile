@@ -19,6 +19,7 @@ group :development, :test do
   gem 'pry-rails',            '~> 0.0'
   gem 'awesome_print',        '~> 1.0'
   gem 'shoulda-matchers',     '~> 2.0'
+  gem 'seed-fu',              '~> 2.3'
 end
 
 group :test do
