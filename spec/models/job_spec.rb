@@ -18,6 +18,10 @@ describe Job do
       should validate_presence_of(:name)
     end
 
+    it 'should validate the presence of committee_id' do
+      should validate_presence_of(:committee_id)
+    end
+
     # Shoulda can't test this
 
     it 'should fail with a string for start_date' do

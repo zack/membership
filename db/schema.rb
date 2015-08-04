@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150804032152) do
+ActiveRecord::Schema.define(version: 20150804215623) do
 
   create_table "committee_members", force: :cascade do |t|
     t.integer  "committee_id", null: false
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 20150804032152) do
   add_index "committee_members", ["member_id"], name: "index_committee_members_on_member_id"
 
   create_table "committees", force: :cascade do |t|
-    t.integer  "pillar_id"
+    t.integer  "pillar_id",  null: false
     t.string   "name",       null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -48,7 +48,7 @@ ActiveRecord::Schema.define(version: 20150804032152) do
   add_index "emergency_contacts", ["member_id"], name: "index_emergency_contacts_on_member_id"
 
   create_table "jobs", force: :cascade do |t|
-    t.integer  "committee_id"
+    t.integer  "committee_id",   null: false
     t.string   "name",           null: false
     t.boolean  "is_full_time"
     t.integer  "hours_per_week"

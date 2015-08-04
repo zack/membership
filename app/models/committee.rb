@@ -4,5 +4,6 @@ class Committee < ActiveRecord::Base
   has_many :committee_members
   has_many :members, through: :committee_members
 
+  validates :pillar_id, presence: true
   validates :name, presence: true, uniqueness: { case_sensitive: false }
 end
