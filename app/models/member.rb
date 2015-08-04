@@ -16,4 +16,5 @@ class Member < ActiveRecord::Base
   validates :year_left, numericality: { only_integer: true }, allow_nil: true
   validates :year_left, numericality: {greater_than_or_equal_to: :year_joined},
                         if: :year_joined?, allow_nil: true
+  validates_date :date_of_birth
 end
