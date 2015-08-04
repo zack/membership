@@ -5,8 +5,14 @@ class Job < ActiveRecord::Base
 
   validates :name, presence: true
   validates :committee_id, presence: true
-  validates_date :date_started
-  validates_date :date_ended, :after => :date_started,
-                              :allow_nil => true,
-                              :if => :date_started
+  validates :hours_per_week_lower, numericality: { only_integer: true }, allow_nil: true
+  validates :hours_per_week_upper, numericality: { only_integer: true }, allow_nil: true
+  validates :hours_per_week_upper,
+    numericality: { greater_than_or_equal_to: :hours_per_week_lower },
+    if: :hours_per_week_lower?,
+    allow_nil: true
+  validates_date :date_started, allow_nil: true
+  validates_date :date_ended, after: :date_started,
+                              allow_nil: true,
+                              if: :date_started
 end

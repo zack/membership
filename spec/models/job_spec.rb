@@ -24,9 +24,19 @@ describe Job do
 
     # Shoulda can't test this
 
+    it 'should fail with hours_per_week_lower lower than hours_per_week_upper' do
+      expect(Job.count).to eq(0)
+      Job.create(name: 'President',
+                 committee_id: 1,
+                 hours_per_week_lower: 5,
+                 hours_per_week_upper: 4)
+      expect(Job.count).to eq(0)
+    end
+
     it 'should fail with a string for start_date' do
       expect(Job.count).to eq(0)
       Job.create(name: 'President',
+                 committee_id: 1,
                  date_started: 'string')
       expect(Job.count).to eq(0)
     end
@@ -34,6 +44,7 @@ describe Job do
     it 'should fail with a number for start_date' do
       expect(Job.count).to eq(0)
       Job.create(name: 'President',
+                 committee_id: 1,
                  date_started: 123)
       expect(Job.count).to eq(0)
     end
@@ -41,6 +52,7 @@ describe Job do
     it 'should fail with a string for end_Date' do
       expect(Job.count).to eq(0)
       Job.create(name: 'President',
+                 committee_id: 1,
                  date_ended: 'string')
       expect(Job.count).to eq(0)
     end
@@ -48,6 +60,7 @@ describe Job do
     it 'should fail with a number for end_date' do
       expect(Job.count).to eq(0)
       Job.create(name: 'President',
+                 committee_id: 1,
                  date_ended: 123)
       expect(Job.count).to eq(0)
     end
@@ -55,6 +68,7 @@ describe Job do
     it 'should fail with an end date before a start date' do
       expect(Job.count).to eq(0)
       Job.create(name: 'President',
+                 committee_id: 1,
                  date_started: Date.today,
                  date_ended: Date.today - 1)
       expect(Job.count).to eq(0)
