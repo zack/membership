@@ -11,11 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150731152609) do
+ActiveRecord::Schema.define(version: 20150804020900) do
 
   create_table "committee_members", force: :cascade do |t|
-    t.integer  "committee_id"
-    t.integer  "member_id"
+    t.integer  "committee_id", null: false
+    t.integer  "member_id",    null: false
     t.date     "date_started"
     t.date     "date_ended"
     t.datetime "created_at",   null: false
