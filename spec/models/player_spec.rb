@@ -31,5 +31,50 @@ describe Player do
       should_not allow_value('AAAA1').for(:number)
       should_not allow_value('11111').for(:number)
     end
+
+    # Shoulda can't test this
+
+    it 'should pass with just date_started' do
+      expect(Player.count).to eq(0)
+      Player.create(name: "Username Here",
+                    number: "W0AH",
+                    date_started: Date.today)
+      expect(Player.count).to eq(1)
+    end
+
+    it 'should pass with just date_ended' do
+      expect(Player.count).to eq(0)
+      Player.create(name: "Username Here",
+                    number: "W0AH",
+                    date_ended: Date.today)
+      expect(Player.count).to eq(1)
+    end
+
+    it 'should pass with date_ended after date_started' do
+      expect(Player.count).to eq(0)
+      Player.create(name: "Username Here",
+                    number: "W0AH",
+                    date_started: Date.today - 1,
+                    date_ended: Date.today)
+      expect(Player.count).to eq(1)
+    end
+
+    it 'should pass with date_ended equal to date_started' do
+      expect(Player.count).to eq(0)
+      Player.create(name: "Username Here",
+                    number: "W0AH",
+                    date_started: Date.today,
+                    date_ended: Date.today)
+      expect(Player.count).to eq(1)
+    end
+
+    it 'should fail with date_ended before date_started' do
+      expect(Player.count).to eq(0)
+      Player.create(name: "Username Here",
+                    number: "W0AH",
+                    date_started: Date.today,
+                    date_ended: Date.today - 1)
+      expect(Player.count).to eq(0)
+    end
   end
 end

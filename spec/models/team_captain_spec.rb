@@ -17,40 +17,43 @@ describe TeamCaptain do
       should validate_uniqueness_of(:team_player_id)
     end
 
-    # Shoulda can't test these
-    it 'should fail with a string for an start_date' do
+    # Shoulda can't test this
+
+    it 'should pass with just date_started' do
       expect(TeamCaptain.count).to eq(0)
       TeamCaptain.create(team_player_id: 1,
-                        date_started: 'string')
-      expect(TeamCaptain.count).to eq(0)
+                         date_started: Date.today)
+      expect(TeamCaptain.count).to eq(1)
     end
 
-    it 'should fail with a number for an start_date' do
+    it 'should pass with just date_ended' do
       expect(TeamCaptain.count).to eq(0)
       TeamCaptain.create(team_player_id: 1,
-                        date_started: 123)
-      expect(TeamCaptain.count).to eq(0)
+                         date_ended: Date.today)
+      expect(TeamCaptain.count).to eq(1)
     end
 
-    it 'should fail with a string for an end_date' do
+    it 'should pass with date_ended after date_started' do
       expect(TeamCaptain.count).to eq(0)
       TeamCaptain.create(team_player_id: 1,
-                        date_ended: 'string')
-      expect(TeamCaptain.count).to eq(0)
+                         date_started: Date.today - 1,
+                         date_ended: Date.today)
+      expect(TeamCaptain.count).to eq(1)
     end
 
-    it 'should fail with a number for an end_date' do
+    it 'should pass with date_ended equal to date_started' do
       expect(TeamCaptain.count).to eq(0)
       TeamCaptain.create(team_player_id: 1,
-                        date_ended: 123)
-      expect(TeamCaptain.count).to eq(0)
+                         date_started: Date.today,
+                         date_ended: Date.today)
+      expect(TeamCaptain.count).to eq(1)
     end
 
-    it 'should fail with an end date before a start date' do
+    it 'should fail with date_ended before date_started' do
       expect(TeamCaptain.count).to eq(0)
       TeamCaptain.create(team_player_id: 1,
-                        date_started: Date.today,
-                        date_ended: Date.today - 1)
+                         date_started: Date.today,
+                         date_ended: Date.today - 1)
       expect(TeamCaptain.count).to eq(0)
     end
   end

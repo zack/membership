@@ -29,45 +29,48 @@ describe TeamPlayer do
       should validate_uniqueness_of(:player_id).scoped_to(:team_id)
     end
 
-    # Shoulda can't test these
-    it 'should fail with a string for an start_date' do
+    # Shoulda can't test this
+
+    it 'should pass with just date_started' do
       expect(TeamPlayer.count).to eq(0)
       TeamPlayer.create(team_id: 1,
-                        player_id: 1,
-                        date_started: 'string')
-      expect(TeamPlayer.count).to eq(0)
+                    player_id: 1,
+                    date_started: Date.today)
+      expect(TeamPlayer.count).to eq(1)
     end
 
-    it 'should fail with a number for an start_date' do
+    it 'should pass with just date_ended' do
       expect(TeamPlayer.count).to eq(0)
       TeamPlayer.create(team_id: 1,
-                        player_id: 1,
-                        date_started: 123)
-      expect(TeamPlayer.count).to eq(0)
+                    player_id: 1,
+                    date_ended: Date.today)
+      expect(TeamPlayer.count).to eq(1)
     end
 
-    it 'should fail with a string for an end_date' do
+    it 'should pass with date_ended after date_started' do
       expect(TeamPlayer.count).to eq(0)
       TeamPlayer.create(team_id: 1,
-                        player_id: 1,
-                        date_ended: 'string')
-      expect(TeamPlayer.count).to eq(0)
+                    player_id: 1,
+                    date_started: Date.today - 1,
+                    date_ended: Date.today)
+      expect(TeamPlayer.count).to eq(1)
     end
 
-    it 'should fail with a number for an end_date' do
+    it 'should pass with date_ended equal to date_started' do
       expect(TeamPlayer.count).to eq(0)
       TeamPlayer.create(team_id: 1,
-                        player_id: 1,
-                        date_ended: 123)
-      expect(TeamPlayer.count).to eq(0)
+                    player_id: 1,
+                    date_started: Date.today,
+                    date_ended: Date.today)
+      expect(TeamPlayer.count).to eq(1)
     end
 
-    it 'should fail with an end date before a start date' do
+    it 'should fail with date_ended before date_started' do
       expect(TeamPlayer.count).to eq(0)
       TeamPlayer.create(team_id: 1,
-                        player_id: 1,
-                        date_started: Date.today,
-                        date_ended: Date.today - 1)
+                    player_id: 1,
+                    date_started: Date.today,
+                    date_ended: Date.today - 1)
       expect(TeamPlayer.count).to eq(0)
     end
   end

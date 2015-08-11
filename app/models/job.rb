@@ -3,6 +3,8 @@ class Job < ActiveRecord::Base
   has_many :member_jobs
   has_many :members, through: :member_jobs
 
+  validates_with DateValidator
+
   validates :name, presence: true
   validates :committee_id, presence: true
   validates :hours_per_week_lower, numericality: { only_integer: true }, allow_nil: true

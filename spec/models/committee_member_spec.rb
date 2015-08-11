@@ -26,39 +26,48 @@ describe CommitteeMember do
     end
 
     # Shoulda can't test these
-    it 'should fail with a string for an start_date' do
+
+    it 'should pass without date_started or date_ended' do
+      expect(CommitteeMember.count).to eq(0)
+      CommitteeMember.create!(member_id: 1, committee_id: 1)
+      expect(CommitteeMember.count).to eq(1)
+    end
+
+    it 'should pass with only date_started' do
       expect(CommitteeMember.count).to eq(0)
       CommitteeMember.create(member_id: 1,
                              committee_id: 1,
-                             date_started: 'string')
-      expect(CommitteeMember.count).to eq(0)
+                             date_started: Date.today)
+      expect(CommitteeMember.count).to eq(1)
     end
 
-    it 'should fail with a number for an start_date' do
+    it 'should pass with only date_ended' do
       expect(CommitteeMember.count).to eq(0)
       CommitteeMember.create(member_id: 1,
                              committee_id: 1,
-                             date_started: 123)
-      expect(CommitteeMember.count).to eq(0)
+                             date_ended: Date.today)
+      expect(CommitteeMember.count).to eq(1)
     end
 
-    it 'should fail with a string for an end_date' do
+    it 'should pass with date_started before date_ended' do
       expect(CommitteeMember.count).to eq(0)
       CommitteeMember.create(member_id: 1,
                              committee_id: 1,
-                             date_ended: 'string')
-      expect(CommitteeMember.count).to eq(0)
+                             date_started: Date.today - 1,
+                             date_ended: Date.today)
+      expect(CommitteeMember.count).to eq(1)
     end
 
-    it 'should fail with a number for an end_date' do
+    it 'should pass with date_started equal to date_ended' do
       expect(CommitteeMember.count).to eq(0)
       CommitteeMember.create(member_id: 1,
                              committee_id: 1,
-                             date_ended: 123)
-      expect(CommitteeMember.count).to eq(0)
+                             date_started: Date.today,
+                             date_ended: Date.today)
+      expect(CommitteeMember.count).to eq(1)
     end
 
-    it 'should fail with an end date before a start date' do
+    it 'should fail with date_started after to date_ended' do
       expect(CommitteeMember.count).to eq(0)
       CommitteeMember.create(member_id: 1,
                              committee_id: 1,

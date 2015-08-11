@@ -33,39 +33,41 @@ describe Job do
       expect(Job.count).to eq(0)
     end
 
-    it 'should fail with a string for start_date' do
+    it 'should pass with just date_started' do
       expect(Job.count).to eq(0)
       Job.create(name: 'President',
                  committee_id: 1,
-                 date_started: 'string')
-      expect(Job.count).to eq(0)
+                 date_started: Date.today)
+      expect(Job.count).to eq(1)
     end
 
-    it 'should fail with a number for start_date' do
+    it 'should pass with just date_ended' do
       expect(Job.count).to eq(0)
       Job.create(name: 'President',
                  committee_id: 1,
-                 date_started: 123)
-      expect(Job.count).to eq(0)
+                 date_ended: Date.today)
+      expect(Job.count).to eq(1)
     end
 
-    it 'should fail with a string for end_Date' do
+    it 'should pass with date_ended after date_started' do
       expect(Job.count).to eq(0)
       Job.create(name: 'President',
                  committee_id: 1,
-                 date_ended: 'string')
-      expect(Job.count).to eq(0)
+                 date_started: Date.today - 1,
+                 date_ended: Date.today)
+      expect(Job.count).to eq(1)
     end
 
-    it 'should fail with a number for end_date' do
+    it 'should pass with date_ended equal to date_started' do
       expect(Job.count).to eq(0)
       Job.create(name: 'President',
                  committee_id: 1,
-                 date_ended: 123)
-      expect(Job.count).to eq(0)
+                 date_started: Date.today,
+                 date_ended: Date.today)
+      expect(Job.count).to eq(1)
     end
 
-    it 'should fail with an end date before a start date' do
+    it 'should fail with date_ended before date_started' do
       expect(Job.count).to eq(0)
       Job.create(name: 'President',
                  committee_id: 1,

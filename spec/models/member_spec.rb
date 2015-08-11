@@ -24,6 +24,7 @@ describe Member do
       should have_many(:committees).through(:committee_members)
     end
   end
+
   describe 'validations' do
     # Because of a weird corner case in the should libary
     subject { Member.new(name: 'Trish') }

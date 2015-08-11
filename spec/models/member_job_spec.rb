@@ -27,42 +27,44 @@ describe MemberJob do
 
     # Shoulda can't test this
 
-    it 'should fail with a string for start_date' do
+    it 'should pass with just date_started' do
       expect(MemberJob.count).to eq(0)
-      MemberJob.create(member_id: 1,
-                       job_id: 1,
-                       date_started: 'string')
-      expect(MemberJob.count).to eq(0)
+      MemberJob.create(job_id: 1,
+                       member_id: 1,
+                       date_started: Date.today)
+      expect(MemberJob.count).to eq(1)
     end
 
-    it 'should fail with a number for start_date' do
+    it 'should pass with just date_ended' do
       expect(MemberJob.count).to eq(0)
-      MemberJob.create(member_id: 1,
-                       job_id: 1,
-                       date_started: 123)
-      expect(MemberJob.count).to eq(0)
+      MemberJob.create(job_id: 1,
+                       member_id: 1,
+                       date_ended: Date.today)
+      expect(MemberJob.count).to eq(1)
     end
 
-    it 'should fail with a string for end_Date' do
+    it 'should pass with date_ended after date_started' do
       expect(MemberJob.count).to eq(0)
-      MemberJob.create(member_id: 1,
-                       job_id: 1,
-                       date_ended: 'string')
-      expect(MemberJob.count).to eq(0)
+      MemberJob.create(job_id: 1,
+                       member_id: 1,
+                       date_started: Date.today - 1,
+                       date_ended: Date.today)
+      expect(MemberJob.count).to eq(1)
     end
 
-    it 'should fail with a number for end_date' do
+    it 'should pass with date_ended equal to date_started' do
       expect(MemberJob.count).to eq(0)
-      MemberJob.create(member_id: 1,
-                       job_id: 1,
-                       date_ended: 123)
-      expect(MemberJob.count).to eq(0)
+      MemberJob.create(job_id: 1,
+                       member_id: 1,
+                       date_started: Date.today,
+                       date_ended: Date.today)
+      expect(MemberJob.count).to eq(1)
     end
 
-    it 'should fail with an end date before a start date' do
+    it 'should fail with date_ended before date_started' do
       expect(MemberJob.count).to eq(0)
-      MemberJob.create(member_id: 1,
-                       job_id: 1,
+      MemberJob.create(job_id: 1,
+                       member_id: 1,
                        date_started: Date.today,
                        date_ended: Date.today - 1)
       expect(MemberJob.count).to eq(0)
