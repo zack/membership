@@ -11,8 +11,4 @@ class Job < ActiveRecord::Base
     numericality: { greater_than_or_equal_to: :hours_per_week_lower },
     if: :hours_per_week_lower?,
     allow_nil: true
-  validates_date :date_started, allow_nil: true
-  validates_date :date_ended, after: :date_started,
-                              allow_nil: true,
-                              if: :date_started
 end

@@ -15,7 +15,6 @@ group :development, :test do
   gem 'web-console',          '2.0.0.beta3'
   gem 'spring',               '1.1.3'
   gem 'rspec-rails',          '~> 3.0'
-  gem 'validates_timeliness', '~> 3.0'
   gem 'pry-rails',            '~> 0.0'
   gem 'awesome_print',        '~> 1.0'
   gem 'shoulda-matchers',     '~> 2.0'

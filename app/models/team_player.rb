@@ -5,8 +5,4 @@ class TeamPlayer < ActiveRecord::Base
 
   validates :team_id, presence: true
   validates :player_id, presence: true, uniqueness: { scope: :team_id }
-  validates_date :date_started
-  validates_date :date_ended, :after => :date_started,
-                              :allow_nil => true,
-                              :if => :date_started
 end
