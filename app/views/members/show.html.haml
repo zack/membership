@@ -3,6 +3,14 @@
     %td
       -@member.attributes.except(*MembersController::IGNORED_MEMBER_KEYS).each do |attr|
         %tr
-          -attr.each do |a|
-            %td
-              =a
+          %td= attr[0].split("_").join(" ")
+          -if attr[0] == "phone_number"
+            %td= number_to_phone(attr[1])
+          -elsif attr[0] == "date_of_birth"
+            %td= attr[1].try(:strftime, ("%B %d, %Y"))
+          -elsif attr[1].class.to_s == "FalseClass"
+            %td= "✗"
+          -elsif attr[1].class.to_s == "TrueClass"
+            %td= "✓"
+          -else
+            %td= attr[1]

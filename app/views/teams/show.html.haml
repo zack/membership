@@ -1,0 +1,9 @@
+%table
+  %tbody
+    %tr
+      -@fields.each do |f|
+        %th= f.capitalize
+    -@team.players.each do |player|
+      %tr
+        -@fields.each do |f|
+          %td= player.attributes[f]
