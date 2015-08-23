@@ -1,0 +1,8 @@
+%table
+  %tbody
+    %td
+      -@member.attributes.except(*MembersController::IGNORED_MEMBER_KEYS).each do |attr|
+        %tr
+          -attr.each do |a|
+            %td
+              =a
