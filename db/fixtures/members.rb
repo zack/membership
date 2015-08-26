@@ -2,11 +2,11 @@ def maybe
   [true, false].sample
 end
 
-for i in 0...200 # seed 200 members
-  Member.seed do |m|
-    name = Faker::Name.name
-    year_joined = rand(11) + 2005
+for i in 1..200 # seed 200 members
+  name = Faker::Name.name
+  year_joined = rand(11) + 2005
 
+  Member.seed do |m|
     m.name = name
     m.nickname = name.split(" ")[0] if maybe()
     m.phone_number = Faker::Number.number(10) if maybe()
