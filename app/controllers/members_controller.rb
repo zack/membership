@@ -1,11 +1,11 @@
 class MembersController < ApplicationController
-  IGNORED_MEMBER_KEYS = ['id', 'updated_at', 'created_at']
+  helper_method :members, :member
 
-  def index
-    @members = Member.all
+  def members
+    @_members ||= Member.all
   end
 
-  def show
-    @member = Member.find(params[:id])
+  def member
+    @_member ||= members.find(params[:id])
   end
 end

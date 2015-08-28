@@ -1,7 +1,7 @@
 %table
   %tbody
     %td
-      -@member.attributes.except(*MembersController::IGNORED_MEMBER_KEYS).each do |attr|
+      -member.attributes.each do |attr|
         %tr
           %td= attr[0].split("_").join(" ")
           -if attr[0] == "phone_number"

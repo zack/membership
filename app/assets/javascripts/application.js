@@ -13,10 +13,11 @@
 //= require jquery
 //= require jquery_ujs
 //= require underscore
-//= require underscore
+//= require mustache
+//= require icanhaz-no-mustache
 //= require backbone
 //= require membership
-//= require_tree ../templates
+//= require templates/templates
 //= require_tree ./models
 //= require_tree ./collections
 //= require_tree ./views

@@ -1,0 +1,10 @@
+!function(){
+  <% Dir.glob("#{Rails.root}/app/assets/javascripts/templates/**/*.html.haml").each do |template| %>
+    <% depend_on(template) %>
+ich.addTemplate(
+"<%= File.basename template, '.html.haml' %>",
+"<%= Tilt.new(template).render.gsub(/\"/, '\\\"').gsub(/\n/,'') %>"
+ );
+  <% end %>
+}();
+// 2014-03-13 14:20:23 -0400
