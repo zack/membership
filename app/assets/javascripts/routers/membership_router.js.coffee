@@ -1,7 +1,7 @@
 class App.Routers.MembershipRouter extends Backbone.Router
   routes:
     ''            : 'index'
-    'members'    : 'members'
+    'members'     : 'members'
     'members/:id' : 'member'
 
   'index': ->
@@ -11,6 +11,5 @@ class App.Routers.MembershipRouter extends Backbone.Router
     console.log "Requested member with id #{id}"
 
   'members': ->
-    console.log 'Requested members index'
-    view = new App.Views.MembersIndex()
+    view = new App.Views.MembersIndex(collection: App.AllMembers)
     $('#container').html(view.render().el)
