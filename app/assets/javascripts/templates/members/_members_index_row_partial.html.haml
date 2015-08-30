@@ -1,4 +1,7 @@
 %tr
-  {{# attrs}}
-  %td{'data-value' => '{{.}}'} {{.}}
-  {{/ attrs}}
+  %td
+    %a{ href: '/members/{{id}}', data: { id: '{{id}}' } } {{name}}
+  {{# rest}}
+  %td
+    {{.}}
+  {{/ rest}}

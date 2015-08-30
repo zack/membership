@@ -1,24 +1,28 @@
 class App.Views.MembersIndex extends Backbone.View
   template: ich.members_index
 
-  relevant_attributes: ['name', 'nickname', 'wftda_id_number',
-                        'signed_wftda_waiver', 'signed_wftda_confidentiality',
-                        'signed_league_bylaws']
+  events:
+    'click a': '_show_member'
 
-  attribute_names: ['Name', 'Nickname', 'WFTDA ID', 'Signed League Bylaws',
-                    'Signed WFTDA Waiver', 'Signed WFTDA Confidentiality']
+  initialize: (options) ->
+    @headers = options.headers
+    @table_omissions = options.table_omissions
 
   render: ->
-    members = @_get_members(@collection.models)
-    @$el.html @template(attributes: @attribute_names, members: members)
+    @$el.html @template
+      members: @_get_members()
+      headers: @_get_headers()
     this
 
-  _get_members: (models) ->
-    active_members = @_get_active_members(models)
-    active_member_hashes = @_get_member_hashes(active_members)
-    active_member_arrays = @_get_filtered_member_arrays(active_member_hashes)
-    pretty_active_member_arrays = @_prettify_member_arrays(active_member_arrays)
-    @_hashify_arrays(pretty_active_member_arrays)
+  _get_members: ->
+    models = @collection.models
+    active_member_hashes = @_get_member_hashes(models)
+    filtered_active_member_hashes = @_filter_member_hashes(active_member_hashes)
+    pretty_member_hashes = @_prettify_member_hashes(filtered_active_member_hashes)
+    @_break_out_member_names(pretty_member_hashes)
+
+  _get_headers: ->
+    App.Helpers.header_map @headers, @table_omissions
 
   _get_active_members: (members) ->
     _.filter members, (member) ->
@@ -28,22 +32,30 @@ class App.Views.MembersIndex extends Backbone.View
     _.map models, (model) ->
       model.attributes
 
-  _get_filtered_member_arrays: (members) ->
+  _filter_member_hashes: (members) ->
     _.map members, (member) =>
-      _.map @relevant_attributes, (attribute) => member[attribute]
+      _.omit member, (value, key) =>
+        !_.contains @headers, key
 
-  _prettify_member_arrays: (arrays) ->
-    _.map arrays, (array) =>
-      _.map array, (value) =>
-        @_clean_value(value)
+  _prettify_member_hashes: (members) ->
+    _.map members, (member) =>
+      _.object (
+        _.map member, (value, key) =>
+          [key, App.Helpers.clean_table_value(value)]
+      )
 
-  _hashify_arrays: (arrays) ->
-    _.map arrays, (array) ->
-      ('attrs': array)
+  _break_out_member_names: (members) ->
+    _.map members, (member) =>
+      name: member.name
+      id: member.id
+      rest: _.map @_remove_name_and_id(member), (value) -> value
 
-  _clean_value: (value) ->
-    switch value
-      when true then '✓'
-      when false then '✗'
-      when null then ''
-      else value
+
+  _remove_name_and_id: (member) ->
+    _.omit member, (value, key) ->
+      _.contains ['id', 'name'], key
+
+  _show_member: (e) ->
+    url = $(e.currentTarget).attr('href')
+    Backbone.history.navigate(url, trigger: true)
+    false

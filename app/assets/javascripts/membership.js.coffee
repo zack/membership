@@ -4,7 +4,6 @@ window.Membership =
   Views: {}
   Routers: {}
   initialize: ->
-    console.log 'loading membership.js.coffee'
     @AllMembers = new @Collections.Members
     @AllMembers.fetch().done =>
       new @Routers.MembershipRouter()
