@@ -1,5 +1,11 @@
 %h3 Member
 
-{{# model}}
-.name= '{{name}}'
-{{/ model}}
+%a{href: '/members'} Back
+
+%table
+  %tbody
+    {{# member}}
+    %tr
+      %td {{key}}
+      %td {{value}}
+    {{/ member}}

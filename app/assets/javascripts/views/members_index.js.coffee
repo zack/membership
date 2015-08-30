@@ -2,10 +2,10 @@ class App.Views.MembersIndex extends Backbone.View
   template: ich.members_index
 
   events:
-    'click a': '_show_member'
+    'click a': App.Helpers.navigate
 
   initialize: (options) ->
-    @headers = options.headers
+    @headers = options.attrs
     @table_omissions = options.table_omissions
 
   render: ->
@@ -48,14 +48,8 @@ class App.Views.MembersIndex extends Backbone.View
     _.map members, (member) =>
       name: member.name
       id: member.id
-      rest: _.map @_remove_name_and_id(member), (value) -> value
-
+      rest: _.values @_remove_name_and_id(member)
 
   _remove_name_and_id: (member) ->
     _.omit member, (value, key) ->
       _.contains ['id', 'name'], key
-
-  _show_member: (e) ->
-    url = $(e.currentTarget).attr('href')
-    Backbone.history.navigate(url, trigger: true)
-    false
