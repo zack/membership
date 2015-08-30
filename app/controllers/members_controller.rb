@@ -1,7 +1,6 @@
 class MembersController < ApplicationController
   helper_method :members, :member
 
-  respond_to :json
   respond_to :html
 
   def index
