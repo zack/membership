@@ -9,6 +9,7 @@ gem 'haml-rails',           '~> 0.9'
 gem 'faker',                '~> 1.0'
 gem 'underscore-rails',     '~> 1.0'
 gem 'backbone-on-rails',    '~> 1.2'
+gem 'responders',           '~> 2.0'
 
 group :development, :test do
   gem 'sqlite3',            '1.3.9'
