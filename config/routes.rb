@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   root 'members#index'
 
-  resources :members, only: [:index, :show]
-  resources :teams, only: [:index, :show]
+  get 'members'        => 'members#index'
+  get 'members/:id'    => 'members#index'
+  get 'members/*'      => 'members#index'
+
 end

@@ -8,10 +8,6 @@ class MembersController < ApplicationController
     respond_with members
   end
 
-  def show
-    respond_with member
-  end
-
   def members
     @_members ||= Member.all
   end

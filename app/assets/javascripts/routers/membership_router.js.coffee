@@ -1,8 +1,8 @@
 class App.Routers.MembershipRouter extends Backbone.Router
   routes:
-    ''            : 'members'
     'members'     : 'members'
     'members/:id' : 'member'
+    'members/*'   : 'members'
 
   'member': (id) ->
     view = new App.Views.MembersShow(model: App.AllMembers.get(id))
