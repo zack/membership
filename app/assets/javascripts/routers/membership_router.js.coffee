@@ -1,5 +1,6 @@
 class App.Routers.MembershipRouter extends Backbone.Router
   routes:
+    ''            : 'members'
     'members'     : 'members'
     'members/:id' : 'member'
     'members/*'   : 'members'
