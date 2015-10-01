@@ -1,4 +1,4 @@
-class App.Routers.MembershipRouter extends Backbone.Router
+class App.Routers.MembersRouter extends Backbone.Router
   routes:
     ''            : 'members'
     'members'     : 'members'

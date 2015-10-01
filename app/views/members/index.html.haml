@@ -1,2 +1,4 @@
 :javascript
-  Membership.membersJson = #{raw members.to_json}
+  membersJson = #{raw members.to_json}
+  new window.App.Routers.MembersRouter();
+  window.App.AllMembers = new window.App.Collections.Members(membersJson)

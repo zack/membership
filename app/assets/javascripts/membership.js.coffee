@@ -4,8 +4,6 @@ window.Membership =
   Views: {}
   Routers: {}
   initialize: ->
-    @AllMembers = new @Collections.Members(@membersJson)
-    new @Routers.MembershipRouter()
     Backbone.history.start(pushState: true)
 
 # Site wide alias for ease of typing

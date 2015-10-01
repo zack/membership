@@ -1,0 +1,4 @@
+:javascript
+  teamsJson = #{raw teams.to_json(:include => :players)}
+  new window.App.Routers.TeamsRouter();
+  window.App.AllTeams = new window.App.Collections.Teams(teamsJson)
