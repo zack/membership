@@ -1,1 +1,7 @@
 %h3 Teams
+
+.teams
+{{# teams}}
+.team
+  %a{ href: '/team/{{id}}'} {{name}}
+{{/ teams}}
