@@ -7,7 +7,7 @@ class TeamsController < ApplicationController
   end
 
   def teams
-    @_temas ||= Team.all
+    @_teams ||= Team.all
   end
 
 end
