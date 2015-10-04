@@ -1,7 +1,18 @@
 %h3 Teams
 
-.teams
-{{# teams}}
-.team
-  %a{ href: '/team/{{id}}'} {{name}}
-{{/ teams}}
+%table#teams
+  %thead
+    %tr
+      {{# teams}}
+      %th
+        %a{ href: '{{url}}' } {{name}}
+      {{/ teams}}
+  %tbody
+    {{# body_rows}}
+    %tr
+      {{# .}}
+      {{# .}}
+      {{{.}}}
+      {{/ .}}
+      {{/ .}}
+    {{/ body_rows}}
