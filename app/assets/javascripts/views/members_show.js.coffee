@@ -3,9 +3,6 @@ class App.Views.MembersShow extends Backbone.View
 
   omitted_keys: ['id', 'created_at', 'updated_at']
 
-  events:
-    'click a': App.Helpers.navigate
-
   render: ->
     member = @_get_member(@model)
     pretty_member = @_prettify_member(member)

@@ -1,10 +1,5 @@
 App.Helpers =
 
-  navigate: (e) ->
-    url = $(e.currentTarget).attr('href')
-    Backbone.history.navigate(url, trigger: true)
-    false
-
   header_map: (headers, omissions = []) ->
     headers = _.difference headers, omissions
     _.map headers, (header) =>

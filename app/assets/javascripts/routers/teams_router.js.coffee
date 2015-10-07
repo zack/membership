@@ -10,11 +10,7 @@ class App.Routers.TeamsRouter extends Backbone.Router
     $('#container').html(view.render().el)
 
   'teams': ->
-    attrs = ['id', 'players']
-    table_omissions = ['id']
 
     view = new App.Views.TeamsIndex
       collection: App.AllTeams
-      attrs: attrs
-      table_omissions: table_omissions
     $('#container').html(view.render().el)

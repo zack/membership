@@ -1,12 +1,10 @@
 class App.Views.MembersIndex extends Backbone.View
   template: ich.members_index
 
-  events:
-    'click a': App.Helpers.navigate
+  headers: ['id', 'name', 'nickname', 'wftda_id_number', 'signed_league_bylaws',
+            'signed_wftda_waiver', 'signed_wftda_confidentiality']
 
-  initialize: (options) ->
-    @headers = options.attrs
-    @table_omissions = options.table_omissions
+  table_omissions: ['id']
 
   render: ->
     @$el.html @template

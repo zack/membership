@@ -1,0 +1,26 @@
+%h3 {{team_name}}
+
+%a{href: '/teams'} Back
+
+%table#team_table
+  %thead
+    %th
+      Name
+    %th
+      Number
+    %th
+      Member
+    %th
+      Date Started
+  %tbody
+    {{# players}}
+    %tr
+      %td
+        %a{ href: '/players/{{player_id}}' } {{player_name}}
+      %td
+        {{player_number}}
+      %td
+        %a{ href: '/members/{{member_id}}' } {{member_name}}
+      %td
+        {{date_started}}
+    {{/ players}}
