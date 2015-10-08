@@ -1,0 +1,47 @@
+a{
+  text-decoration: none;
+  color: blue;
+}
+table {
+  &#member-collection {
+    border-collapse: collapse;
+    tr {
+      &:nth-child(odd) {
+        background-color: #EEE;
+      }
+    }
+    th {
+      padding: 4px;
+      border: 1px solid black;
+      background-color: #CCC;
+    }
+    td {
+      border: 1px solid black;
+      text-align: center;
+      &:nth-child(1) {
+        text-align: left;
+      }
+      &.true:after {
+        content: '✓';
+      }
+      &.false:after {
+        content: '✗';
+      }
+    }
+  }
+
+  &#teams {
+    border-collapse: collapse;
+    th {
+      border: 1px solid black;
+      background-color: #CCC;
+    }
+    td {
+      border: 1px solid black;
+      text-align: center;
+      &:nth-child(odd) {
+        background-color: #EEE;
+      }
+    }
+  }
+}
