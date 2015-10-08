@@ -1,1 +1,1 @@
-class App.Models.Member extends Backbone.Model
+class db.Member extends Backbone.Model

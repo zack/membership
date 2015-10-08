@@ -16,8 +16,9 @@
 //= require mustache
 //= require icanhaz-no-mustache
 //= require backbone
-//= require membership
+//= require backbone.marionette
 
+//= require support/prelude
 //= require support/helpers
 //= require templates/templates
 

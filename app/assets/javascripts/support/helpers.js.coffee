@@ -1,4 +1,4 @@
-App.Helpers =
+db.Helpers =
 
   header_map: (headers, omissions = []) ->
     headers = _.difference headers, omissions
