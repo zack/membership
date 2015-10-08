@@ -1,1 +1,1 @@
-class App.Models.Team extends Backbone.Model
+class db.Team extends Backbone.Model

@@ -1,3 +1,2 @@
-class App.Collections.Players extends Backbone.Collection
-  url: '/players'
-  model: App.Models.Player
+class db.PlayersCollection extends Backbone.Collection
+  model: db.Player

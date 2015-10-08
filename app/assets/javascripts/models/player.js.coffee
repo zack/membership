@@ -1,1 +1,1 @@
-class App.Models.Player extends Backbone.Model
+class db.Player extends Backbone.Model

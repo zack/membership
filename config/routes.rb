@@ -1,16 +1,6 @@
 Rails.application.routes.draw do
-  root 'members#index'
+  root 'db#index'
 
-  get 'members'     => 'members#index'
-  get 'members/:id' => 'members#index'
-  get 'members/*'   => 'members#index'
-
-  get 'teams'       => 'teams#index'
-  get 'teams/:id'   => 'teams#index'
-  get 'teams/*'     => 'teams#index'
-
-  get 'players'     => 'players#index'
-  get 'players/:id' => 'players#index'
-  get 'players/*'   => 'players#index'
+  get '*path'       => 'db#index'
 
 end

@@ -1,3 +1,2 @@
-class App.Collections.Teams extends Backbone.Collection
-  url: '/teams'
-  model: App.Models.Team
+class db.TeamsCollection extends Backbone.Collection
+  model: db.Team

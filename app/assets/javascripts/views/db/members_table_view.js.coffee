@@ -1,14 +1,12 @@
-class db.MemberCollectionView extends Marionette.CompositeView
-  template: ich.member_collection
+class db.MembersTableView extends Marionette.CompositeView
+  template: ich.members_table
   tagName: 'table'
   id: 'member-collection'
+  class: 'members_table'
   childViewContainer: 'tbody'
   templateHelpers:
     tableHeaders: ['Name', 'Nickname', 'WFTDA ID', 'WFTDA League Bylaws',
                    'WFTDA Waiver', 'WFTDA Confidentiality']
 
-  onRender: ->
-    console.log 'rendering member collection view'
-
   getChildView: ->
-    db.MemberView
+    db.MembersTableRowView

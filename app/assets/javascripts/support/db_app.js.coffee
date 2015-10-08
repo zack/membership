@@ -5,7 +5,7 @@ $ ->
     db.app.Router = new db.MembershipRouter()
 
   db.app.on 'start', ->
-    Backbone.history.start()
+    Backbone.history.start({pushState: true})
 
   db.app.addRegions(
     app_region: '#db'
