@@ -15,7 +15,7 @@ class db.MembershipRouter extends Marionette.AppRouter
       new db.MembersTableView
         collection: db.members)
 
-  member: ->
+  member: (id) ->
     db.app.app_region.show(
       new db.MemberView
-        collection: db.members)
+        model: db.members.get(id))
