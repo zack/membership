@@ -28,6 +28,8 @@ db.Helpers =
       when 'reason_left'                  then 'Reason Left'
       when 'date_started'                 then 'Date Started'
       when 'date_ended'                   then 'Date Ended'
+      when 'created_at'                   then 'Created At'
+      when 'updated_at'                   then 'Updated At'
       else
         console.log 'Warning: Unmatched header at header map:', header
         header

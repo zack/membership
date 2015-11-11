@@ -1,6 +1,7 @@
 class db.MembershipRouter extends Marionette.AppRouter
 
   routes:
+    ''            : 'members'
     'members'     : 'members'
     'members/:id' : 'member'
 
