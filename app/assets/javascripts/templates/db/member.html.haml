@@ -1,8 +1,11 @@
-{{#member_info}}
-%thead
-  %tr
-    {{#.}}
-    %td {{attribute}}
-    %td {{value}}
-    {{/.}}
-{{/member_info}}
+%h2 {{member_name}}
+
+%table
+  %tbody
+    {{#member_info}}
+    %tr
+      {{#.}}
+      %td.strong{width:'30%'} {{attribute}}
+      %td {{value}}
+      {{/.}}
+    {{/member_info}}

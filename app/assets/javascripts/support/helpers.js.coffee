@@ -28,15 +28,14 @@ db.Helpers =
       when 'reason_left'                  then 'Reason Left'
       when 'date_started'                 then 'Date Started'
       when 'date_ended'                   then 'Date Ended'
-      when 'created_at'                   then 'Created At'
-      when 'updated_at'                   then 'Updated At'
+      when 'created_at'                   then 'Created'
+      when 'updated_at'                   then 'Updated'
       else
-        console.log 'Warning: Unmatched header at header map:', header
         header
 
   clean_table_value: (value) ->
     if typeof(value) == 'string'
-      if value.match(/^\d{4}-\d{2}-\d{2}$/)
+      if value.match(/^\d{4}-\d{2}-\d{2}/)
         new Date(value).toString().slice(4,15)
       else if value.match(/\d{10}/)
         value.replace(/^(\d{3})(\d{3})(\d{4})$/, '$1-$2-$3')
@@ -46,5 +45,4 @@ db.Helpers =
       switch value
         when true then '✓'
         when false then '✗'
-        when null then ''
         else value

@@ -1,7 +1,9 @@
+{{#member_info}}
 %td
   %a{href: '/members/{{id}}'} {{name}}
 %td {{nickname}}
 %td {{wftda_id_number}}
-%td{class: '{{signed_league_bylaws}}'}
-%td{class: '{{signed_wftda_waiver}}'}
-%td{class: '{{signed_wftda_confidentiality}}'}
+%td {{signed_league_bylaws}}
+%td {{signed_wftda_waiver}}
+%td {{signed_wftda_confidentiality}}
+{{/member_info}}
