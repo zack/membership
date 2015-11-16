@@ -6,12 +6,6 @@ class db.MembershipRouter extends Marionette.AppRouter
     'members/'    : 'members'
     'members/:id' : 'member'
 
-    'players'     : 'players'
-    'players/:id' : 'player'
-
-    'teams'       : 'teams'
-    'teams/:id'   : 'team'
-
   members: ->
     db.app.app_region.show(
       new db.MembersTableView
