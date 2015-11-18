@@ -29,11 +29,20 @@ table {
 
 #member_collection {
   margin: 0 auto;
+  h2 {
+    text-align: center;
+    font-size: 35px;
+    line-height: 10px;
+  }
 }
 
 #member_view {
+  width: 800px;
+  margin: 0 auto;
+  h2 {
+    margin-bottom: 0px;
+  }
   table {
-    width: 800px;
-    margin: 0 auto;
+    margin-top: 16px;
   }
 }
