@@ -1,0 +1,12 @@
+%h2 {{team_name}}
+%a{href: '/teams'} Teams Table
+
+%table
+  %tbody
+    {{#team_info}}
+    %tr
+      {{#.}}
+      %td.strong{width:'30%'} {{attribute}}
+      %td {{value}}
+      {{/.}}
+    {{/team_info}}

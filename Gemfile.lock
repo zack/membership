@@ -229,6 +229,3 @@ DEPENDENCIES
   uglifier (= 2.5.3)
   underscore-rails (~> 1.0)
   web-console (= 2.0.0.beta3)
-
-BUNDLED WITH
-   1.10.6
