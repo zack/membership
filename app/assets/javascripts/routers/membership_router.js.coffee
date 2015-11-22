@@ -11,7 +11,7 @@ class db.MembershipRouter extends Marionette.AppRouter
 
   members: ->
     db.app.app_region.show(
-      new db.MembersTableView
+      new db.MemberIndexView
         collection: db.members)
 
   member: (id) ->
@@ -21,7 +21,7 @@ class db.MembershipRouter extends Marionette.AppRouter
 
   teams: ->
     db.app.app_region.show(
-      new db.TeamsTableView
+      new db.TeamIndexView
         collection: db.teams)
 
   team: (id) ->

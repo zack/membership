@@ -1,7 +1,7 @@
-class db.TeamsTableRowView extends Marionette.ItemView
-  template: ich.teams_table_row
+class db.TeamIndexRowView extends Marionette.ItemView
+  template: ich.team_index_row
   tagName: 'tr'
-  className: 'team_table_row_view'
+  className: 'team_index_row_view'
   templateHelpers: ->
     team_info: @_get_team_info
 

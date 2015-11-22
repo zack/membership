@@ -1,7 +1,7 @@
-class db.TeamsTableView extends Marionette.CompositeView
-  template: ich.teams_table
+class db.TeamIndexView extends Marionette.CompositeView
+  template: ich.team_index
   id: 'team_collection'
-  class: 'teams_table'
+  class: 'team_index'
   childViewContainer: 'tbody'
   templateHelpers: ->
     table_headers: @_get_table_headers
@@ -9,7 +9,7 @@ class db.TeamsTableView extends Marionette.CompositeView
   TABLE_HEADERS: ['name']
 
   getChildView: ->
-    db.TeamsTableRowView
+    db.TeamIndexRowView
 
   childViewOptions: ->
     table_headers: @TABLE_HEADERS

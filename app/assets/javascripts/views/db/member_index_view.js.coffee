@@ -1,8 +1,7 @@
-class db.MembersTableView extends Marionette.CompositeView
-  template: ich.members_table
-  #tagName: 'table'
+class db.MemberIndexView extends Marionette.CompositeView
+  template: ich.member_index
   id: 'member_collection'
-  class: 'members_table'
+  class: 'member_index'
   childViewContainer: 'tbody'
   templateHelpers: ->
     table_headers: @_get_table_headers
@@ -11,7 +10,7 @@ class db.MembersTableView extends Marionette.CompositeView
                  'signed_wftda_waiver', 'signed_wftda_confidentiality']
 
   getChildView: ->
-    db.MembersTableRowView
+    db.MemberIndexRowView
 
   childViewOptions: ->
     table_headers: @TABLE_HEADERS

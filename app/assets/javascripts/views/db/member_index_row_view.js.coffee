@@ -1,7 +1,7 @@
-class db.MembersTableRowView extends Marionette.ItemView
-  template: ich.members_table_row
+class db.MemberIndexRowView extends Marionette.ItemView
+  template: ich.member_index_row
   tagName: 'tr'
-  className: 'member_table_row_view'
+  className: 'member_index_row_view'
   templateHelpers: ->
     member_info: @_get_member_info
 
