@@ -1,8 +1,9 @@
 class db.MembersTableView extends Marionette.CompositeView
   template: ich.members_table
-  tagName: 'table'
+  #tagName: 'table'
   id: 'member_collection'
   class: 'members_table'
+  childViewContainer: 'tbody'
   templateHelpers: ->
     table_headers: @_get_table_headers
 

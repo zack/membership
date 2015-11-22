@@ -1,10 +1,22 @@
+#db {
+  width: 800px;
+  margin: 0 auto;
+}
+
 a{
   text-decoration: none;
   color: blue;
 }
 
+h2 {
+  text-align: center;
+  margin-bottom: 12px;
+  font-size: 35px;
+}
+
 table {
   border-collapse: collapse;
+  margin-top: 16px;
   tr {
     &:nth-child(odd) {
       background-color: #EEE;
@@ -24,36 +36,5 @@ table {
     &.strong {
       font-weight: bold;
     }
-  }
-}
-
-#member_collection {
-  margin: 0 auto;
-  h2 {
-    text-align: center;
-    font-size: 35px;
-    line-height: 10px;
-  }
-}
-
-#member_view {
-  width: 800px;
-  margin: 0 auto;
-  h2 {
-    margin-bottom: 0px;
-  }
-  table {
-    margin-top: 16px;
-  }
-}
-
-#team_view {
-  width: 800px;
-  margin: 0 auto;
-  h2 {
-    margin-bottom: 0px;
-  }
-  table {
-    margin-top: 16px;
   }
 }
