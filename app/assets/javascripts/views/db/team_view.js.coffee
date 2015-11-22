@@ -1,6 +1,7 @@
 class db.TeamView extends Marionette.ItemView
   template: ich.team
   id: 'team_view'
+  tagName: 'table'
   templateHelpers: ->
     team_info: @_get_team_info
     team_name: @_get_team_name

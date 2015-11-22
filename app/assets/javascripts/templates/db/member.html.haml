@@ -1,12 +1,8 @@
-%h2 {{member_name}}
-%a{href: '/members'} Members Table
-
-%table
-  %tbody
-    {{#member_info}}
-    %tr
-      {{#.}}
-      %td.strong{width:'30%'} {{attribute}}
-      %td {{value}}
-      {{/.}}
-    {{/member_info}}
+%tbody
+  {{#member_info}}
+  %tr
+    {{#.}}
+    %td.strong{width:'30%'} {{attribute}}
+    %td {{value}}
+    {{/.}}
+  {{/member_info}}
