@@ -1,6 +1,6 @@
 class db.TeamIndexView extends Marionette.CompositeView
   template: ich.team_index
-  id: 'team_collection'
+  id: 'team_index'
   class: 'team_index'
   childViewContainer: 'tbody'
   templateHelpers: ->

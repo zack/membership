@@ -2,17 +2,17 @@
   :javascript
     db.members = new db.MembersCollection(#{raw @members.to_json})
 
-- if @teams
-  :javascript
-    db.teams = new db.TeamsCollection(#{raw @teams.to_json})
-
 - if @players
   :javascript
     db.players = new db.PlayersCollection(#{raw @players.to_json})
 
+- if @teams
+  :javascript
+    db.teams = new db.TeamsCollection(
+      #{raw @teams.to_json(:include => { :players => {
+                                           :include => { :member => {
+                                           :only => :name}}}})})
+
+= render 'head'
 #db
-  %h1 Boston Roller Derby Membership Database
-  #navbar
-    %a#member_nav.nav{href: '/members'} Members
-    %a#team_nav.nav{href: '/teams'} Teams
   #content

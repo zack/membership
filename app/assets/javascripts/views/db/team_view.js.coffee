@@ -1,22 +1,33 @@
 class db.TeamView extends Marionette.ItemView
   template: ich.team
   id: 'team_view'
-  tagName: 'table'
   templateHelpers: ->
-    team_info: @_get_team_info
-    team_name: @_get_team_name
+    name: @_get_team_name
+    players: @_get_players
 
-  IGNORED_HEADERS: ['id']
+  _get_players: =>
+    current = []
+    previous = []
 
-  initialize: (options) ->
-    @model = options.model
+    _.each @model.get('players'), (player) =>
+      p = @_build_player(player)
+      if player.date_ended?
+        previous.push p
+      else
+        current.push p
 
-  _get_team_info: =>
-    _.compact _.map @model.attributes, (v, k) =>
-      unless _.contains @IGNORED_HEADERS, k
-        attribute = db.Helpers.map_header k
-        value = db.Helpers.clean_table_value v
-        {attribute: attribute,value: value}
+    [current: _.sortBy(current, (p) -> p.name), previous: _.sortBy(previous, (p) -> p.name)]
+
+  _build_player: (player) ->
+    {
+      id: player.id,
+      name: player.name,
+      number: player.number,
+      member_name: player.member.name,
+      member_id: player.member_id,
+      started: player.date_started,
+      ended: player.date_ended
+    }
 
   _get_team_name: =>
     @model.get('name')

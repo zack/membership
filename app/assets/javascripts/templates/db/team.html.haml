@@ -1,8 +1,45 @@
-%tbody
-  {{#team_info}}
-  %tr
-    {{#.}}
-    %td.strong{width:'30%'} {{attribute}}
-    %td {{value}}
-    {{/.}}
-  {{/team_info}}
+%h2 {{name}}
+
+%h3 Current Players
+
+%table
+  %thead
+    %th Name
+    %th Number
+    %th Date Joined
+    %th Member Name
+  %tbody
+    {{#players}}
+    {{#current}}
+    %tr
+      %td
+        %a{href: "/players/{{id}}"} {{name}}
+      %td {{number}}
+      %td {{started}}
+      %td
+        %a{href: "/members/{{id}}"} {{member_name}}
+    {{/current}}
+    {{/players}}
+
+%h3 Previous Players
+
+%table
+  %thead
+    %th Name
+    %th Number
+    %th Date Joined
+    %th Date Left
+    %th Member Name
+  %tbody
+    {{#players}}
+    {{#previous}}
+    %tr
+      %td
+        %a{href: "/players/{{id}}"} {{name}}
+      %td {{number}}
+      %td {{started}}
+      %td {{ended}}
+      %td
+        %a{href: "/members/{{id}}"} {{member_name}}
+    {{/previous}}
+    {{/players}}

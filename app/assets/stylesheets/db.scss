@@ -11,6 +11,12 @@
   }
 }
 
+#member_index {
+  td {
+    white-space: nowrap;
+  }
+}
+
 a{
   text-decoration: none;
   color: blue;
@@ -32,11 +38,11 @@ table {
     }
   }
   th {
-    padding: 4px;
     border: 1px solid black;
     background-color: #CCC;
   }
   td {
+    padding: 0;
     border: 1px solid black;
     text-align: center;
     &:nth-child(1) {
