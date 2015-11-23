@@ -4,11 +4,11 @@ class db.MemberView extends Marionette.ItemView
   templateHelpers: ->
     member_info: @_get_member_info
     name: @_get_member_name
+    has_emergency_contacts: @_has_emergency_contacts
+    emergency_contacts: @_get_emergency_contacts
 
-  IGNORED_HEADERS: ['name', 'id']
-
-  initialize: (options) ->
-    @model = options.model
+  IGNORED_HEADERS: ['name', 'id', 'emergency_contacts', 'players']
+  IGNORED_EC_HEADERS: ['id', 'member_id']
 
   _get_member_info: =>
     _.compact _.map @model.attributes, (v, k) =>
@@ -19,3 +19,15 @@ class db.MemberView extends Marionette.ItemView
 
   _get_member_name: =>
     @model.get('name')
+
+  _has_emergency_contacts: =>
+    @model.get('emergency_contacts').length > 0
+
+  _get_emergency_contacts: =>
+    _.map @model.get('emergency_contacts'), (e) =>
+      {contact_info:
+        _.compact _.map e, (v, k) =>
+          unless _.contains @IGNORED_EC_HEADERS, k
+            attribute = db.Helpers.map_header k
+            value = db.Helpers.clean_table_value v
+            {attribute: attribute,value: value}}

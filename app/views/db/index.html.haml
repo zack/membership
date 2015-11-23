@@ -1,6 +1,6 @@
 - if @members
   :javascript
-    db.members = new db.MembersCollection(#{raw @members.to_json})
+    db.members = new db.MembersCollection(#{raw @members.to_json(:include => [:emergency_contacts, :players])})
 
 - if @players
   :javascript
