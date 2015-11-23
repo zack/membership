@@ -1,11 +1,11 @@
 class db.MemberView extends Marionette.ItemView
   template: ich.member
   id: 'member_view'
-  tagName: 'table'
   templateHelpers: ->
     member_info: @_get_member_info
+    name: @_get_member_name
 
-  IGNORED_HEADERS: ['id']
+  IGNORED_HEADERS: ['name', 'id']
 
   initialize: (options) ->
     @model = options.model
@@ -16,3 +16,6 @@ class db.MemberView extends Marionette.ItemView
         attribute = db.Helpers.map_header k
         value = db.Helpers.clean_table_value v
         {attribute: attribute,value: value}
+
+  _get_member_name: =>
+    @model.get('name')
