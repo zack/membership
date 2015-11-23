@@ -20,7 +20,6 @@ class db.TeamView extends Marionette.ItemView
 
   _build_player: (player) ->
     {
-      id: player.id,
       name: player.name,
       number: player.number,
       member_name: player.member.name,
