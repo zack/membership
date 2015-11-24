@@ -8,5 +8,5 @@ class Player < ActiveRecord::Base
   validates :name, presence: true,
                    uniqueness: { scope: :number , case_sensitive: false}
   validates :number, presence: true,
-                     format: { with: /\A(?=[a-zA-Z]*\d)(?=[a-zA-Z]*).{1,4}\z/ }
+                     format: { with: /\A\d{1,4}\z/ }
 end
