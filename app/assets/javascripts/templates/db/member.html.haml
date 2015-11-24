@@ -10,8 +10,8 @@
       {{/.}}
     {{/member_info}}
 
-{{#has_teams}}
-%h2 Teams
+{{#has_skater_profiles}}
+%h2 Skater Profiles
 %table
   %thead
     %tr
@@ -22,7 +22,7 @@
       %th Date Ended
       %th Active
   %tbody
-    {{#teams}}
+    {{#skater_profiles}}
     {{#.}}
     %tr
       %td
@@ -33,11 +33,11 @@
       %td {{date_ended}}
       %td {{active}}
     {{/.}}
-    {{/teams}}
-{{/has_teams}}
-{{^has_teams}}
-%h2 No Teams
-{{/has_teams}}
+    {{/skater_profiles}}
+{{/has_skater_profiles}}
+{{^has_skater_profiles}}
+%h2 No Skater Profiles
+{{/has_skater_profiles}}
 
 {{#has_emergency_contacts}}
 %h2 Emergency Contacts
