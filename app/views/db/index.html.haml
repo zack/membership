@@ -1,6 +1,11 @@
 - if @members
   :javascript
-    db.members = new db.MembersCollection(#{raw @members.to_json(:include => [:emergency_contacts, :players])})
+    db.members = new db.MembersCollection(
+    #{raw @members.to_json(:include =>
+      [
+        :emergency_contacts,
+        { :players => { :include => { :teams => { :only => [:name, :id]}}}}
+      ])})
 
 - if @players
   :javascript
@@ -9,9 +14,8 @@
 - if @teams
   :javascript
     db.teams = new db.TeamsCollection(
-      #{raw @teams.to_json(:include => { :players => {
-                                           :include => { :member => {
-                                           :only => :name}}}})})
+      #{raw @teams.to_json(:include =>
+        { :players => { :include => { :member => { :only => :name}}}})})
 
 = render 'head'
 #db

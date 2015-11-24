@@ -44,6 +44,7 @@ db.Helpers =
         value
     else
       switch value
+        when null then ''
         when true then '✓'
         when false then '✗'
         else value

@@ -11,6 +11,7 @@ $ ->
 			protocol = @protocol
 
 			if href.slice(protocol.length) != protocol
+        $(document).scrollTop(0)
 				e.preventDefault()
 				db.app.Router.navigate(href, true)
 

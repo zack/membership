@@ -15,19 +15,24 @@
 %table
   %thead
     %tr
-      %th Name
+      %th Team
+      %th Jersey
       %th Number
       %th Date Started
       %th Date Ended
       %th Active
   %tbody
     {{#teams}}
+    {{#.}}
     %tr
+      %td
+        %a{href: "/teams/{{team_id}}"} {{team_name}}
       %td {{name}}
       %td {{number}}
       %td {{date_started}}
       %td {{date_ended}}
       %td {{active}}
+    {{/.}}
     {{/teams}}
 {{/has_teams}}
 {{^has_teams}}

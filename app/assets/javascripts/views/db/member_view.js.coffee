@@ -14,9 +14,6 @@ class db.MemberView extends Marionette.ItemView
 
   TEAM_HEADERS: ['name', 'number', 'date_started', 'date_ended', 'active']
 
-  initialize: ->
-    console.log @_get_teams()
-
   _get_member_info: =>
     _.compact _.map @model.attributes, (v, k) =>
       unless _.contains @IGNORED_HEADERS, k
@@ -44,8 +41,14 @@ class db.MemberView extends Marionette.ItemView
 
   _get_teams: =>
     _.map @model.get('players'), (e) =>
-      team_info = {}
-      _.each @TEAM_HEADERS, (h) =>
-        value = db.Helpers.clean_table_value e[h]
-        team_info[h] = value
-      team_info
+      teams = _.map e.teams, (t) =>
+        @_build_team_row(e, t)
+
+  _build_team_row: (player, team) ->
+    row = {team_name: team.name, team_id: team.id}
+
+    _.each @TEAM_HEADERS, (h) =>
+      value = db.Helpers.clean_table_value player[h]
+      row[h] = value
+
+    row
