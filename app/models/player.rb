@@ -1,6 +1,7 @@
 class Player < ActiveRecord::Base
   belongs_to :member
-  has_one :team, through: :team_players
+  has_many :team_players
+  has_many :teams, through: :team_players
 
   validates_with DateValidator
 

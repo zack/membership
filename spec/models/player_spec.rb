@@ -3,6 +3,14 @@ describe Player do
     it 'should belong to member' do
       should belong_to(:member)
     end
+
+    it 'should have many team_players' do
+      should have_many(:team_players)
+    end
+
+    it 'should have many teams' do
+      should have_many(:teams).through(:team_players)
+    end
   end
 
   describe 'validations' do
