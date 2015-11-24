@@ -10,6 +10,30 @@
       {{/.}}
     {{/member_info}}
 
+{{#has_teams}}
+%h2 Teams
+%table
+  %thead
+    %tr
+      %th Name
+      %th Number
+      %th Date Started
+      %th Date Ended
+      %th Active
+  %tbody
+    {{#teams}}
+    %tr
+      %td {{name}}
+      %td {{number}}
+      %td {{date_started}}
+      %td {{date_ended}}
+      %td {{active}}
+    {{/teams}}
+{{/has_teams}}
+{{^has_teams}}
+%h2 No Teams
+{{/has_teams}}
+
 {{#has_emergency_contacts}}
 %h2 Emergency Contacts
 {{#emergency_contacts}}
