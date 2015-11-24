@@ -7,6 +7,7 @@
     %th Name
     %th Number
     %th Date Joined
+    %th Active
     %th Member Name
   %tbody
     {{#players}}
@@ -15,8 +16,9 @@
       %td {{name}}
       %td {{number}}
       %td {{started}}
+      %td {{active}}
       %td
-        %a{href: "/members/{{id}}"} {{member_name}}
+        %a{href: "/members/{{member_id}}"} {{member_name}}
     {{/current}}
     {{/players}}
 
@@ -38,6 +40,6 @@
       %td {{started}}
       %td {{ended}}
       %td
-        %a{href: "/members/{{id}}"} {{member_name}}
+        %a{href: "/members/{{member_id}}"} {{member_name}}
     {{/previous}}
     {{/players}}

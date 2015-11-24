@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150811170006) do
+ActiveRecord::Schema.define(version: 20151124025112) do
 
   create_table "committee_members", force: :cascade do |t|
     t.integer  "committee_id", null: false
@@ -111,6 +111,7 @@ ActiveRecord::Schema.define(version: 20150811170006) do
     t.date     "date_ended"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
+    t.boolean  "active"
   end
 
   add_index "players", ["member_id"], name: "index_players_on_member_id"
