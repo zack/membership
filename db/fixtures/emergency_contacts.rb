@@ -1,5 +1,5 @@
 def maybe
-  [true, false].sample()
+  [true, false].sample
 end
 
 for i in 1..200 # seed 200 emergency contacts

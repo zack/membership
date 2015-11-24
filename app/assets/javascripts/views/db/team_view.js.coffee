@@ -25,7 +25,8 @@ class db.TeamView extends Marionette.ItemView
       member_name: player.member.name,
       member_id: player.member_id,
       started: player.date_started,
-      ended: player.date_ended
+      ended: player.date_ended,
+      active: db.Helpers.clean_table_value(player.active)
     }
 
   _get_team_name: =>
