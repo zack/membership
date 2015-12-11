@@ -1,17 +1,38 @@
-%h2 {{name}}
+.view
+  .head.member
+    %h2 {{name}}
+    %h3.edit
+      %a{href: '#', data: {bypass: true}} Edit
+    %h3.save
+      %a{href: '#', data: {bypass: true}} Save
 
-%table
-  %tbody
-    {{#member_info}}
-    %tr
-      {{#.}}
-      %td.strong{width:'30%'} {{attribute}}
-      %td {{value}}
-      {{/.}}
-    {{/member_info}}
+  %table.show
+    %tbody
+      {{#member_info}}
+      %tr
+        {{#.}}
+        %td.strong{width:'30%'} {{attribute}}
+        %td {{value}}
+        {{/.}}
+      {{/member_info}}
+
+  %table.edit
+    %tbody
+      {{#member_info}}
+      %tr
+        {{#.}}
+        %td.strong{width:'30%'} {{attribute}}
+        %td.input
+          %input{value: '{{value}}', data: {attribute: '{{attribute}}'}}
+        {{/.}}
+      {{/member_info}}
 
 {{#has_skater_profiles}}
-%h2 Skater Profiles
+.head.skater-profile
+  %h2 Skater Profiles
+  %h3.edit
+    %a{href: '#'} Edit
+
 %table
   %thead
     %tr
@@ -40,7 +61,10 @@
 {{/has_skater_profiles}}
 
 {{#has_emergency_contacts}}
-%h2 Emergency Contacts
+.head.emergency-contact
+  %h2 Emergency Contacts
+  %h3.edit
+    %a{href: '#'} Edit
 {{#emergency_contacts}}
 %table
   %tbody
@@ -53,6 +77,7 @@
     {{/contact_info}}
 {{/emergency_contacts}}
 {{/has_emergency_contacts}}
+
 {{^has_emergency_contacts}}
 %h2 No Emergency Contacts
 {{/has_emergency_contacts}}

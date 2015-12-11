@@ -1,3 +1,10 @@
+@mixin border-box {
+  width: 100%;
+  box-sizing: border-box;
+  -webkit-box-sizing:border-box;
+  -moz-box-sizing: border-box;
+}
+
 html {
   overflow-y: scroll;
 }
@@ -37,10 +44,27 @@ h1 {
   font-size: 35px;
 }
 
+.head{
+  h2 {
+    display: inline-block;
+    float: left;
+    line-height: 13px;
+  }
+
+  h3 {
+    float: right;
+    display: inline-block;
+    &.save {
+      display: none;
+    }
+  }
+}
+
 table {
   border-collapse: collapse;
   margin-top: 16px;
   width: 100%;
+
   tr {
     &:nth-child(odd) {
       background-color: #EEE;
@@ -51,7 +75,7 @@ table {
     background-color: #CCC;
   }
   td {
-    padding: 0;
+    padding: 1px;
     border: 1px solid black;
     text-align: center;
     &:nth-child(1) {
@@ -59,6 +83,20 @@ table {
     }
     &.strong {
       font-weight: bold;
+    }
+  }
+
+  &.edit {
+    display: none;
+    td {
+      border: 0;
+      padding: 1px 0;
+      input {
+        @include border-box
+      }
+      select {
+        @include border-box
+      }
     }
   }
 }
