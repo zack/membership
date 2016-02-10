@@ -28,7 +28,7 @@ class db.MemberView extends Marionette.CompositeView
       unless _.contains @IGNORED_MEMBER_HEADERS, k
         attribute = db.Helpers.map_header k
         value = db.Helpers.clean_table_value v
-        {attribute: attribute,value: value}
+        {attribute: attribute, value: value}
 
   _get_member_name: =>
     @model.get('name')
@@ -95,13 +95,48 @@ class db.MemberView extends Marionette.CompositeView
   _handle_save: (e) ->
     table = $(e.currentTarget).parents('.view').find('table.edit')
     data_els = $(table).find('td.input').children()
-
     if @_table_is_valid(data_els)
       data = @_get_edit_table_data(data_els)
+      # TODO persist data
       @_show_view_table(e)
 
   _table_is_valid: (els)->
-    true
+    _.each els, (el) ->
+      valid = switch $(el).data('attribute')
+        when "Phone Number"
+          @_phone_number_is_valid(el.value)
+        when "Date of Birth"
+          @_dob_is_valid(el.value)
+        when "WFTDA ID"
+          @_bool_is_valid(el.value)
+        when "Signed WFTDA Waiver"
+          @_bool_is_valid(el.value)
+        when "Signed WFTDA Confidentiality"
+          @_bool_is_valid(el.value)
+        when "Signed League Bylaws"
+          @_bool_is_valid(el.value)
+        when "Purchased WFTDA Insurance"
+          @_bool_is_valid(el.value)
+        when "Passed WFTDA Test"
+          @_bool_is_valid(el.value)
+        when "Active"
+          @_bool_is_valid(el.value)
+        when "Google Doc Access"
+          @_bool_is_valid(el.value)
+        when "Year Joined"
+          @_year_is_valid(el.value)
+        when "Year Left"
+          @_year_is_valid(el.value)
+      if !valid
+      else
+        true
+
+  _phone_number_is_valid: (input) ->
+    input.replace(/\D/g,'').length == 10
+
+  _dob_is_valid: (input) ->
+  _bool_is_valid: (input) ->
+  _year_is_valid: (input) ->
 
   _get_edit_table_data: (els) ->
     _.compact _.map els, (el) =>
