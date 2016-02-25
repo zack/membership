@@ -22,8 +22,8 @@
       %tr
         {{#.}}
         %td.strong{width:'30%'} {{attribute}}
-        %td.input
-          %input{value: '{{value}}', data: {attribute: '{{attribute}}'}}
+        %td.input.form-group
+          %input.form-control{value: '{{value}}', data: {attribute: '{{attribute}}'}}
         {{/.}}
       {{/member_info}}
 
