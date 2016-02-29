@@ -26,6 +26,7 @@ class db.MemberView extends Marionette.CompositeView
   events: ->
     'click h3.edit': '_show_edit_table'
     'click h3.save': '_handle_save'
+    'change input': '_handle_input_change'
 
   onShow: =>
     @_prepare_edit_tables()
@@ -52,13 +53,18 @@ class db.MemberView extends Marionette.CompositeView
     $(view).find('table.edit').show()
     $(view).find('h3.save').show()
 
+  _handle_input_change: (e) ->
+    $(e.currentTarget).parent('.input').removeClass('has-danger')
+
   _handle_save: (e) ->
     table = $(e.currentTarget).parents('.view').find('table.edit')
     data_els = $(table).find('td.input').children()
-    if @_table_is_valid(data_els)
+    if db.TableValidator.table_is_valid(data_els)
       data = @_get_edit_table_data(data_els)
-      # TODO persist data
-      @_show_view_table(e)
+      @_submit(data)
+
+  _submit: (data) ->
+    @_show_view_table(e)
 
   # Data cleaning methods
 
@@ -143,72 +149,6 @@ class db.MemberView extends Marionette.CompositeView
     $('[data-attribute="Created"]').prop('disabled', true)
     $('[data-attribute="Updated"]').prop('disabled', true)
 
-  # Table validation methods
-  # TODO: Move this all into another object
-
-  _table_is_valid: (els)->
-    results = _.map els, (el) =>
-      switch $(el).data('attribute')
-        when "Phone Number"
-          @_phone_number_is_valid(el)
-        when "Date Of Birth"
-          @_dob_is_valid(el)
-        when "WFTDA ID"
-          @_wftda_id_is_valid(el)
-        when "Signed WFTDA Waiver"
-          @_bool_is_valid(el)
-        when "Signed WFTDA Confidentiality"
-          @_bool_is_valid(el)
-        when "Signed League Bylaws"
-          @_bool_is_valid(el)
-        when "Purchased WFTDA Insurance"
-          @_bool_is_valid(el)
-        when "Passed WFTDA Test"
-          @_bool_is_valid(el)
-        when "Active"
-          @_bool_is_valid(el)
-        when "Google Doc Access"
-          @_bool_is_valid(el)
-        when "Year Joined"
-          @_year_is_valid(el)
-        when "Year Left"
-          @_year_is_valid(el)
-
-    !_.contains results, false
-
-  _phone_number_is_valid: (input) ->
-    value = input.value.replace(/\D/g,'')
-    if !value.match(/^\d{10}$/)
-      @_set_el_to_error(input)
-      return false
-
-  _dob_is_valid: (input) ->
-    value = input.value
-    if !value.match(/^\d{4}-\d{2}-\d{2}$/) and !!value
-      @_set_el_to_error(input)
-      return false
-
-  _bool_is_valid: (input) ->
-    value = input.value
-    if !_.contains(['✓','✗'], value) and !!value
-      @_set_el_to_error(input)
-      return false
-
-  _wftda_id_is_valid: (input) ->
-    value = input.value
-    if !value.match(/^\d{5}$/) and !!value
-      @_set_el_to_error(input)
-      return false
-
-  _year_is_valid: (input) ->
-    value = input.value
-    if !value.match(/^\d{4}$/) and !!value
-      @_set_el_to_error(input)
-      return false
-
-  _set_el_to_error: (el) ->
-    $(el).parent().addClass('has-danger')
-
   # Table data accessor methods
 
   _get_edit_table_data: (els) ->
@@ -231,4 +171,3 @@ class db.MemberView extends Marionette.CompositeView
     else if data == '✓'
       return 'false'
     data
-

@@ -36,8 +36,10 @@ db.Helpers =
 
   clean_table_value: (value) ->
     if typeof(value) == 'string'
-      if value.match(/\d{10}/)
-        value.replace(/^(\d{3})(\d{3})(\d{4})$/, '$1-$2-$3')
+      if value.match(/^\d{10}$/)
+        return value.replace(/^(\d{3})(\d{3})(\d{4})$/, '($1) $2-$3')
+      if value.match(/^\d{4}-\d{2}-\d{2}T.*Z/)
+        new Date(value).toString().slice(4,15)
       else
         value
     else

@@ -20,6 +20,7 @@
 
 //= require support/prelude
 //= require support/helpers
+//= require support/table_validator
 //= require templates/templates
 
 //= require_tree ./models
