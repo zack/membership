@@ -1,5 +1,5 @@
 == History
-Created as a membership tracking application for Boston Derby Dames.
+Created as a membership tracking application for Boston Roller Derby.
 
 == Purpose
 This is meant to be a more or less general purpose membership app for roller
