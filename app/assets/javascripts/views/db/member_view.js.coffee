@@ -64,7 +64,15 @@ class db.MemberView extends Marionette.CompositeView
       @_submit(data)
 
   _submit: (data) ->
-    @_show_view_table(e)
+    submission = =>
+      $.ajax
+        type: "POST"
+        url: "/members"
+        dataType: 'json'
+        type: 'post'
+        data: JSON.stringify { data: data }
+        success: =>
+          @_show_view_table(e)
 
   # Data cleaning methods
 

@@ -10,4 +10,12 @@ class MembersController < ApplicationController
     @_members ||= Member.all
   end
 
+  def update
+    binding.pry
+    @member = Member.find(params[:id])
+    if @member.update_attributes(user_params)
+      flash[:success] = "Member Updated"
+    end
+  end
+
 end
