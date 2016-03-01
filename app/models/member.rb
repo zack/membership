@@ -1,4 +1,6 @@
 class Member < ActiveRecord::Base
+  include NormalizeBlankValues
+
   has_many :players
   has_many :emergency_contacts
   has_many :member_jobs
@@ -10,7 +12,8 @@ class Member < ActiveRecord::Base
   validates :forum_handle, uniqueness: { case_sensitive: false },
                            allow_nil: true
   validates :wftda_id_number, uniqueness: true,
-                              numericality: { only_integer: true },
+                              numericality:
+                              { only_integer: true, allow_blank: true},
                               allow_nil: true
   validates :year_joined, numericality: { only_integer: true }, allow_nil: true
   validates :year_left, numericality: { only_integer: true }, allow_nil: true

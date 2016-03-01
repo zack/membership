@@ -19,9 +19,9 @@ class db.MemberView extends Marionette.CompositeView
   PLAYER_PROFILE_HEADERS: ['name', 'number', 'date_started', 'date_ended', 'active']
 
   #Attributes on the Member model that have boolean values
-  BOOLEAN_EDIT_BOXES: ['Signed WFTDA Waiver', 'Signed WFTDA Confidentiality',
-  'Signed League Bylaws', 'Purchased WFTDA Insurance', 'Passed WFTDA Test',
-  'Active', 'Google Doc Access']
+  BOOLEAN_EDIT_BOXES: ['signed_wftda_waiver', 'signed_wftda_confidentiality',
+  'signed_league_bylaws', 'purchased_wftda_insurance', 'passed_wftda_test',
+  'active', 'google_doc_access']
 
   events: ->
     'click h3.edit': '_show_edit_table'
@@ -56,23 +56,16 @@ class db.MemberView extends Marionette.CompositeView
   _handle_input_change: (e) ->
     $(e.currentTarget).parent('.input').removeClass('has-danger')
 
-  _handle_save: (e) ->
+  _handle_save: (e) =>
     table = $(e.currentTarget).parents('.view').find('table.edit')
     data_els = $(table).find('td.input').children()
     if db.TableValidator.table_is_valid(data_els)
       data = @_get_edit_table_data(data_els)
-      @_submit(data)
+      @_submit(e, data)
 
-  _submit: (data) ->
-    submission = =>
-      $.ajax
-        type: "POST"
-        url: "/members"
-        dataType: 'json'
-        type: 'post'
-        data: JSON.stringify { data: data }
-        success: =>
-          @_show_view_table(e)
+  _submit: (e, data) ->
+    new db.Member().save data,
+      success: => @_show_view_table(e)
 
   # Data cleaning methods
 
@@ -80,8 +73,9 @@ class db.MemberView extends Marionette.CompositeView
     _.compact _.map @model.attributes, (v, k) =>
       unless _.contains @IGNORED_MEMBER_HEADERS, k
         attribute = db.Helpers.map_header k
+        model_attribute = k
         value = db.Helpers.clean_table_value v
-        {attribute: attribute, value: value}
+        {attribute: attribute, value: value, model_attribute: model_attribute}
 
   _build_emergency_contacts: =>
     _.map @model.get('emergency_contacts'), (e) =>
@@ -138,19 +132,19 @@ class db.MemberView extends Marionette.CompositeView
       value = $("[data-attribute='#{attr}']").val()
       $("[data-attribute='#{attr}']").parent('td').html(
         "<select data-attribute='#{attr}'>
-        <option value=''></option>
-        <option value='✓'>✓</option>
-        <option value='✗'>✗</option>
+        <option value='null'></option>
+        <option value='true'>✓</option>
+        <option value='false'>✗</option>
         </select>")
       $("[data-attribute='#{attr}']").val(value)
 
   _generate_datepickers: ->
-    $("[data-attribute='Date Of Birth']").datepicker({
+    $("[data-attribute='date_of_birth']").datepicker({
         format: 'yyyy-mm-dd',
         orientation: 'bottom left',
         startDate: '-100y',
         endDate: '-18y',
-    }).attr('placeholder', 'yyyy-mm-dd');
+    }).attr('placeholder', 'yyyy-mm-dd')
 
   _disable_timestamps: ->
     # Timestamp rows are automatically maintained by Rails, not by users
@@ -160,22 +154,16 @@ class db.MemberView extends Marionette.CompositeView
   # Table data accessor methods
 
   _get_edit_table_data: (els) ->
-    _.compact _.map els, (el) =>
+    @attrs = id: @model.get('id')
+    _.each els, (el) =>
       key = $(el).data('attribute')
       value = @_get_input_data(el)
       unless key == 'Created' || key == 'Updated'
-        {"#{key}": value}
+        @attrs[key] = value
+    return @attrs
 
   _get_input_data: (i) ->
-    data = @_get_data_from_input(i)
-    @_sanitize_data_input(data)
+    @_get_data_from_input(i)
 
   _get_data_from_input: (i) ->
     $(i).value?() || $(i).val?()
-
-  _sanitize_data_input: (data) ->
-    if data == '✗'
-      return 'true'
-    else if data == '✓'
-      return 'false'
-    data
