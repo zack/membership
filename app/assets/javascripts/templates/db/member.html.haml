@@ -27,9 +27,9 @@
         {{/.}}
       {{/member_info}}
 
-{{#has_skater_profiles}}
-.head.skater-profile
-  %h2 Skater Profiles
+{{#has_player_profiles}}
+.head.player-profile
+  %h2 Player Profiles
   %h3.edit
     %a{href: '#'} Edit
 
@@ -43,7 +43,7 @@
       %th Date Ended
       %th Active
   %tbody
-    {{#skater_profiles}}
+    {{#player_profiles}}
     {{#.}}
     %tr
       %td
@@ -54,11 +54,11 @@
       %td {{date_ended}}
       %td {{active}}
     {{/.}}
-    {{/skater_profiles}}
-{{/has_skater_profiles}}
-{{^has_skater_profiles}}
-%h2 No Skater Profiles
-{{/has_skater_profiles}}
+    {{/player_profiles}}
+{{/has_player_profiles}}
+{{^has_player_profiles}}
+%h2 No player Profiles
+{{/has_player_profiles}}
 
 {{#has_emergency_contacts}}
 .head.emergency-contact
