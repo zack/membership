@@ -12,6 +12,7 @@ class Member < ActiveRecord::Base
   validates :forum_handle, uniqueness: { case_sensitive: false },
                            allow_nil: true
   validates :wftda_id_number, uniqueness: true,
+                              length: { in: 5..6 },
                               numericality:
                               { only_integer: true, allow_blank: true},
                               allow_nil: true

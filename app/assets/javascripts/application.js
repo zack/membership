@@ -17,6 +17,7 @@
 //= require icanhaz-no-mustache
 //= require backbone
 //= require backbone.marionette
+//= require maskedinput
 
 //= require support/prelude
 //= require support/helpers

@@ -3,29 +3,29 @@ db.TableValidator =
   table_is_valid: (data_els)->
     results = _.map data_els, (el) =>
       switch $(el).data('attribute')
-        when "Phone Number"
+        when "phone_number"
           @_phone_number_is_valid(el)
-        when "Date Of Birth"
+        when "date_of_birth"
           @_dob_is_valid(el)
-        when "WFTDA ID"
+        when "wftda_id_number"
           @_wftda_id_is_valid(el)
-        when "Signed WFTDA Waiver"
+        when "signed_wftda_waiver"
           @_bool_is_valid(el)
-        when "Signed WFTDA Confidentiality"
+        when "signed_wftda_confidentiality"
           @_bool_is_valid(el)
-        when "Signed League Bylaws"
+        when "signed_leauge_bylaws"
           @_bool_is_valid(el)
-        when "Purchased WFTDA Insurance"
+        when "purchased_wftda_insurance"
           @_bool_is_valid(el)
-        when "Passed WFTDA Test"
+        when "passed_wftda_test"
           @_bool_is_valid(el)
-        when "Active"
+        when "active"
           @_bool_is_valid(el)
-        when "Google Doc Access"
+        when "google_doc_access"
           @_bool_is_valid(el)
-        when "Year Joined"
+        when "year_joined"
           @_year_is_valid(el)
-        when "Year Left"
+        when "year_left"
           @_year_is_valid(el)
 
     !_.contains results, false
@@ -44,13 +44,13 @@ db.TableValidator =
 
   _bool_is_valid: (input) ->
     value = input.value
-    if !_.contains(['✓','✗'], value) and !!value
+    if !_.contains(['true','false', 'null'], value) and !!value
       @_set_el_to_error(input)
       return false
 
   _wftda_id_is_valid: (input) ->
     value = input.value
-    if !value.match(/^\d{5}$/) and !!value
+    if !value.match(/^\d{5,6}$/) and !!value
       @_set_el_to_error(input)
       return false
 
@@ -61,4 +61,4 @@ db.TableValidator =
       return false
 
   _set_el_to_error: (el) ->
-    $(el).parent().addClass('has-danger')
+    $(el).addClass('error')

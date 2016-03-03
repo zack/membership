@@ -24,9 +24,16 @@ class db.MemberView extends Marionette.CompositeView
   'active', 'google_doc_access']
 
   events: ->
-    'click h3.edit': '_show_edit_table'
-    'click h3.save': '_handle_save'
-    'change input': '_handle_input_change'
+    'click button.edit':                '_show_edit_table'
+    'click button.save:not(.disabled)': '_handle_save'
+    'click button.cancel':              '_handle_cancel'
+    'change input':                     '_handle_input_change' # datepicker
+    'input input':                      '_handle_input_change'
+    'change select':                    '_handle_select_change'
+    'focus td input':                   '_handle_td_input_focus'
+    'focus td select':                  '_handle_td_input_focus'
+    'blur td input':                    '_handle_td_input_blur'
+    'blur td select':                   '_handle_td_input_blur'
 
   onShow: =>
     @_prepare_edit_tables()
@@ -35,6 +42,9 @@ class db.MemberView extends Marionette.CompositeView
     @_limit_input_length()
     @_transform_boolean_inputs()
     @_generate_datepickers()
+    @_generate_phone_mask()
+    @_generate_wftda_id_mask()
+    @_generate_year_masks()
     @_disable_timestamps()
 
   # Event handlers and their helpers
@@ -42,19 +52,53 @@ class db.MemberView extends Marionette.CompositeView
   _show_view_table: (e) ->
     view = $(e.currentTarget).parents('.view')
     $(view).find('table.show').show()
-    $(view).find('h3.edit').show()
+    $(view).find('button.edit').show()
     $(view).find('table.edit').hide()
-    $(view).find('h3.save').hide()
+    $(view).find('.edit-table-buttons').hide()
 
   _show_edit_table: (e) ->
     view = $(e.currentTarget).parents('.view')
     $(view).find('table.show').hide()
-    $(view).find('h3.edit').hide()
+    $(view).find('button.edit').hide()
     $(view).find('table.edit').show()
-    $(view).find('h3.save').show()
+    $(view).find('.text-primary').removeClass('text-primary')
+    $(view).find('.edit-table-buttons').show()
+    $(view).find('.edit-table-buttons > .save').addClass('disabled')
+
+  _reset_edit_table: (e) ->
+    table = $(e.currentTarget).parents('.view').find('table.edit')
+    _.each @model.attributes, (val, attr) =>
+      if _.contains @BOOLEAN_EDIT_BOXES, attr
+        $(table).find("select[data-attribute='#{attr}']").val("#{val}")
+      else
+        $(table).find("input[data-attribute='#{attr}']").html(val)
+
+  _update_view_table: (e) ->
+    table = $(e.currentTarget).parents('.view').find('table.show')
+    _.each @model.attributes, (val, attr) =>
+      if _.contains @BOOLEAN_EDIT_BOXES, attr
+        val = @_bool_to_symbol(val)
+      $(table).find("td[data-attribute='#{attr}']").html(val)
 
   _handle_input_change: (e) ->
+    $(e.currentTarget).addClass('text-primary')
+    @_handle_field_change(e)
+
+  _handle_select_change: (e) ->
+    $(e.currentTarget).parent('td').addClass('text-primary')
+    @_handle_field_change(e)
+
+  _handle_field_change: (e) ->
     $(e.currentTarget).parent('.input').removeClass('has-danger')
+    $(e.currentTarget).parents('.view').find('button.save').removeClass('disabled')
+
+  _handle_td_input_focus: (e) ->
+    tr = $(e.currentTarget).parents('tr')
+    tr.addClass('focus')
+
+  _handle_td_input_blur: (e) ->
+    tr = $(e.currentTarget).parents('tr')
+    tr.removeClass('focus')
 
   _handle_save: (e) =>
     table = $(e.currentTarget).parents('.view').find('table.edit')
@@ -65,7 +109,17 @@ class db.MemberView extends Marionette.CompositeView
 
   _submit: (e, data) ->
     new db.Member().save data,
-      success: => @_show_view_table(e)
+      success: (model) => @_handle_submit_success(e, model)
+
+  _handle_cancel: (e) =>
+    table = $(e.currentTarget).parents('.view').find('table.edit')
+    @_show_view_table(e)
+    @_reset_edit_table(e)
+
+  _handle_submit_success: (e, model) =>
+    @model = model
+    @_show_view_table(e)
+    @_update_view_table(e)
 
   # Data cleaning methods
 
@@ -129,14 +183,15 @@ class db.MemberView extends Marionette.CompositeView
     # Any attributes that are strictly boolean need to be transformed to
     # dropdowns.
     _.each @BOOLEAN_EDIT_BOXES, (attr) =>
-      value = $("[data-attribute='#{attr}']").val()
+      value = $("td[data-attribute='#{attr}']").text()
       $("[data-attribute='#{attr}']").parent('td').html(
         "<select data-attribute='#{attr}'>
-        <option value='null'></option>
+        <option value=''></option>
         <option value='true'>✓</option>
         <option value='false'>✗</option>
         </select>")
-      $("[data-attribute='#{attr}']").val(value)
+
+      $("[data-attribute='#{attr}']").val(@_symbol_to_bool(value))
 
   _generate_datepickers: ->
     $("[data-attribute='date_of_birth']").datepicker({
@@ -145,11 +200,25 @@ class db.MemberView extends Marionette.CompositeView
         startDate: '-100y',
         endDate: '-18y',
     }).attr('placeholder', 'yyyy-mm-dd')
+      .mask('9999-99-99',{placeholder:'yyyy-mm-dd'})
+
+  _generate_phone_mask: ->
+    $("input[data-attribute='phone_number']").mask('(999) 999-9999')
+      .attr('placeholder', '(999) 999-9999')
+
+   _generate_wftda_id_mask: ->
+    $("input[data-attribute='wftda_id_number']").mask('99999?9')
+
+   _generate_year_masks: ->
+    $("input[data-attribute='year_left']").mask('9999', {placeholder: 'yyyy'})
+      .attr('placeholder', 'yyyy')
+    $("input[data-attribute='year_joined']").mask('9999', {placeholder: 'yyyy'})
+      .attr('placeholder', 'yyyy')
 
   _disable_timestamps: ->
     # Timestamp rows are automatically maintained by Rails, not by users
-    $('[data-attribute="Created"]').prop('disabled', true)
-    $('[data-attribute="Updated"]').prop('disabled', true)
+    $('[data-attribute="created_at"]').prop('disabled', true)
+    $('[data-attribute="updated_at"]').prop('disabled', true)
 
   # Table data accessor methods
 
@@ -167,3 +236,19 @@ class db.MemberView extends Marionette.CompositeView
 
   _get_data_from_input: (i) ->
     $(i).value?() || $(i).val?()
+
+  _bool_to_symbol: (value) ->
+    if value == 'true'
+      '✓'
+    else if value == 'false'
+      '✗'
+    else
+      ''
+
+  _symbol_to_bool: (value) ->
+    if value == '✓'
+      'true'
+    else if value == '✗'
+      'false'
+    else
+      'null'

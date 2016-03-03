@@ -1,27 +1,27 @@
 .view
   .head.member
     %h2 {{name}}
-    %h3.edit
-      %a{href: '#', data: {bypass: true}} Edit
-    %h3.save
-      %a{href: '#', data: {bypass: true}} Save
+    %button.btn.btn-primary.edit Edit
+    .edit-table-buttons
+      %button.btn.btn-primary.save.disabled Save
+      %button.btn.btn-default.cancel Cancel
 
-  %table.show
+  %table.member.show
     %tbody
       {{#member_info}}
       %tr
         {{#.}}
-        %td.strong{width:'30%'} {{attribute}}
-        %td {{value}}
+        %td.strong {{attribute}}
+        %td{data: {attribute: '{{model_attribute}}'}} {{value}}
         {{/.}}
       {{/member_info}}
 
-  %table.edit
+  %table.member.edit
     %tbody
       {{#member_info}}
       %tr
         {{#.}}
-        %td.strong{width:'30%'} {{attribute}}
+        %td.strong {{attribute}}
         %td.input.form-group
           %input.form-control{value: '{{value}}', data: {attribute: '{{model_attribute}}'}}
         {{/.}}
@@ -30,8 +30,7 @@
 {{#has_player_profiles}}
 .head.player-profile
   %h2 Player Profiles
-  %h3.edit
-    %a{href: '#'} Edit
+  %button.btn.btn-primary.edit Edit
 
 %table
   %thead
@@ -63,8 +62,7 @@
 {{#has_emergency_contacts}}
 .head.emergency-contact
   %h2 Emergency Contacts
-  %h3.edit
-    %a{href: '#'} Edit
+  %button.btn.btn-primary.edit Edit
 {{#emergency_contacts}}
 %table
   %tbody
