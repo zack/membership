@@ -17,9 +17,11 @@
 //= require icanhaz-no-mustache
 //= require backbone
 //= require backbone.marionette
+//= require maskedinput
 
 //= require support/prelude
 //= require support/helpers
+//= require support/table_validator
 //= require templates/templates
 
 //= require_tree ./models

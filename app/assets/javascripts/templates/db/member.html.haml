@@ -1,17 +1,37 @@
-%h2 {{name}}
+.view
+  .head.member
+    %h2 {{name}}
+    %button.btn.btn-primary.edit Edit
+    .edit-table-buttons
+      %button.btn.btn-primary.save.disabled Save
+      %button.btn.btn-default.cancel Cancel
 
-%table
-  %tbody
-    {{#member_info}}
-    %tr
-      {{#.}}
-      %td.strong{width:'30%'} {{attribute}}
-      %td {{value}}
-      {{/.}}
-    {{/member_info}}
+  %table.member.show
+    %tbody
+      {{#member_info}}
+      %tr
+        {{#.}}
+        %td.strong {{attribute}}
+        %td{data: {attribute: '{{model_attribute}}'}} {{value}}
+        {{/.}}
+      {{/member_info}}
 
-{{#has_skater_profiles}}
-%h2 Skater Profiles
+  %table.member.edit
+    %tbody
+      {{#member_info}}
+      %tr
+        {{#.}}
+        %td.strong {{attribute}}
+        %td.input.form-group
+          %input.form-control{value: '{{value}}', data: {attribute: '{{model_attribute}}'}}
+        {{/.}}
+      {{/member_info}}
+
+{{#has_player_profiles}}
+.head.player-profile
+  %h2 Player Profiles
+  %button.btn.btn-primary.edit Edit
+
 %table
   %thead
     %tr
@@ -22,7 +42,7 @@
       %th Date Ended
       %th Active
   %tbody
-    {{#skater_profiles}}
+    {{#player_profiles}}
     {{#.}}
     %tr
       %td
@@ -33,14 +53,16 @@
       %td {{date_ended}}
       %td {{active}}
     {{/.}}
-    {{/skater_profiles}}
-{{/has_skater_profiles}}
-{{^has_skater_profiles}}
-%h2 No Skater Profiles
-{{/has_skater_profiles}}
+    {{/player_profiles}}
+{{/has_player_profiles}}
+{{^has_player_profiles}}
+%h2 No player Profiles
+{{/has_player_profiles}}
 
 {{#has_emergency_contacts}}
-%h2 Emergency Contacts
+.head.emergency-contact
+  %h2 Emergency Contacts
+  %button.btn.btn-primary.edit Edit
 {{#emergency_contacts}}
 %table
   %tbody
@@ -53,6 +75,7 @@
     {{/contact_info}}
 {{/emergency_contacts}}
 {{/has_emergency_contacts}}
+
 {{^has_emergency_contacts}}
 %h2 No Emergency Contacts
 {{/has_emergency_contacts}}

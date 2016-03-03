@@ -9,7 +9,7 @@ class db.MemberIndexRowView extends Marionette.ItemView
     @table_headers = options.table_headers
 
   _get_member_info: =>
-    info = {}
+    info = {id: @model.get('id')}
     _.each @table_headers, (h) =>
       value = db.Helpers.clean_table_value @model.get(h)
       info[h] = value
