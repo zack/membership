@@ -15,7 +15,8 @@ class Member < ActiveRecord::Base
                               length: { in: 5..6 },
                               numericality:
                               { only_integer: true, allow_blank: true},
-                              allow_nil: true
+                              allow_nil: true,
+                              allow_blank: true
   validates :year_joined, numericality: { only_integer: true }, allow_nil: true
   validates :year_left, numericality: { only_integer: true }, allow_nil: true
   validates :year_left, numericality: {greater_than_or_equal_to: :year_joined},

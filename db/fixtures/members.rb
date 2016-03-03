@@ -10,7 +10,7 @@ for i in 1..200 # seed 200 members
     m.name = name
     m.nickname = name.split(" ")[0] if maybe()
     m.phone_number = Faker::Number.number(10) if maybe()
-    m.forum_handle = Faker::Lorem.word if maybe()
+    m.forum_handle = name + Faker::Lorem.word if maybe()
     m.address = "#{Faker::Address.street_address}, #{Faker::Address.city}, "\
                 "#{Faker::Address.state_abbr}, #{Faker::Address.zip}" if maybe()
     m.date_of_birth = Date.today - (rand(17156) + 6570).days if maybe() # 18-65
