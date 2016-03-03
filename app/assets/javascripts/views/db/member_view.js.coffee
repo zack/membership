@@ -71,7 +71,7 @@ class db.MemberView extends Marionette.CompositeView
       if _.contains @BOOLEAN_EDIT_BOXES, attr
         $(table).find("select[data-attribute='#{attr}']").val("#{val}")
       else
-        $(table).find("input[data-attribute='#{attr}']").html(val)
+        $(table).find("input[data-attribute='#{attr}']").val(val)
 
   _update_view_table: (e) ->
     table = $(e.currentTarget).parents('.view').find('table.show')
