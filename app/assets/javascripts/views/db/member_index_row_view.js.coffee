@@ -6,11 +6,11 @@ class db.MemberIndexRowView extends Marionette.ItemView
     member_info: @_get_member_info
 
   initialize: (options) ->
-    @table_headers = options.table_headers
+    @table_attrs = options.table_attrs
 
   _get_member_info: =>
     info = {id: @model.get('id')}
-    _.each @table_headers, (h) =>
+    _.each @table_attrs, (h) =>
       value = db.Helpers.clean_table_value @model.get(h)
       info[h] = value
     info

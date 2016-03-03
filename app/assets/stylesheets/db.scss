@@ -5,9 +5,12 @@
   -moz-box-sizing: border-box;
 }
 
+// SPA elements
+
 html {
   overflow-y: scroll;
 }
+
 #db {
   width: 800px;
   margin: 0 auto;
@@ -21,21 +24,20 @@ html {
   }
 }
 
-#member_index {
-  td {
-    white-space: nowrap;
-  }
-}
+// Sitewide Elements
 
-#team_index {
-  td {
-    text-align: center;
-  }
-}
-
-a{
-  text-decoration: none;
-  color: blue;
+a {
+	text-decoration: none !important;
+	color: #0275d8 !important;
+	&:hover {
+		color: #0091FF !important;
+		text-shadow: 0 0 2px #61D3FF;
+		-webkit-transition: background-color 200ms ease-in-out, color 200ms ease-in-out;
+		-moz-transition: background-color 200ms ease-in-out, color 200ms ease-in-out;
+		-ms-transition: background-color 200ms ease-in-out, color 200ms ease-in-out;
+		-o-transition: background-color 200ms ease-in-out, color 200ms ease-in-out;
+		transition: background-color 200ms ease-in-out, color 200ms ease-in-out;
+	}
 }
 
 h1 {
@@ -44,24 +46,11 @@ h1 {
   font-size: 35px;
 }
 
-.head{
-  button {
-    float: right;
-    display: inline-block;
-    margin-top: -35px;
-  }
-  .edit-table-buttons {
-    display: none;
-    .cancel {
-      margin-right: 10px;
-    }
-  }
-}
-
 table {
   border-collapse: collapse;
   margin-top: 16px;
   width: 100%;
+	text-align: center;
 
   tr {
     &:nth-child(odd) {
@@ -80,59 +69,96 @@ table {
       font-weight: bold;
     }
   }
+}
 
-  &.member {
-    td:nth-child(1) {
-      width: 31%;
+.head{
+  button {
+    float: right;
+    display: inline-block;
+    margin-top: -35px;
+  }
+  .edit-table-buttons {
+    display: none;
+    .cancel {
+      margin-right: 10px;
     }
-    tr.focus {
-      background-color: rgba(102, 175, 233, .25);
+  }
+}
+
+// Specific Pages
+
+#member_index {
+  table {
+    thead {
+      font-size: 12px;
     }
-    &.edit {
-      td:nth-child(2) {
+    tr {
+      td {
+        white-space: nowrap;
         padding: 0;
       }
     }
   }
+}
 
-  &.edit {
-    display: none;
-    td.input {
-      background-color: white;
+#member_view {
+	table.member {
+		td {
+			text-align: left;
+
+			&:nth-child(1) {
+				width: 31%;
+			}
+		}
+
+    tr.focus {
+      background-color: rgba(102, 175, 233, .25);
     }
-    input {
-      @include border-box;
-      margin: 0;
-      padding: 1px 5px;
-      border: 0;
-      border-radius: 0;
 
-      box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-      -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    &.edit {
+			display: none;
+			td {
+				&:nth-child(2) {
+					padding: 0;
+				}
+				&.input {
+					background-color: white;
+				}
+			}
+			input {
+				@include border-box;
+				margin: 0;
+				padding: 1px 5px;
+				border: 0;
+				border-radius: 0;
 
-      transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-      -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-      -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+				box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+				-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
 
-      &:focus {
-        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .145), 0 0 8px rgba(102, 175, 233, .6);
-        box-shadow: inset 0 1px 1px rgba(0, 0, 0, .145), 0 0 8px rgba(102, 175, 233, .6);
-        outline-offset: -1px;
-        outline: 1px solid #66AFE9;
-      }
-      &.error {
-        background-color: rgba(217, 83, 79, .12);
-        outline-offset: -1px;
-        outline: 1px solid rgb(217, 83, 79);
-      }
-    }
-    select {
-      @include border-box;
-      height: 26px;
-      border: 0;
-      border-radius: 0;
-      padding: 0;
-      background-color: white;
-    }
-  }
+				transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+				-o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+				-webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+
+				&:focus {
+					-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .145), 0 0 8px rgba(102, 175, 233, .6);
+					box-shadow: inset 0 1px 1px rgba(0, 0, 0, .145), 0 0 8px rgba(102, 175, 233, .6);
+					outline-offset: -1px;
+					outline: 1px solid #66AFE9;
+				}
+				&.error {
+					background-color: rgba(217, 83, 79, .12);
+					outline-offset: -1px;
+					outline: 1px solid rgb(217, 83, 79);
+				}
+			}
+			select {
+				@include border-box;
+				height: 26px;
+				border: 0;
+				border-radius: 0;
+				padding: 0;
+				background-color: white;
+			}
+		}
+	}
 }
