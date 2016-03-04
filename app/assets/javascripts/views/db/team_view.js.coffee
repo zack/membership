@@ -5,6 +5,9 @@ class db.TeamView extends Marionette.ItemView
     name: @_get_team_name
     players: @_get_players
 
+  events:
+    'click td.link': '_handle_tdlink_click'
+
   _get_players: =>
     current = []
     previous = []
@@ -31,3 +34,7 @@ class db.TeamView extends Marionette.ItemView
 
   _get_team_name: =>
     @model.get('name')
+
+  _handle_tdlink_click: (e) ->
+    id = $(e.currentTarget).data('id')
+    db.app.Router.navigate("members/#{id}", {trigger: true})

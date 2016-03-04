@@ -18,6 +18,7 @@ html {
 
 #navbar {
   text-align: center;
+
   .nav {
     display: inline;
     padding: 20px;
@@ -25,20 +26,6 @@ html {
 }
 
 // Sitewide Elements
-
-a {
-	text-decoration: none !important;
-	color: #0275d8 !important;
-	&:hover {
-		color: #0091FF !important;
-		text-shadow: 0 0 2px #61D3FF;
-		-webkit-transition: background-color 200ms ease-in-out, color 200ms ease-in-out;
-		-moz-transition: background-color 200ms ease-in-out, color 200ms ease-in-out;
-		-ms-transition: background-color 200ms ease-in-out, color 200ms ease-in-out;
-		-o-transition: background-color 200ms ease-in-out, color 200ms ease-in-out;
-		transition: background-color 200ms ease-in-out, color 200ms ease-in-out;
-	}
-}
 
 h1 {
   text-align: center;
@@ -52,21 +39,40 @@ table {
   width: 100%;
 	text-align: center;
 
-  tr {
-    &:nth-child(odd) {
-      background-color: #EEE;
-    }
-  }
   th {
     border: 1px solid black;
     background-color: #CCC;
     text-align: center;
   }
+
+  tr {
+    &:nth-child(odd) {
+      background-color: #EEE;
+    }
+    &:hover {
+      background-color: rgba(102, 175, 233, .25);
+    }
+  }
+
   td {
     border: 1px solid black;
     padding: 1px 0px 1px 5px;
+
     &.strong {
       font-weight: bold;
+    }
+
+    &:hover {
+      background-color: rgba(102, 175, 233, .25); // compounds
+    }
+
+    &.link{
+      cursor: pointer;
+      color: #0275D8;
+
+      &:hover {
+        background-color: rgba(102, 175, 233, .5);
+      }
     }
   }
 }
@@ -77,6 +83,7 @@ table {
     display: inline-block;
     margin-top: -35px;
   }
+
   .edit-table-buttons {
     display: none;
     .cancel {
@@ -92,6 +99,7 @@ table {
     thead {
       font-size: 12px;
     }
+
     tr {
       td {
         white-space: nowrap;
@@ -112,19 +120,22 @@ table {
 		}
 
     tr.focus {
-      background-color: rgba(102, 175, 233, .25);
+      background-color: rgba(102, 175, 233, .5);
     }
 
     &.edit {
 			display: none;
+
 			td {
 				&:nth-child(2) {
 					padding: 0;
 				}
+
 				&.input {
 					background-color: white;
 				}
 			}
+
 			input {
 				@include border-box;
 				margin: 0;
@@ -134,7 +145,6 @@ table {
 
 				box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
 				-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-
 				transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 				-o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 				-webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
@@ -145,12 +155,14 @@ table {
 					outline-offset: -1px;
 					outline: 1px solid #66AFE9;
 				}
+
 				&.error {
 					background-color: rgba(217, 83, 79, .12);
 					outline-offset: -1px;
 					outline: 1px solid rgb(217, 83, 79);
 				}
 			}
+
 			select {
 				@include border-box;
 				height: 26px;

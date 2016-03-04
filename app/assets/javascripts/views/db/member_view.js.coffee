@@ -27,6 +27,7 @@ class db.MemberView extends Marionette.CompositeView
     'click button.edit':                '_show_edit_table'
     'click button.save:not(.disabled)': '_handle_save'
     'click button.cancel':              '_handle_cancel'
+    'click td.link': '_handle_tdlink_click'
     'change input':                     '_handle_input_change' # datepicker
     'input input':                      '_handle_input_change'
     'change select':                    '_handle_select_change'
@@ -120,6 +121,10 @@ class db.MemberView extends Marionette.CompositeView
     @model = model
     @_show_view_table(e)
     @_update_view_table(e)
+
+  _handle_tdlink_click: (e) ->
+    id = $(e.currentTarget).data('id')
+    db.app.Router.navigate("teams/#{id}", {trigger: true})
 
   # Data cleaning methods
 

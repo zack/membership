@@ -45,8 +45,7 @@
     {{#player_profiles}}
     {{#.}}
     %tr
-      %td
-        %a{href: "/teams/{{team_id}}"} {{team_name}}
+      %td.link{data: {id: '{{team_id}}'}} {{team_name}}
       %td {{name}}
       %td {{number}}
       %td {{date_started}}

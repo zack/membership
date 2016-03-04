@@ -3,6 +3,7 @@ $ ->
   db.app = new Marionette.Application()
   db.app.addInitializer ->
     db.app.Router = new db.MembershipRouter()
+    db.app.Router.on('route', -> $(document).scrollTop(0)) # not perfect
 
   db.app.on 'start', ->
     Backbone.history.start({pushState: true})

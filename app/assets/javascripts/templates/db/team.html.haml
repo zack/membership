@@ -17,8 +17,7 @@
       %td {{number}}
       %td {{started}}
       %td {{active}}
-      %td
-        %a{href: "/members/{{member_id}}"} {{member_name}}
+      %td.link{data: {id: '{{member_id}}'}} {{member_name}}
     {{/current}}
     {{/players}}
 

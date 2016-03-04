@@ -12,6 +12,9 @@ class db.MemberIndexView extends Marionette.CompositeView
   TABLE_HEADERS: ['Name', 'Nickname', 'WFTDA #', 'Bylaws', 'Waiver',
                   'Confidentiality', 'Active']
 
+  events:
+    'click td.link': '_handle_tdlink_click'
+
   getChildView: ->
     db.MemberIndexRowView
 
@@ -21,3 +24,7 @@ class db.MemberIndexView extends Marionette.CompositeView
   _get_table_headers: =>
     _.map @TABLE_ATTRS, (h) =>
       db.Helpers.map_header(h)
+
+  _handle_tdlink_click: (e) ->
+    id = $(e.currentTarget).data('id')
+    db.app.Router.navigate("members/#{id}", {trigger: true})
