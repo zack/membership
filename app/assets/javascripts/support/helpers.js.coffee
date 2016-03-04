@@ -15,6 +15,7 @@ db.Helpers =
       when 'date_started'                 then 'Date Started'
       when 'forum_handle'                 then 'Forum Handle'
       when 'google_doc_access'            then 'Google Doc Access'
+      when 'name'                         then 'Name'
       when 'id'                           then 'ID'
       when 'nickname'                     then 'Nickname'
       when 'street_name'                  then 'Street Name'

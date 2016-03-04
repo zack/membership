@@ -1,91 +1,209 @@
+// Colors
+
+$white:                      hsl(0, 0%, 100%);
+$ultra-light-grey:           hsla(0, 0%, 0%, .05);
+$shadow-grey:                hsla(0, 0%, 0%, .14);
+$light-grey:                 hsl(0, 0%, 93%);
+$grey:                       hsl(0, 0%, 80%);
+$dark-grey:                  hsl(0, 0%, 60%);
+$black:                      hsl(0, 0%, 0%);
+
+$button-blue:                hsl(233, 53%, 46%);
+
+$table-link-blue:            hsl(208, 98%, 43%);
+$table-link-hover-blue:      hsla(207, 75%, 66%, .5);
+$table-row-hover-blue:       hsla(207, 75%, 66%, .25);
+
+$input-glow-blue:            hsla(207, 75%, 66%, .6);
+$input-error-background-red: hsla(2, 64%, 58%, .12);
+$input-error-outline-red:    hsl(2, 64%, 58%);
+
+$member-table-attr-focus:    hsla(207, 75%, 66%, .5);
+
+// Mixins
+
+@mixin prefix($property, $value, $prefixes: ()) {
+  @each $prefix in $prefixes {
+    -#{$prefix}-#{$property}: $value;
+  }
+
+  #{$property}: $value;
+}
+
+@mixin prefix2($property, $value1, $value2, $prefixes: ()) {
+  @each $prefix in $prefixes {
+    -#{$prefix}-#{$property}: $value1, $value2;
+  }
+
+  #{$property}: $value1, $value2;
+}
+
 @mixin border-box {
   width: 100%;
   box-sizing: border-box;
-  -webkit-box-sizing:border-box;
-  -moz-box-sizing: border-box;
+  @include prefix(box-sizing, border-box, ('webkit', 'moz'));
 }
 
-// SPA elements
+// Single Page App Elements
 
-html {
-  overflow-y: scroll;
-}
-
-#db {
-  width: 800px;
+.db {
   margin: 0 auto;
+  width: 800px;
 }
 
-#navbar {
-  text-align: center;
+.container .navbar {
+  margin: 0 auto;
+  padding: 0;
+  width: 800px;
 
   .nav {
     display: inline;
-    padding: 20px;
+    padding-right: 20px;
   }
 }
 
 // Sitewide Elements
 
+html {
+  overflow-y: scroll;
+}
+
 h1 {
-  text-align: center;
-  margin-bottom: 12px;
   font-size: 35px;
+  margin-bottom: 12px;
+  text-align: center;
 }
 
 table {
+  border: 1px solid $black;
   border-collapse: collapse;
   margin-top: 16px;
+  text-align: center;
   width: 100%;
-	text-align: center;
 
   th {
-    border: 1px solid black;
-    background-color: #CCC;
+    font-size: 12px;
+    background-color: $grey;
     text-align: center;
   }
 
   tr {
+    border-left: 1px solid $black;
+    border-right: 1px solid $black;
+
     &:nth-child(odd) {
-      background-color: #EEE;
+      background-color: $light-grey;
     }
+
     &:hover {
-      background-color: rgba(102, 175, 233, .25);
+      background-color: $table-row-hover-blue;
+    }
+
+    &:first-child {
+      &:hover td {
+        border-bottom: 1px solid $table-row-hover-blue;
+      }
+    }
+
+    &:last-child {
+      &:hover td {
+        border-top: 1px solid $table-row-hover-blue;
+      }
+
+      &:not(:first-child) {
+        border-top: 1px solid $light-grey;
+      }
+    }
+
+    &:only-child {
+      &:hover td {
+        border: 0;
+      }
+    }
+
+    &:not(:first-child):not(:last-child) {
+      border-bottom: 1px solid $light-grey;
+      border-top: 1px solid $light-grey;
+      &:hover td {
+        border-top: 1px solid $table-row-hover-blue;
+        border-bottom: 1px solid $table-row-hover-blue;
+      }
     }
   }
 
   td {
-    border: 1px solid black;
-    padding: 1px 0px 1px 5px;
+    padding: 1px 0 1px 6px;
 
     &.strong {
       font-weight: bold;
     }
 
-    &:hover {
-      background-color: rgba(102, 175, 233, .25); // compounds
-    }
-
-    &.link{
+    &.link {
+      color: $table-link-blue;
       cursor: pointer;
-      color: #0275D8;
 
       &:hover {
-        background-color: rgba(102, 175, 233, .5);
+        background-color: $table-link-hover-blue;
+      }
+    }
+  }
+
+  &.vertical {
+    tr {
+      &:first-child {
+        td {
+          border-top: 1px solid black;
+        }
+      }
+    }
+
+    td {
+      text-align: left;
+
+      &:first-child {
+        background-color: $ultra-light-grey;
+        border-top: 1px solid #E2E2E2;
+        border-left: 1px solid black;
+        width: 31%;
       }
     }
   }
 }
 
-.head{
+.head {
   button {
-    float: right;
+    border-radius: 4px;
     display: inline-block;
-    margin-top: -35px;
+    float: right;
+    line-height: 12px;
+    margin-top: -14px;
+
+    &.btn-default {
+      border: 1px solid $dark-grey;
+
+      &:hover {
+        background-color: $dark-grey;
+      }
+    }
+
+    &.btn-primary {
+      border: 1px solid $button-blue;
+    }
+
+    &:hover {
+      border-color: $black;
+    }
+  }
+
+  .title {
+    font-size: 30px;
+    font-weight: 400;
+    margin-bottom: -16px;
   }
 
   .edit-table-buttons {
     display: none;
+
     .cancel {
       margin-right: 10px;
     }
@@ -94,83 +212,150 @@ table {
 
 // Specific Pages
 
-#member_index {
+.member-index {
   table {
     thead {
-      font-size: 12px;
+      th {
+        width: 10.6%;
+
+        &:first-child {
+          padding-left: 6px;
+          text-align: left;
+          width: 22%;
+        }
+        &:nth-child(2) {
+          padding-left: 6px;
+          text-align: left;
+          width: 25%;
+        }
+      }
     }
 
-    tr {
-      td {
-        white-space: nowrap;
-        padding: 0;
+    td {
+      padding: 0;
+      white-space: nowrap;
+
+      &:nth-child(-n+2) { // first 2
+        padding-left: 6px;
+        text-align: left;
       }
     }
   }
 }
 
-#member_view {
-	table.member {
-		td {
-			text-align: left;
+.member-view table {
+  margin-bottom: 28px;
 
-			&:nth-child(1) {
-				width: 31%;
-			}
-		}
+  input {
+    @include border-box;
+    border: 0;
+    border-radius: 0;
+    margin: 0;
+    padding: 1px 5px;
 
-    tr.focus {
-      background-color: rgba(102, 175, 233, .5);
+    &:focus {
+      @include prefix2(box-shadow, inset 0 1px 1px $shadow-grey, 0 0 8px $input-glow-blue, ('webkit'));
+      outline: 1px solid $input-glow-blue;
+      outline-offset: -1px;
     }
 
-    &.edit {
-			display: none;
+    &.error {
+      background-color: $input-error-background-red;
+      outline: 1px solid $input-error-outline-red;
+      outline-offset: -1px;
+    }
+  }
 
-			td {
-				&:nth-child(2) {
-					padding: 0;
-				}
+  select {
+    @include border-box;
+    background-color: $white;
+    border: 0;
+    border-radius: 0;
+    height: 26px;
+    padding: 0;
+  }
 
-				&.input {
-					background-color: white;
-				}
-			}
+  &.player {
+    td, th {
+      &:first-child {
+        padding-left: 6px;
+        text-align: left;
+        width: 23%;
+      }
 
-			input {
-				@include border-box;
-				margin: 0;
-				padding: 1px 5px;
-				border: 0;
-				border-radius: 0;
+      &:nth-child(2) {
+        padding-left: 6px;
+        text-align: left;
+        width: 33%;
+      }
 
-				box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-				-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-				transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-				-o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-				-webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+      &:nth-child(3) {
+        width: 8%;
+      }
 
-				&:focus {
-					-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .145), 0 0 8px rgba(102, 175, 233, .6);
-					box-shadow: inset 0 1px 1px rgba(0, 0, 0, .145), 0 0 8px rgba(102, 175, 233, .6);
-					outline-offset: -1px;
-					outline: 1px solid #66AFE9;
-				}
+      &:nth-child(4) {
+        width: 12%;
+      }
 
-				&.error {
-					background-color: rgba(217, 83, 79, .12);
-					outline-offset: -1px;
-					outline: 1px solid rgb(217, 83, 79);
-				}
-			}
+      &:nth-child(5) {
+        width: 12%;
+      }
 
-			select {
-				@include border-box;
-				height: 26px;
-				border: 0;
-				border-radius: 0;
-				padding: 0;
-				background-color: white;
-			}
-		}
-	}
+      &:nth-child(6) {
+        width: 6%;
+      }
+    }
+  }
+
+  &.emergency-contact {
+    text-align: left;
+
+    td:first-child {
+      background-color: $ultra-light-grey;
+    }
+  }
+
+  &.edit {
+    display: none;
+
+    .border-div {
+      border-left: 1px solid $light-grey;
+    }
+
+    tr {
+      &:hover {
+        .border-div {
+          border-left-color: $table-row-hover-blue;
+        }
+      }
+
+      &.focus {
+        border: 1px solid black;
+        background-color: $member-table-attr-focus;
+
+        td {
+          border-top: 1px solid $member-table-attr-focus;
+          border-bottom: 1px solid $member-table-attr-focus;
+        }
+
+        td:first-child {
+          border-right: 1px solid $member-table-attr-focus;
+        }
+
+        .border-div {
+          border-color: $table-row-hover-blue;
+        }
+      }
+    }
+
+    td {
+      &:nth-child(2) {
+        padding: 0;
+      }
+
+      &.input {
+        background-color: $white;
+      }
+    }
+  }
 }

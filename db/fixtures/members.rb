@@ -15,7 +15,7 @@ for i in 1..200 # seed 200 members
     m.address = "#{Faker::Address.street_address}, #{Faker::Address.city}, "\
                 "#{Faker::Address.state_abbr}, #{Faker::Address.zip}" if maybe()
     m.date_of_birth = Date.today - (rand(17156) + 6570).days if maybe() # 18-65
-    m.wftda_id_number = Faker::Number.number(5) if maybe()
+    m.wftda_id_number = Faker::Number.between(10000,999999) if maybe()
     m.primary_insurance = "#{Faker::Company.name} #{Faker::Company.suffix}" if maybe()
     m.signed_wftda_waiver = maybe() if maybe()
     m.signed_wftda_confidentiality = maybe() if maybe()

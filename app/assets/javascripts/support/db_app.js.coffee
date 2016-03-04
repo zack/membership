@@ -17,7 +17,7 @@ $ ->
 				db.app.Router.navigate(href, true)
 
   db.app.addRegions(
-    app_region: '#db #content'
+    app_region: '.db .content'
   )
 
   db.app.start()

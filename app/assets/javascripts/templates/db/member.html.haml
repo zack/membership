@@ -1,12 +1,12 @@
 .view
   .head.member
-    %h2 {{nickname}}
+    .title {{nickname}}
     %button.btn.btn-primary.edit Edit
     .edit-table-buttons
       %button.btn.btn-primary.save.disabled Save
       %button.btn.btn-default.cancel Cancel
 
-  %table.member.show
+  %table.vertical.member.show
     %tbody
       {{#member_info}}
       %tr
@@ -16,63 +16,66 @@
         {{/.}}
       {{/member_info}}
 
-  %table.member.edit
+  %table.vertical.member.edit
     %tbody
       {{#member_info}}
       %tr
         {{#.}}
         %td.strong {{attribute}}
         %td.input.form-group
-          %input.form-control{value: '{{value}}', data: {attribute: '{{model_attribute}}'}}
+          .border-div
+            %input.form-control{value: '{{value}}', data: {attribute: '{{model_attribute}}'}}
         {{/.}}
       {{/member_info}}
 
 {{#has_player_profiles}}
-.head.player-profile
-  %h2 Player Profiles
-  %button.btn.btn-primary.edit Edit
+.view
+  .head.player
+    .title Player Profiles
+    %button.btn.btn-primary.edit Edit
 
-%table
-  %thead
-    %tr
-      %th Team
-      %th Jersey
-      %th Number
-      %th Date Started
-      %th Date Ended
-      %th Active
-  %tbody
-    {{#player_profiles}}
-    {{#.}}
-    %tr
-      %td.link{data: {id: '{{team_id}}'}} {{team_name}}
-      %td {{name}}
-      %td {{number}}
-      %td {{date_started}}
-      %td {{date_ended}}
-      %td {{active}}
-    {{/.}}
-    {{/player_profiles}}
+  %table.player
+    %thead
+      %tr
+        %th Team
+        %th Jersey
+        %th Number
+        %th Date Started
+        %th Date Ended
+        %th Active
+    %tbody
+      {{#player_profiles}}
+      {{#.}}
+      %tr
+        %td.link{data: {id: '{{team_id}}'}} {{team_name}}
+        %td {{name}}
+        %td {{number}}
+        %td {{date_started}}
+        %td {{date_ended}}
+        %td {{active}}
+      {{/.}}
+      {{/player_profiles}}
 {{/has_player_profiles}}
 {{^has_player_profiles}}
 %h2 No player Profiles
 {{/has_player_profiles}}
 
 {{#has_emergency_contacts}}
-.head.emergency-contact
-  %h2 Emergency Contacts
-  %button.btn.btn-primary.edit Edit
-{{#emergency_contacts}}
-%table
-  %tbody
-    {{#contact_info}}
-    %tr
-      {{#.}}
-      %td.strong{width:'30%'} {{attribute}}
-      %td {{value}}
-      {{/.}}
-    {{/contact_info}}
-{{/emergency_contacts}}
+.view
+  .head.emergency-contact
+    .title Emergency Contacts
+    %button.btn.btn-primary.edit Edit
+  {{#emergency_contacts}}
+  %table.vertical.emergency-contact
+    %tbody
+      {{#contact_info}}
+      %tr
+        {{#.}}
+        %td.strong{width:'30%'} {{attribute}}
+        %td {{value}}
+        {{/.}}
+      {{/contact_info}}
+  {{/emergency_contacts}}
 {{/has_emergency_contacts}}
 
 {{^has_emergency_contacts}}

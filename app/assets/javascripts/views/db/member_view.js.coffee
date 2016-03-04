@@ -1,6 +1,6 @@
 class db.MemberView extends Marionette.CompositeView
   template: ich.member
-  id: 'member_view'
+  className: 'member-view'
   templateHelpers: ->
     member_info: @_build_member_info
     nickname: @_get_member_name
@@ -103,7 +103,7 @@ class db.MemberView extends Marionette.CompositeView
 
   _handle_save: (e) =>
     table = $(e.currentTarget).parents('.view').find('table.edit')
-    data_els = $(table).find('td.input').children()
+    data_els = $(table).find('td.input .border-div').children()
     if db.TableValidator.table_is_valid(data_els)
       data = @_get_edit_table_data(data_els)
       @_submit(e, data)
@@ -138,18 +138,9 @@ class db.MemberView extends Marionette.CompositeView
     _.compact _.map attrs, (obj) =>
       unless _.contains @IGNORED_MEMBER_HEADERS, obj[0]
         attribute = db.Helpers.map_header obj[0]
-        model_attribute = obj[1]
+        model_attribute = obj[0]
         value = db.Helpers.clean_table_value obj[1]
         {attribute: attribute, value: value, model_attribute: model_attribute}
-
-  #_build_member_info: =>
-    #attrs = @model.attributes.sort(db.Helpers.attributes_comparator)
-    #_.compact _.map attrs, (v, k) =>
-      #unless _.contains @IGNORED_MEMBER_HEADERS, k
-        #attribute = db.Helpers.map_header k
-        #model_attribute = k
-        #value = db.Helpers.clean_table_value v
-        #{attribute: attribute, value: value, model_attribute: model_attribute}
 
   _build_emergency_contacts: =>
     _.map @model.get('emergency_contacts'), (e) =>
@@ -204,7 +195,7 @@ class db.MemberView extends Marionette.CompositeView
     # dropdowns.
     _.each @BOOLEAN_EDIT_BOXES, (attr) =>
       value = $("td[data-attribute='#{attr}']").text()
-      $("[data-attribute='#{attr}']").parent('td').html(
+      $("[data-attribute='#{attr}']").parents('td .border-div').html(
         "<select data-attribute='#{attr}'>
         <option value=''></option>
         <option value='true'>✓</option>
@@ -246,13 +237,10 @@ class db.MemberView extends Marionette.CompositeView
     @attrs = id: @model.get('id')
     _.each els, (el) =>
       key = $(el).data('attribute')
-      value = @_get_input_data(el)
+      value = @_get_data_from_input(el)
       unless key == 'Created' || key == 'Updated'
         @attrs[key] = value
     return @attrs
-
-  _get_input_data: (i) ->
-    @_get_data_from_input(i)
 
   _get_data_from_input: (i) ->
     $(i).value?() || $(i).val?()

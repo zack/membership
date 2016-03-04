@@ -1,7 +1,6 @@
 class db.MemberIndexView extends Marionette.CompositeView
   template: ich.member_index
-  id: 'member_index'
-  class: 'member_index'
+  className: 'member-index'
   childViewContainer: 'tbody'
   templateHelpers: ->
     table_headers: @TABLE_HEADERS
