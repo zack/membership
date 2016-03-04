@@ -4,7 +4,7 @@ end
 
 for i in 1..300 # we seed 300 players
   on_teams = []
-  rand(3).times do # between 0 and 2 teams per player
+  rand(2)+1.times do # between 1 and 2 teams per player
     days_since_started = rand(3650)
     new_team = rand(5) + 1
     while on_teams.include?(new_team)
