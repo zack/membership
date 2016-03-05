@@ -16,8 +16,9 @@ db.Helpers =
       when 'forum_handle'                 then 'Forum Handle'
       when 'google_doc_access'            then 'Google Doc Access'
       when 'id'                           then 'ID'
-      when 'name'                         then 'Name'
       when 'nickname'                     then 'Nickname'
+      when 'street_name'                  then 'Street Name'
+      when 'government_name'              then 'Government Name'
       when 'passed_wftda_test'            then 'Passed WFTDA Test'
       when 'phone_number'                 then 'Phone Number'
       when 'primary_insurance'            then 'Primary Insurance'
@@ -48,3 +49,46 @@ db.Helpers =
         when true then '✓'
         when false then '✗'
         else value
+
+  header_index: (header) ->
+    [
+      'id',
+      'nickname',
+      'government_name',
+      'street_name',
+      'forum_handle',
+      'phone_number',
+      'address',
+      'date_of_birth',
+      'wftda_id_number',
+      'primary_insurance',
+      'purchased_wftda_insurance',
+      'signed_wftda_waiver',
+      'signed_wftda_confidentiality',
+      'passed_wftda_test',
+      'signed_league_bylaws',
+      'google_doc_access',
+      'active',
+      'date_ended',
+      'date_started',
+      'year_joined',
+      'year_left'
+      'reason_left',
+      'relationship',
+      'updated_at',
+      'created_at'
+    ].indexOf(header)
+
+  attributes_comparator: (a, b) =>
+    header_index = db.Helpers.header_index
+
+    a_key = a[0]
+    b_key = b[0]
+
+    if header_index(a_key) < header_index(b_key)
+      return -1
+    else if header_index(a_key) > header_index(b_key)
+      return 1
+    else
+      return 0
+

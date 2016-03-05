@@ -7,8 +7,9 @@ for i in 1..200 # seed 200 members
   year_joined = rand(11) + 2005
 
   Member.seed do |m|
-    m.name = name
-    m.nickname = name.split(" ")[0] if maybe()
+    m.government_name = name
+    m.street_name = name
+    m.nickname = name.split(" ")[0]
     m.phone_number = Faker::Number.number(10) if maybe()
     m.forum_handle = name + Faker::Lorem.word if maybe()
     m.address = "#{Faker::Address.street_address}, #{Faker::Address.city}, "\

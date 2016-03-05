@@ -3,14 +3,14 @@ class db.MemberView extends Marionette.CompositeView
   id: 'member_view'
   templateHelpers: ->
     member_info: @_build_member_info
-    name: @_get_member_name
+    nickname: @_get_member_name
     has_emergency_contacts: @_has_emergency_contacts
     emergency_contacts: @_build_emergency_contacts
     has_player_profiles: @_has_player_profiles
     player_profiles: @_build_player_profiles
 
   #Attributes on the Member model that don't need rows in the table
-  IGNORED_MEMBER_HEADERS: ['name', 'id', 'emergency_contacts', 'players']
+  IGNORED_MEMBER_HEADERS: ['nickname', 'id', 'emergency_contacts', 'players']
 
   #Attributes on the Emergency Contact model that don't need rows in the table(s)
   IGNORED_EMERGENCY_CONTACT_HEADERS: ['id', 'member_id']
@@ -129,12 +129,27 @@ class db.MemberView extends Marionette.CompositeView
   # Data cleaning methods
 
   _build_member_info: =>
-    _.compact _.map @model.attributes, (v, k) =>
-      unless _.contains @IGNORED_MEMBER_HEADERS, k
-        attribute = db.Helpers.map_header k
-        model_attribute = k
-        value = db.Helpers.clean_table_value v
+    attrs = []
+    _.each @model.attributes, (v, k) =>
+      attrs.push [k,v]
+
+    attrs = attrs.sort(db.Helpers.attributes_comparator)
+
+    _.compact _.map attrs, (obj) =>
+      unless _.contains @IGNORED_MEMBER_HEADERS, obj[0]
+        attribute = db.Helpers.map_header obj[0]
+        model_attribute = obj[1]
+        value = db.Helpers.clean_table_value obj[1]
         {attribute: attribute, value: value, model_attribute: model_attribute}
+
+  #_build_member_info: =>
+    #attrs = @model.attributes.sort(db.Helpers.attributes_comparator)
+    #_.compact _.map attrs, (v, k) =>
+      #unless _.contains @IGNORED_MEMBER_HEADERS, k
+        #attribute = db.Helpers.map_header k
+        #model_attribute = k
+        #value = db.Helpers.clean_table_value v
+        #{attribute: attribute, value: value, model_attribute: model_attribute}
 
   _build_emergency_contacts: =>
     _.map @model.get('emergency_contacts'), (e) =>
@@ -163,7 +178,7 @@ class db.MemberView extends Marionette.CompositeView
   # Accessors
 
   _get_member_name: =>
-    @model.get('name')
+    @model.get('nickname')
 
   _has_emergency_contacts: =>
     @model.get('emergency_contacts').length > 0

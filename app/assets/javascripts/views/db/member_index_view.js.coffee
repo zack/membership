@@ -6,10 +6,11 @@ class db.MemberIndexView extends Marionette.CompositeView
   templateHelpers: ->
     table_headers: @TABLE_HEADERS
 
-  TABLE_ATTRS: ['name', 'nickname', 'wftda_id_number', 'signed_league_bylaws',
-                 'signed_wftda_waiver', 'signed_wftda_confidentiality', 'active']
+  TABLE_ATTRS: ['nickname', 'street_name', 'wftda_id_number',
+                'signed_league_bylaws', 'signed_wftda_waiver',
+                'signed_wftda_confidentiality', 'active']
 
-  TABLE_HEADERS: ['Name', 'Nickname', 'WFTDA #', 'Bylaws', 'Waiver',
+  TABLE_HEADERS: ['Nickname', 'Street Name', 'WFTDA #', 'Bylaws', 'Waiver',
                   'Confidentiality', 'Active']
 
   events:

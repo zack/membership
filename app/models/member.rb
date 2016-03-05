@@ -8,7 +8,9 @@ class Member < ActiveRecord::Base
   has_many :committee_members
   has_many :committees, through: :committee_members
 
-  validates :name, presence: true
+  validates :nickname, presence: true
+  validates :street_name, presence: true
+  validates :government_name, presence: true
   validates :forum_handle, uniqueness: { case_sensitive: false },
                            allow_nil: true
   validates :wftda_id_number, uniqueness: true,

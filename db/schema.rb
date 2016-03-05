@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151124025112) do
+ActiveRecord::Schema.define(version: 20160304183308) do
 
   create_table "committee_members", force: :cascade do |t|
     t.integer  "committee_id", null: false
@@ -75,8 +75,8 @@ ActiveRecord::Schema.define(version: 20151124025112) do
   add_index "member_jobs", ["member_id"], name: "index_member_jobs_on_member_id"
 
   create_table "members", force: :cascade do |t|
-    t.string   "name",                         null: false
-    t.string   "nickname"
+    t.string   "street_name",                  null: false
+    t.string   "nickname",                     null: false
     t.string   "phone_number"
     t.string   "forum_handle"
     t.text     "address"
@@ -95,6 +95,7 @@ ActiveRecord::Schema.define(version: 20151124025112) do
     t.text     "reason_left"
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
+    t.string   "government_name",              null: false
   end
 
   create_table "pillars", force: :cascade do |t|

@@ -3,6 +3,8 @@ db.TableValidator =
   table_is_valid: (data_els)->
     results = _.map data_els, (el) =>
       switch $(el).data('attribute')
+        when "nickname"
+          @_nickname_is_valid(el)
         when "phone_number"
           @_phone_number_is_valid(el)
         when "date_of_birth"
@@ -29,6 +31,12 @@ db.TableValidator =
           @_year_is_valid(el)
 
     !_.contains results, false
+
+  _nickname_is_valid: (input) ->
+    value = input.value
+    if !value.length > 0
+      @_set_el_to_error(input)
+      return false
 
   _phone_number_is_valid: (input) ->
     value = input.value.replace(/\D/g,'')
