@@ -40,8 +40,10 @@ class db.MemberView extends Marionette.CompositeView
     'change select':                    '_handle_select_change'
     'focus td input':                   '_handle_td_input_focus'
     'focus td select':                  '_handle_td_input_focus'
+    'focus td textarea':                '_handle_td_input_focus'
     'blur td input':                    '_handle_td_input_blur'
     'blur td select':                   '_handle_td_input_blur'
+    'blur td textarea':                 '_handle_td_input_blur'
 
   onShow: =>
     @_prepare_edit_tables()

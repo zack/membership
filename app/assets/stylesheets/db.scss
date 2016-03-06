@@ -170,6 +170,12 @@ table {
   }
 }
 
+textarea {
+  &:focus {
+    outline: 0;
+  }
+}
+
 .head {
   button {
     border-radius: 4px;
@@ -253,12 +259,6 @@ table {
     margin: 0;
     padding: 1px 5px;
 
-    &:focus {
-      @include prefix2(box-shadow, inset 0 1px 1px $shadow-grey, 0 0 8px $input-glow-blue, ('webkit'));
-      outline: 1px solid $input-glow-blue;
-      outline-offset: -1px;
-    }
-
     &.error {
       background-color: $input-error-background-red;
       outline: 1px solid $input-error-outline-red;
@@ -333,6 +333,12 @@ table {
         border: 1px solid black;
         background-color: $member-table-attr-focus;
 
+        &:first-child {
+          td {
+            border-top: 1px solid $black;
+          }
+        }
+
         td {
           border-top: 1px solid $member-table-attr-focus;
           border-bottom: 1px solid $member-table-attr-focus;
@@ -343,7 +349,11 @@ table {
         }
 
         .border-div {
+          @include prefix2(box-shadow, inset 0 1px 1px $shadow-grey, 0 0 8px $input-glow-blue, ('webkit'));
           border-color: $table-row-hover-blue;
+          border-left: 0;
+          outline: 1px solid $input-glow-blue;
+          outline-offset: -1px;
         }
       }
     }
