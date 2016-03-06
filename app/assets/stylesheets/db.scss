@@ -246,7 +246,7 @@ table {
 .member-view table {
   margin-bottom: 28px;
 
-  input {
+  input, textarea {
     @include border-box;
     border: 0;
     border-radius: 0;

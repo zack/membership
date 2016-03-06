@@ -20,23 +20,25 @@ class MembersController < ApplicationController
   def member_params
     puts member_update_attributes
     member_update_attributes.permit(
-      :nickname,
-      :phone_number,
-      :forum_handle,
+      :active,
       :address,
       :date_of_birth,
-      :wftda_id_number,
-      :primary_insurance,
-      :signed_wftda_waiver,
-      :signed_wftda_confidentiality,
-      :signed_league_bylaws,
-      :purchased_wftda_insurance,
-      :passed_wftda_test,
-      :active,
+      :forum_handle,
       :google_doc_access,
+      :government_name,
+      :nickname,
+      :passed_wftda_test,
+      :phone_number,
+      :primary_insurance,
+      :purchased_wftda_insurance,
+      :reason_left,
+      :signed_league_bylaws,
+      :signed_wftda_confidentiality,
+      :signed_wftda_waiver,
+      :street_name,
+      :wftda_id_number,
       :year_joined,
-      :year_left,
-      :reason_left)
+      :year_left)
   end
 
   def member_update_attributes

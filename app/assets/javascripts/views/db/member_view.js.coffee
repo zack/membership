@@ -9,6 +9,9 @@ class db.MemberView extends Marionette.CompositeView
     has_player_profiles: @_has_player_profiles
     player_profiles: @_build_player_profiles
 
+  # Max length of text type in MySQL
+  MYSQL_MAXLENGTH: 65535
+
   #Attributes on the Member model that don't need rows in the table
   IGNORED_MEMBER_HEADERS: ['nickname', 'id', 'emergency_contacts', 'players']
 
@@ -17,6 +20,9 @@ class db.MemberView extends Marionette.CompositeView
 
   #Attributes on the Player model that don't need rows in the table(s)
   PLAYER_PROFILE_HEADERS: ['name', 'number', 'date_started', 'date_ended', 'active']
+
+  # Attributes on the model that need larger text boxes and character limits
+  TEXTAREA_ATTRIBUTES: ['reason_left', 'address']
 
   #Attributes on the Member model that have boolean values
   BOOLEAN_EDIT_BOXES: ['signed_wftda_waiver', 'signed_wftda_confidentiality',
@@ -27,9 +33,10 @@ class db.MemberView extends Marionette.CompositeView
     'click button.edit':                '_show_edit_table'
     'click button.save:not(.disabled)': '_handle_save'
     'click button.cancel':              '_handle_cancel'
-    'click td.link': '_handle_tdlink_click'
+    'click td.link':                    '_handle_tdlink_click'
     'change input':                     '_handle_input_change' # datepicker
     'input input':                      '_handle_input_change'
+    'input textarea':                   '_handle_input_change'
     'change select':                    '_handle_select_change'
     'focus td input':                   '_handle_td_input_focus'
     'focus td select':                  '_handle_td_input_focus'
@@ -41,6 +48,7 @@ class db.MemberView extends Marionette.CompositeView
 
   _prepare_edit_tables: ->
     @_limit_input_length()
+    @_transform_textareas()
     @_transform_boolean_inputs()
     @_generate_datepickers()
     @_generate_phone_mask()
@@ -186,9 +194,15 @@ class db.MemberView extends Marionette.CompositeView
     # Some input fields (e.g. year joined) may have even stricter validations
     $('input').attr('maxlength', 255)
 
-    # These are text columns and MySQL can take up to 65535 chars
-    $('input[data-attribute="Reason Left"]').attr('maxlength', 65535)
-    $('input[data-attribute="Address"]').attr('maxlength', 65535)
+  _transform_textareas: ->
+    # Any attributes that should be textareas need to be transformed
+    _.each @TEXTAREA_ATTRIBUTES, (attr) =>
+      value = $("td[data-attribute='#{attr}']").text()
+      $("[data-attribute='#{attr}']").parents('td .border-div').html(
+        "<textarea data-attribute='#{attr}' maxlength=#{@MYSQL_MAXLENGTH}>
+        </textarea>")
+
+      $("textarea[data-attribute='#{attr}']").val(value)
 
   _transform_boolean_inputs: ->
     # Any attributes that are strictly boolean need to be transformed to
@@ -202,7 +216,7 @@ class db.MemberView extends Marionette.CompositeView
         <option value='false'>✗</option>
         </select>")
 
-      $("[data-attribute='#{attr}']").val(@_symbol_to_bool(value))
+      $("select[data-attribute='#{attr}']").val(@_symbol_to_bool(value))
 
   _generate_datepickers: ->
     $("[data-attribute='date_of_birth']").datepicker({
