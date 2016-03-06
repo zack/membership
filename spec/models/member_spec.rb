@@ -27,10 +27,22 @@ describe Member do
 
   describe 'validations' do
     # Because of a weird corner case in the should libary
-    subject { Member.new(name: 'Trish') }
+    subject { Member.new(
+      government_name: 'Patricia Walkins',
+      street_name: 'Patricia Walkins',
+      nickname: 'Trish',
+    )}
 
-    it 'validate presence of name' do
-      should validate_presence_of(:name)
+    it 'validate presence of government_name' do
+      should validate_presence_of(:government_name)
+    end
+
+    it 'validate presence of street_name' do
+      should validate_presence_of(:street_name)
+    end
+
+    it 'validate presence of nickname' do
+      should validate_presence_of(:nickname)
     end
 
     it 'validates uniqueness of forum_handle' do
@@ -56,7 +68,9 @@ describe Member do
     # Shoulda can't test greater_or_equal_to against other attributes
     it 'should fail with an end year before a start year' do
       expect(Member.count).to eq(0)
-      Member.create(name: 'Avela',
+      Member.create(government_name: 'John Benjamin',
+                    street_name: 'Avela Benjamin',
+                    nickname: 'Avela',
                     year_joined: 2015,
                     year_left: 2014)
       expect(Member.count).to eq(0)

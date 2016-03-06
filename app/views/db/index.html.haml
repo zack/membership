@@ -15,7 +15,7 @@
   :javascript
     db.teams = new db.TeamsCollection(
       #{raw @teams.to_json(:include =>
-        { :players => { :include => { :member => { :only => :name}}}})})
+        { :players => { :include => { :member => { :only => :street_name}}}})})
 
 = render 'head'
 #db
