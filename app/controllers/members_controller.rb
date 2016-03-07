@@ -18,8 +18,7 @@ class MembersController < ApplicationController
   private
 
   def member_params
-    puts member_update_attributes
-    member_update_attributes.permit(
+    params[:member].permit(
       :active,
       :address,
       :date_of_birth,
@@ -39,9 +38,5 @@ class MembersController < ApplicationController
       :wftda_id_number,
       :year_joined,
       :year_left)
-  end
-
-  def member_update_attributes
-    params[:member].except(:id, :updated_at, :created_at)
   end
 end
