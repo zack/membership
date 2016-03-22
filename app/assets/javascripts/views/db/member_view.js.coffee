@@ -119,8 +119,13 @@ class db.MemberView extends Marionette.CompositeView
       @_submit(e, data)
 
   _submit: (e, data) ->
-    new db.Member().save data,
-      success: (model) => @_handle_submit_success(e, model)
+    classes = $(e.currentTarget).parents('.view').find('table.show').attr('class').split(' ')
+    if _.contains classes, 'member'
+      new db.Member().save data,
+        success: (model) => @_handle_submit_success(e, model)
+    else if _.contains classes, 'player'
+      new db.Player().save data,
+        success: (model) => @_handle_submit_success(e, model)
 
   _handle_cancel: (e) =>
     table = $(e.currentTarget).parents('.view').find('table.edit')

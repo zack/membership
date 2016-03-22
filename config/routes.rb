@@ -4,5 +4,6 @@ Rails.application.routes.draw do
   get '*path'         => 'db#index'
 
   put 'members/(:id)' => 'members#update', as: 'member_update'
+  put 'players/(:id)' => 'players#update', as: 'player_update'
 
 end

@@ -10,4 +10,20 @@ class PlayersController < ApplicationController
     @_players ||= Player.all
   end
 
+  def update
+    player = Player.find(params[:player][:id])
+    player.update_attributes!(player_params)
+    render status: 201, json: {player: player}
+  end
+
+  private
+
+  def player_params
+    params[:player].permit(
+      :name,
+      :number,
+      :date_started,
+      :date_ended,
+      :active)
+  end
 end

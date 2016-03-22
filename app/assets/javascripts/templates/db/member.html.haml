@@ -33,8 +33,11 @@
   .head.player
     .title Player Profiles
     %button.btn.btn-primary.edit Edit
+    .edit-table-buttons
+      %button.btn.btn-primary.save.disabled Save
+      %button.btn.btn-default.cancel Cancel
 
-  %table.player
+  %table.player.show
     %thead
       %tr
         %th Team
@@ -53,6 +56,38 @@
         %td {{date_started}}
         %td {{date_ended}}
         %td {{active}}
+      {{/.}}
+      {{/player_profiles}}
+
+  %table.player.edit
+    %thead
+      %tr
+        %th Team
+        %th Jersey
+        %th Number
+        %th Date Started
+        %th Date Ended
+        %th Active
+    %tbody
+      {{#player_profiles}}
+      {{#.}}
+      %tr
+        %td.link{data: {id: '{{team_id}}'}} {{team_name}}
+        %td.input
+          .border-div
+            %input.form-control{value: '{{name}}', data: {attribute: 'name'}}
+        %td.input
+          .border-div
+            %input.form-control{value: '{{number}}', data: {attribute: 'number'}}
+        %td.input
+          .border-div
+            %input.form-control{value: '{{date_started}}', data: {attribute: 'date_started'}}
+        %td.input
+          .border-div
+            %input.form-control{value: '{{date_ended}}', data: {attribute: 'date_ended'}}
+        %td.input
+          .border-div
+            %input.form-control{value: '{{active}}', data: {attribute: 'active'}}
       {{/.}}
       {{/player_profiles}}
 {{/has_player_profiles}}
