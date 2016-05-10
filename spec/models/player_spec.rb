@@ -21,10 +21,6 @@ describe Player do
       should validate_presence_of(:name)
     end
 
-    it 'should validate uniqueness of name' do
-      should validate_uniqueness_of(:name).scoped_to(:number).case_insensitive
-    end
-
     it 'should validate the format of the number' do
       should allow_value('0').for(:number)
       should allow_value('00').for(:number)

@@ -5,8 +5,6 @@ class Player < ActiveRecord::Base
 
   validates_with DateValidator
 
-  validates :name, presence: true,
-                   uniqueness: { scope: :number , case_sensitive: false}
-  validates :number, presence: true,
-                     format: { with: /\A\d{1,4}\z/ }
+  validates :name, presence: true
+  validates :number, presence: true, format: { with: /\A\d{1,4}\z/ }
 end

@@ -7,8 +7,14 @@ db.TableValidator =
           @_nickname_is_valid(el)
         when "phone_number"
           @_phone_number_is_valid(el)
+        when "number"
+          @_wftda_number_is_valid(el)
         when "date_of_birth"
-          @_dob_is_valid(el)
+          @_date_is_valid(el)
+        when "date_started"
+          @_date_is_valid(el)
+        when "date_ended"
+          @_date_is_valid(el)
         when "wftda_id_number"
           @_wftda_id_is_valid(el)
         when "signed_wftda_waiver"
@@ -44,7 +50,7 @@ db.TableValidator =
       @_set_el_to_error(input)
       return false
 
-  _dob_is_valid: (input) ->
+  _date_is_valid: (input) ->
     value = input.value
     if !value.match(/^\d{4}-\d{2}-\d{2}$/) and !!value
       @_set_el_to_error(input)
@@ -59,6 +65,12 @@ db.TableValidator =
   _wftda_id_is_valid: (input) ->
     value = input.value
     if !value.match(/^\d{5,6}$/) and !!value
+      @_set_el_to_error(input)
+      return false
+
+  _wftda_number_is_valid: (input) ->
+    value = input.value
+    if !value.match(/^\d{1,4}$/) and !!value
       @_set_el_to_error(input)
       return false
 

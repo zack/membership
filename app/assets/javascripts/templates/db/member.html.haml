@@ -3,7 +3,7 @@
     .title {{nickname}}
     %button.btn.btn-primary.edit Edit
     .edit-table-buttons
-      %button.btn.btn-primary.save.disabled Save
+      %button.btn.btn-primary.save.member.disabled Save
       %button.btn.btn-default.cancel Cancel
 
   %table.vertical.member.show
@@ -24,7 +24,7 @@
         %td.strong {{attribute}}
         %td.input.form-group
           .border-div
-            %input.form-control{value: '{{value}}', data: {attribute: '{{model_attribute}}'}}
+            %input.cell.form-control{value: '{{value}}', data: {attribute: '{{model_attribute}}'}}
         {{/.}}
       {{/member_info}}
 
@@ -34,7 +34,7 @@
     .title Player Profiles
     %button.btn.btn-primary.edit Edit
     .edit-table-buttons
-      %button.btn.btn-primary.save.disabled Save
+      %button.btn.btn-primary.save.player.disabled Save
       %button.btn.btn-default.cancel Cancel
 
   %table.player.show
@@ -49,13 +49,13 @@
     %tbody
       {{#player_profiles}}
       {{#.}}
-      %tr
+      %tr.data{data: {player_id: '{{id}}'}}
         %td.link{data: {id: '{{team_id}}'}} {{team_name}}
-        %td {{name}}
-        %td {{number}}
-        %td {{date_started}}
-        %td {{date_ended}}
-        %td {{active}}
+        %td{data: {attribute: 'name'}} {{name}}
+        %td{data: {attribute: 'number'}} {{number}}
+        %td{data: {attribute: 'date_started'}} {{date_started}}
+        %td{data: {attribute: 'date_ended'}} {{date_ended}}
+        %td{data: {attribute: 'active'}} {{active}}
       {{/.}}
       {{/player_profiles}}
 
@@ -71,23 +71,28 @@
     %tbody
       {{#player_profiles}}
       {{#.}}
-      %tr
-        %td.link{data: {id: '{{team_id}}'}} {{team_name}}
-        %td.input
+      %tr.data{data: {player_id: '{{id}}'}}
+        %td
           .border-div
-            %input.form-control{value: '{{name}}', data: {attribute: 'name'}}
-        %td.input
+            %div{data: {id: '{{team_id}}'}} {{team_name}}
+        %td.input.form-group
           .border-div
-            %input.form-control{value: '{{number}}', data: {attribute: 'number'}}
-        %td.input
+            %input.cell.form-control{value: '{{name}}', data: {attribute: 'name'}}
+        %td.input.form-group
           .border-div
-            %input.form-control{value: '{{date_started}}', data: {attribute: 'date_started'}}
-        %td.input
+            %input.cell.form-control{value: '{{number}}', data: {attribute: 'number'}}
+        %td.input.form-group
           .border-div
-            %input.form-control{value: '{{date_ended}}', data: {attribute: 'date_ended'}}
-        %td.input
+            %input.cell.form-control{value: '{{date_started}}', data: {attribute: 'date_started'}}
+        %td.input.form-group
           .border-div
-            %input.form-control{value: '{{active}}', data: {attribute: 'active'}}
+            %input.cell.form-control{value: '{{date_ended}}', data: {attribute: 'date_ended'}}
+        %td.input.form-group
+          .border-div
+            %select.cell{value: '{{active}}', data: {attribute: 'active'}}
+              %option{value: ''}
+              %option{value: 'true'} ✓
+              %option{value: 'false'} ✗
       {{/.}}
       {{/player_profiles}}
 {{/has_player_profiles}}
@@ -100,14 +105,30 @@
   .head.emergency-contact
     .title Emergency Contacts
     %button.btn.btn-primary.edit Edit
+    .edit-table-buttons
+      %button.btn.btn-primary.save.contact.disabled Save
+      %button.btn.btn-default.cancel Cancel
   {{#emergency_contacts}}
-  %table.vertical.emergency-contact
+
+  %table.show.vertical.emergency-contact{data: {'contact-id' => '{{id}}'}}
     %tbody
       {{#contact_info}}
       %tr
         {{#.}}
         %td.strong{width:'30%'} {{attribute}}
-        %td {{value}}
+        %td{data: {attribute: '{{model_attribute}}'}} {{value}}
+        {{/.}}
+      {{/contact_info}}
+
+  %table.vertical.contact.edit{data: {'contact-id' => '{{id}}'}}
+    %tbody
+      {{#contact_info}}
+      %tr
+        {{#.}}
+        %td.strong {{attribute}}
+        %td.input.form-group
+          .border-div
+            %input.cell.form-control{value: '{{value}}', data: {attribute: '{{model_attribute}}'}}
         {{/.}}
       {{/contact_info}}
   {{/emergency_contacts}}

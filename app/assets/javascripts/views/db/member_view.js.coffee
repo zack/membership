@@ -18,11 +18,13 @@ class db.MemberView extends Marionette.CompositeView
   #Attributes on the Emergency Contact model that don't need rows in the table(s)
   IGNORED_EMERGENCY_CONTACT_HEADERS: ['id', 'member_id']
 
-  #Attributes on the Player model that don't need rows in the table(s)
-  PLAYER_PROFILE_HEADERS: ['name', 'number', 'date_started', 'date_ended', 'active']
+  #Attributes on the Player model that need rows in the table(s)
+  PLAYER_PROFILE_HEADERS: ['name', 'number', 'date_started', 'date_ended', 'active', 'id']
 
   # Attributes on the model that need larger text boxes and character limits
   TEXTAREA_ATTRIBUTES: ['reason_left', 'address']
+
+  DATEPICKER_ATTRIBUTES: ['date_of_birth', 'date_started', 'date_ended']
 
   #Attributes on the Member model that have boolean values
   BOOLEAN_EDIT_BOXES: ['signed_wftda_waiver', 'signed_wftda_confidentiality',
@@ -52,6 +54,7 @@ class db.MemberView extends Marionette.CompositeView
     @_limit_input_length()
     @_transform_textareas()
     @_transform_boolean_inputs()
+    @_select_player_active_options()
     @_generate_datepickers()
     @_generate_phone_mask()
     @_generate_wftda_id_mask()
@@ -84,9 +87,26 @@ class db.MemberView extends Marionette.CompositeView
       else
         $(table).find("input[data-attribute='#{attr}']").val(val)
 
-  _update_view_table: (e) ->
+  _update_member_view_table: (e) ->
     table = $(e.currentTarget).parents('.view').find('table.show')
     _.each @model.attributes, (val, attr) =>
+      if _.contains @BOOLEAN_EDIT_BOXES, attr
+        val = @_bool_to_symbol(val)
+      $(table).find("td[data-attribute='#{attr}']").html(val)
+
+  _update_player_view_table: (e, player_data) ->
+    table = $(e.currentTarget).parents('.view').find('table.show')
+    row = $(table).find("tr[data-player-id=#{player_data.id}]")
+    _.each player_data, (val, attr) =>
+      if _.contains @BOOLEAN_EDIT_BOXES, attr
+        val = @_bool_to_symbol(val)
+      $(row).find("td[data-attribute='#{attr}']").html(val)
+
+  _update_contact_view_table: (e, contact_data) ->
+    table = $(e.currentTarget).parents('.view').
+      find("table.show[data-contact-id=#{contact_data.id}]")
+    console.log table
+    _.each contact_data, (val, attr) =>
       if _.contains @BOOLEAN_EDIT_BOXES, attr
         val = @_bool_to_symbol(val)
       $(table).find("td[data-attribute='#{attr}']").html(val)
@@ -112,30 +132,50 @@ class db.MemberView extends Marionette.CompositeView
     tr.removeClass('focus')
 
   _handle_save: (e) =>
-    table = $(e.currentTarget).parents('.view').find('table.edit')
-    data_els = $(table).find('td.input .border-div').children()
+    tables = $(e.currentTarget).parents('.view').find('table.edit')
+    data_els = $(tables).find('.cell')
     if db.TableValidator.table_is_valid(data_els)
-      data = @_get_edit_table_data(data_els)
-      @_submit(e, data)
+      if ($(e.currentTarget).attr('class')).indexOf('member') > -1
+        data = @_get_member_edit_table_data(data_els)
+        @_submit_member(data, e)
+      else if ($(e.currentTarget).attr('class')).indexOf('player') > -1
+        player_data = @_get_player_edit_table_data(tables.find('tr.data'))
+        @_submit_players(player_data, e)
+      else
+        contact_data = @_get_contact_edit_table_data(tables)
+        @_submit_contacts(contact_data, e)
 
-  _submit: (e, data) ->
-    classes = $(e.currentTarget).parents('.view').find('table.show').attr('class').split(' ')
-    if _.contains classes, 'member'
-      new db.Member().save data,
-        success: (model) => @_handle_submit_success(e, model)
-    else if _.contains classes, 'player'
-      new db.Player().save data,
-        success: (model) => @_handle_submit_success(e, model)
+  _submit_member: (data, e) ->
+    new db.Member().save data,
+      success: (model) => @_handle_member_submit_success(e, model)
+
+  _submit_players: (player_data, e) ->
+    _.each player_data, (player) =>
+      new db.Player().save player,
+        success: () =>  @_handle_player_submit_success(e, player)
+
+  _submit_contacts: (contact_data, e) ->
+    _.each contact_data, (contact) =>
+      new db.EmergencyContact().save contact,
+        success: () => @_handle_contact_submit_success(e, contact)
 
   _handle_cancel: (e) =>
     table = $(e.currentTarget).parents('.view').find('table.edit')
     @_show_view_table(e)
     @_reset_edit_table(e)
 
-  _handle_submit_success: (e, model) =>
+  _handle_member_submit_success: (e, model) =>
     @model = model
     @_show_view_table(e)
-    @_update_view_table(e)
+    @_update_member_view_table(e)
+
+  _handle_player_submit_success: (e, player_data) =>
+    @_show_view_table(e)
+    @_update_player_view_table(e, player_data)
+
+  _handle_contact_submit_success: (e, contact_data) =>
+    @_show_view_table(e)
+    @_update_contact_view_table(e, contact_data)
 
   _handle_tdlink_click: (e) ->
     id = $(e.currentTarget).data('id')
@@ -159,15 +199,18 @@ class db.MemberView extends Marionette.CompositeView
 
   _build_emergency_contacts: =>
     _.map @model.get('emergency_contacts'), (e) =>
-      {contact_info:
-        _.compact _.map e, (v, k) =>
-          unless _.contains @IGNORED_EMERGENCY_CONTACT_HEADERS, k
-            attribute = db.Helpers.map_header k
-            value = db.Helpers.clean_table_value v
-            {attribute: attribute,value: value}}
+      { id: e.id, contact_info: @_get_contact_info(e) }
+
+  _get_contact_info: (e) =>
+    _.compact _.map e, (v, k) =>
+      unless _.contains @IGNORED_EMERGENCY_CONTACT_HEADERS, k
+        attribute = db.Helpers.map_header k
+        model_attribute = k
+        value = db.Helpers.clean_table_value v
+        {attribute: attribute, value: value, model_attribute: model_attribute}
 
   _build_player_profiles: =>
-    _.flatten _.map @model.get('players'), (p) =>
+    a = _.flatten _.map @model.get('players'), (p) =>
       if p.teams.length > 0
         _.map p.teams, (t) =>
           @_build_profile_row(p, t)
@@ -204,35 +247,45 @@ class db.MemberView extends Marionette.CompositeView
   _transform_textareas: ->
     # Any attributes that should be textareas need to be transformed
     _.each @TEXTAREA_ATTRIBUTES, (attr) =>
-      value = $("td[data-attribute='#{attr}']").text()
-      $("[data-attribute='#{attr}']").parents('td .border-div').html(
-        "<textarea data-attribute='#{attr}' maxlength=#{@MYSQL_MAXLENGTH}>
-        </textarea>")
+      _.each $("td[data-attribute='#{attr}']"), (cell) ->
+        value = $(cell).text()
+        $(cell).parents('td .border-div').html(
+          "<textarea data-attribute='#{attr}' maxlength=#{@MYSQL_MAXLENGTH}>
+          </textarea>")
 
-      $("textarea[data-attribute='#{attr}']").val(value)
+        $(cell).val(value).addClass('cell')
 
   _transform_boolean_inputs: ->
     # Any attributes that are strictly boolean need to be transformed to
     # dropdowns.
     _.each @BOOLEAN_EDIT_BOXES, (attr) =>
-      value = $("td[data-attribute='#{attr}']").text()
-      $("[data-attribute='#{attr}']").parents('td .border-div').html(
-        "<select data-attribute='#{attr}'>
-        <option value=''></option>
-        <option value='true'>✓</option>
-        <option value='false'>✗</option>
-        </select>")
+      _.each $("input[data-attribute='#{attr}']"), (cell) =>
+        value = $(cell).attr('value')
+        parent = $(cell).parent()
+        $(parent).html(
+          "<select data-attribute='#{attr}'>
+          <option value=''></option>
+          <option value='true'>✓</option>
+          <option value='false'>✗</option>
+          </select>")
 
-      $("select[data-attribute='#{attr}']").val(@_symbol_to_bool(value))
+        $(parent).find('select').val(@_symbol_to_bool(value)).addClass('cell')
+
+  _select_player_active_options: ->
+    # We don't create these dymanically - they're in the haml. But they need
+    # to be properly selected on render, so we do that here.
+    _.each $('.player.edit select[data-attribute=active]'), (elem) =>
+      $(elem).val(@_symbol_to_bool($(elem).attr('value')))
 
   _generate_datepickers: ->
-    $("[data-attribute='date_of_birth']").datepicker({
-        format: 'yyyy-mm-dd',
-        orientation: 'bottom left',
-        startDate: '-100y',
-        endDate: '-18y',
-    }).attr('placeholder', 'yyyy-mm-dd')
-      .mask('9999-99-99',{placeholder:'yyyy-mm-dd'})
+    _.each @DATEPICKER_ATTRIBUTES, (attr) ->
+      $("[data-attribute=#{attr}]").datepicker({
+          format: 'yyyy-mm-dd',
+          orientation: 'bottom left',
+          startDate: '-100y',
+          endDate: '-18y',
+      }).attr('placeholder', 'yyyy-mm-dd')
+        .mask('9999-99-99',{placeholder:'yyyy-mm-dd'})
 
   _generate_phone_mask: ->
     $("input[data-attribute='phone_number']").mask('(999) 999-9999')
@@ -249,19 +302,38 @@ class db.MemberView extends Marionette.CompositeView
 
   _disable_timestamps: ->
     # Timestamp rows are automatically maintained by Rails, not by users
-    $('[data-attribute="created_at"]').prop('disabled', true)
-    $('[data-attribute="updated_at"]').prop('disabled', true)
+    $("[data-attribute=created_at]").prop('disabled', true).removeClass('cell')
+    $("[data-attribute=updated_at]").prop('disabled', true).removeClass('cell')
 
   # Table data accessor methods
 
-  _get_edit_table_data: (els) ->
-    @attrs = id: @model.get('id')
+  _get_member_edit_table_data: (els) ->
+    attrs = id: @model.get('id')
     _.each els, (el) =>
       key = $(el).data('attribute')
       value = @_get_data_from_input(el)
-      unless key == 'Created' || key == 'Updated'
-        @attrs[key] = value
-    return @attrs
+      attrs[key] = value
+    return attrs
+
+  _get_player_edit_table_data: (rows) ->
+    return _.map rows, (row, idx) =>
+      attrs = id: $(row).data('player-id')
+      cells = $(row).find('.cell')
+      _.each cells, (cell) =>
+        key = $(cell).data('attribute')
+        value = @_get_data_from_input(cell)
+        attrs[key] = value
+      return attrs
+
+  _get_contact_edit_table_data: (tables) ->
+    return _.map tables, (table, idx) =>
+      attrs = id: $(table).data('contact-id')
+      cells = $(table).find('.cell')
+      _.each cells, (cell) =>
+        key = $(cell).data('attribute')
+        value = @_get_data_from_input(cell)
+        attrs[key] = value
+      return attrs
 
   _get_data_from_input: (i) ->
     $(i).value?() || $(i).val?()

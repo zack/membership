@@ -3,5 +3,4 @@ class EmergencyContact < ActiveRecord::Base
 
   validates :name, presence: true
   validates :member_id, presence: true
-  validates :phone_number, presence: true, format: { with: /\A\d{10}\z/ }
 end
