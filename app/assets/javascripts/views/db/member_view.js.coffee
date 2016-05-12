@@ -75,6 +75,7 @@ class db.MemberView extends Marionette.CompositeView
     $(view).find('table.show').hide()
     $(view).find('button.edit').hide()
     $(view).find('table.edit').show()
+    $(view).find('.edited').removeClass('edited')
     $(view).find('.text-primary').removeClass('text-primary')
     $(view).find('.edit-table-buttons').show()
     $(view).find('.edit-table-buttons > .save').addClass('disabled')
@@ -105,7 +106,6 @@ class db.MemberView extends Marionette.CompositeView
   _update_contact_view_table: (e, contact_data) ->
     table = $(e.currentTarget).parents('.view').
       find("table.show[data-contact-id=#{contact_data.id}]")
-    console.log table
     _.each contact_data, (val, attr) =>
       if _.contains @BOOLEAN_EDIT_BOXES, attr
         val = @_bool_to_symbol(val)
@@ -120,6 +120,7 @@ class db.MemberView extends Marionette.CompositeView
     @_handle_field_change(e)
 
   _handle_field_change: (e) ->
+    $(e.currentTarget).parents('tr').addClass('edited')
     $(e.currentTarget).parent('.input').removeClass('has-danger')
     $(e.currentTarget).parents('.view').find('button.save').removeClass('disabled')
 
@@ -133,13 +134,13 @@ class db.MemberView extends Marionette.CompositeView
 
   _handle_save: (e) =>
     tables = $(e.currentTarget).parents('.view').find('table.edit')
-    data_els = $(tables).find('.cell')
+    data_els = $(tables).find('.edited .cell')
     if db.TableValidator.table_is_valid(data_els)
       if ($(e.currentTarget).attr('class')).indexOf('member') > -1
         data = @_get_member_edit_table_data(data_els)
         @_submit_member(data, e)
       else if ($(e.currentTarget).attr('class')).indexOf('player') > -1
-        player_data = @_get_player_edit_table_data(tables.find('tr.data'))
+        player_data = @_get_player_edit_table_data(tables.find('tr.data.edited'))
         @_submit_players(player_data, e)
       else
         contact_data = @_get_contact_edit_table_data(tables)
@@ -149,15 +150,22 @@ class db.MemberView extends Marionette.CompositeView
     new db.Member().save data,
       success: (model) => @_handle_member_submit_success(e, model)
 
-  _submit_players: (player_data, e) ->
+  _submit_players: (player_data, e) =>
     _.each player_data, (player) =>
       new db.Player().save player,
-        success: () =>  @_handle_player_submit_success(e, player)
+        success: () =>  @_handle_player_submit_success(e, player),
+        error: (model, response) => @_handle_player_errors(player, response, e)
 
   _submit_contacts: (contact_data, e) ->
     _.each contact_data, (contact) =>
       new db.EmergencyContact().save contact,
         success: () => @_handle_contact_submit_success(e, contact)
+
+  _handle_player_errors: (player, response, e) =>
+    _.each response.responseJSON, (response) =>
+      _.each response, (error) =>
+        _.each error, (string) =>
+          error_player = _.find(@model.get('players'), (p) -> return p.id == player.id)
 
   _handle_cancel: (e) =>
     table = $(e.currentTarget).parents('.view').find('table.edit')
@@ -282,8 +290,7 @@ class db.MemberView extends Marionette.CompositeView
       $("[data-attribute=#{attr}]").datepicker({
           format: 'yyyy-mm-dd',
           orientation: 'bottom left',
-          startDate: '-100y',
-          endDate: '-18y',
+          startDate: '-100y'
       }).attr('placeholder', 'yyyy-mm-dd')
         .mask('9999-99-99',{placeholder:'yyyy-mm-dd'})
 
