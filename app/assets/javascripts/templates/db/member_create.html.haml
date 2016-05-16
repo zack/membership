@@ -1,0 +1,17 @@
+.view.member-create
+  %h3 Create a New Member
+  %p After creation you will be brought to a page where you can add more information.
+  %table
+    %tr
+      %td Government Name:
+      %td.input.form-group
+        %input.form-control{attr: 'government_name'}
+    %tr
+      %td Nickname:
+      %td.input.form-group
+        %input.form-control{attr: 'nickname'}
+    %tr
+      %td Street Name:
+      %td.input.form-group
+        %input.form-control{attr: 'street_name'}
+  %button.btn.btn-primary.submit Create

@@ -1,13 +1,14 @@
 class db.MembershipRouter extends Marionette.AppRouter
 
   routes:
-    ''            : 'members'
+    ''               : 'members'
 
-    'members(/)'  : 'members'
-    'members/:id' : 'member'
+    'members/create' : 'create_member'
+    'members(/)'     : 'members'
+    'members/:id'    : 'member'
 
-    'teams'       : 'teams'
-    'teams/:id'   : 'team'
+    'teams'          : 'teams'
+    'teams/:id'      : 'team'
 
   members: ->
     db.app.app_region.show(
@@ -18,6 +19,10 @@ class db.MembershipRouter extends Marionette.AppRouter
     db.app.app_region.show(
       new db.MemberView
         model: db.members.get(id))
+
+  create_member: (id) ->
+    db.app.app_region.show(
+      new db.MemberCreateView)
 
   teams: ->
     db.app.app_region.show(

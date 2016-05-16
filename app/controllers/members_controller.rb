@@ -9,6 +9,13 @@ class MembersController < ApplicationController
     @_members ||= Member.all
   end
 
+  def create
+    member = Member.create()
+    member.update_attributes!(member_params)
+    member.save
+    render status: 201, json: {member: member}
+  end
+
   def update
     member = Member.find(params[:member][:id])
     member.update_attributes!(member_params)
@@ -18,6 +25,7 @@ class MembersController < ApplicationController
   private
 
   def member_params
+    puts params
     params[:member].permit(
       :active,
       :address,
