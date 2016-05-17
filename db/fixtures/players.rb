@@ -7,6 +7,7 @@ for i in 1..300 # seed 300 players
 
   Player.seed do |p|
     p.member_id = rand(200) + 1 # we seed 200 members
+    p.team_id = rand(5) + 1 # we seed 5 teams
     p.name = Faker::Name.title
     p.number = ('0'..'9').to_a.shuffle[0,rand(1..4)].join
     p.active = maybe() if maybe()

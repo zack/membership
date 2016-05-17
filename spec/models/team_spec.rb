@@ -1,11 +1,7 @@
 describe Team do
   describe 'associations' do
-    it 'have many team_players' do
-      should have_many(:team_players)
-    end
-
-    it 'have many players through team players' do
-      should have_many(:players).through(:team_players)
+    it 'have many players' do
+      should have_many(:players)
     end
   end
 

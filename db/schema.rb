@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160304183308) do
+ActiveRecord::Schema.define(version: 20160517195722) do
 
   create_table "committee_members", force: :cascade do |t|
     t.integer  "committee_id", null: false
@@ -113,33 +113,11 @@ ActiveRecord::Schema.define(version: 20160304183308) do
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
     t.boolean  "active"
+    t.integer  "team_id"
   end
 
   add_index "players", ["member_id"], name: "index_players_on_member_id"
   add_index "players", ["name", "number"], name: "index_players_on_name_and_number", unique: true
-
-  create_table "team_captains", force: :cascade do |t|
-    t.integer  "team_player_id", null: false
-    t.date     "date_started"
-    t.date     "date_ended"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
-  end
-
-  add_index "team_captains", ["team_player_id"], name: "index_team_captains_on_team_player_id"
-
-  create_table "team_players", force: :cascade do |t|
-    t.integer  "team_id",      null: false
-    t.integer  "player_id",    null: false
-    t.date     "date_started"
-    t.date     "date_ended"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
-  end
-
-  add_index "team_players", ["player_id"], name: "index_team_players_on_player_id"
-  add_index "team_players", ["team_id", "player_id"], name: "index_team_players_on_team_id_and_player_id", unique: true
-  add_index "team_players", ["team_id"], name: "index_team_players_on_team_id"
 
   create_table "teams", force: :cascade do |t|
     t.string   "name",         null: false

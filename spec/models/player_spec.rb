@@ -4,12 +4,8 @@ describe Player do
       should belong_to(:member)
     end
 
-    it 'should have many team_players' do
-      should have_many(:team_players)
-    end
-
-    it 'should have many teams' do
-      should have_many(:teams).through(:team_players)
+    it 'should belong to team' do
+      should belong_to(:team)
     end
   end
 
