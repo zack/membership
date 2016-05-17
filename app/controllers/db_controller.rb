@@ -9,19 +9,22 @@ class DbController < ApplicationController
     @members = all_members
     @teams = all_teams
     @players = all_players
+    @emergency_contacts = all_emergency_contacts
   end
 
   def all_members
-    Member.primary_load_data.to_json( :include =>
-      [ :emergency_contacts, { :players => { :include => { :teams => { :only => [:name, :id]}}}}])
+    Member.all.to_json
   end
 
   def all_teams
-    Team.primary_load_data.to_json( :include =>
-        { :players => { :include => { :member => { :only => :street_name}}}})
+    Team.all.to_json
   end
 
   def all_players
     Player.all.to_json
+  end
+
+  def all_emergency_contacts
+    EmergencyContact.all.to_json
   end
 end

@@ -106,23 +106,23 @@
     .title Emergency Contacts
     %button.btn.btn-primary.edit Edit
     .edit-table-buttons
-      %button.btn.btn-primary.save.contact.disabled Save
+      %button.btn.btn-primary.save.emergency-contact.disabled Save
       %button.btn.btn-default.cancel Cancel
   {{#emergency_contacts}}
 
-  %table.show.vertical.emergency-contact{data: {'contact-id' => '{{id}}'}}
+  %table.show.vertical.emergency-contact{data: {'emergency-contact-id' => '{{id}}'}}
     %tbody
-      {{#contact_info}}
+      {{#emergency_contact_info}}
       %tr
         {{#.}}
         %td.strong{width:'30%'} {{attribute}}
         %td{data: {attribute: '{{model_attribute}}'}} {{value}}
         {{/.}}
-      {{/contact_info}}
+      {{/emergency_contact_info}}
 
-  %table.vertical.contact.edit{data: {'contact-id' => '{{id}}'}}
+  %table.vertical.emergency-contact.edit{data: {'emergency-contact-id' => '{{id}}'}}
     %tbody
-      {{#contact_info}}
+      {{#emergency_contact_info}}
       %tr
         {{#.}}
         %td.strong {{attribute}}
@@ -130,7 +130,7 @@
           .border-div
             %input.cell.form-control{value: '{{value}}', data: {attribute: '{{model_attribute}}'}}
         {{/.}}
-      {{/contact_info}}
+      {{/emergency_contact_info}}
   {{/emergency_contacts}}
 {{/has_emergency_contacts}}
 

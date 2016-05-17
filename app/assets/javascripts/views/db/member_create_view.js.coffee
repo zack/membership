@@ -15,7 +15,7 @@ class db.MemberCreateView extends Marionette.CompositeView
     if @_all_inputs_are_filled()
       data = @_get_member_data()
       new db.Member().save data,
-        success: @_handle_save_success
+        success: @_update_members
         error: @_handle_save_error
     else
       @_highlight_empty_inputs()
@@ -26,7 +26,6 @@ class db.MemberCreateView extends Marionette.CompositeView
 
   _highlight_empty_inputs: ->
     empty_inputs = _.filter($('input'), (elem) -> $(elem).val().length == 0)
-    console.log empty_inputs
     _.each empty_inputs, (elem) -> $(elem).addClass('error')
 
   _get_member_data: ->
@@ -37,9 +36,9 @@ class db.MemberCreateView extends Marionette.CompositeView
       member[attribute] = value
     member
 
-  _handle_save_success: (model) ->
-    member_id = model.attributes.member.id
-    db.app.Router.navigate("members/#{member_id}", {trigger: true})
+  _update_members: (model) =>
+    db.members.add(model)
+    @_navigate_to_member(model.id)
 
-  _handle_save_error: ->
-    console.log 'error'
+  _navigate_to_member: (id) ->
+    db.app.Router.navigate("members/#{id}", {trigger: true})

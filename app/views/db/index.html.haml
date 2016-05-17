@@ -10,6 +10,10 @@
   :javascript
     db.teams = new db.TeamsCollection(#{raw @teams})
 
+- if @emergency_contacts
+  :javascript
+    db.emergency_contacts = new db.EmergencyContactsCollection(#{raw @emergency_contacts})
+
 = render 'head'
 .db
   .content

@@ -13,13 +13,13 @@ class MembersController < ApplicationController
     member = Member.create()
     member.update_attributes!(member_params)
     member.save
-    render status: 201, json: {member: member}
+    render status: 201, json: member
   end
 
   def update
     member = Member.find(params[:member][:id])
     member.update_attributes!(member_params)
-    render status: 201, json: {member: member}
+    render status: 201, json: member
   end
 
   private

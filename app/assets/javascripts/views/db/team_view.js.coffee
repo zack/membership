@@ -8,13 +8,16 @@ class db.TeamView extends Marionette.ItemView
   events:
     'click td.link': '_handle_tdlink_click'
 
+  initialize: ->
+    @players = db.players.where({team_id: @model.id})
+
   _get_players: =>
     current = []
     previous = []
 
-    _.each @model.get('players'), (player) =>
+    _.each @players, (player) =>
       p = @_build_player(player)
-      if player.date_ended?
+      if player.get('date_ended')?
         previous.push p
       else
         current.push p
@@ -26,13 +29,13 @@ class db.TeamView extends Marionette.ItemView
 
   _build_player: (player) ->
     {
-      name: player.name,
-      number: player.number,
-      member_name: player.member.street_name,
-      member_id: player.member_id,
-      started: player.date_started,
-      ended: player.date_ended,
-      active: db.Helpers.clean_table_value(player.active)
+      name: player.get('name'),
+      number: player.get('number'),
+      member_name: db.members.get(player.get('member_id')).get('street_name'),
+      member_id: player.get('member_id'),
+      started: player.get('date_started'),
+      ended: player.get('date_ended'),
+      active: db.Helpers.clean_table_value(player.get('active'))
     }
 
   _get_team_name: =>

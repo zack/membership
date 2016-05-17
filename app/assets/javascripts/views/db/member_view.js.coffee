@@ -38,7 +38,9 @@ class db.MemberView extends Marionette.CompositeView
     'click td.link':                    '_handle_tdlink_click'
     'change input':                     '_handle_input_change' # datepicker
     'input input':                      '_handle_input_change'
+    'keydown input':                    '_handle_input_change'
     'input textarea':                   '_handle_input_change'
+    'keydown textarea':                 '_handle_input_change'
     'change select':                    '_handle_select_change'
     'focus td input':                   '_handle_td_input_focus'
     'focus td select':                  '_handle_td_input_focus'
@@ -46,6 +48,11 @@ class db.MemberView extends Marionette.CompositeView
     'blur td input':                    '_handle_td_input_blur'
     'blur td select':                   '_handle_td_input_blur'
     'blur td textarea':                 '_handle_td_input_blur'
+
+  initialize: ->
+    @players = new db.PlayersCollection(db.players.where({member_id: @model.id}))
+    @emergency_contacts = new db.EmergencyContactsCollection(
+      db.emergency_contacts.where({member_id: @model.id}))
 
   onShow: =>
     @_prepare_edit_tables()
@@ -58,6 +65,7 @@ class db.MemberView extends Marionette.CompositeView
     @_generate_datepickers()
     @_generate_phone_mask()
     @_generate_wftda_id_mask()
+    @_generate_player_number()
     @_generate_year_masks()
     @_disable_timestamps()
 
@@ -80,7 +88,7 @@ class db.MemberView extends Marionette.CompositeView
     $(view).find('.edit-table-buttons').show()
     $(view).find('.edit-table-buttons > .save').addClass('disabled')
 
-  _reset_edit_table: (e) ->
+  _reset_member_edit_table: (e) ->
     table = $(e.currentTarget).parents('.view').find('table.edit')
     _.each @model.attributes, (val, attr) =>
       if _.contains @BOOLEAN_EDIT_BOXES, attr
@@ -88,27 +96,40 @@ class db.MemberView extends Marionette.CompositeView
       else
         $(table).find("input[data-attribute='#{attr}']").val(val)
 
+  _reset_player_edit_table: (e) ->
+    table = $(e.currentTarget).parents('.view').find('table.edit')
+    _.each @players.models, (player) =>
+      row = $(table).find("tr[data-player-id=#{player.id}]")
+      _.each player.attributes, (val, attr) =>
+        if _.contains @BOOLEAN_EDIT_BOXES, attr
+          $(row).find("select[data-attribute='#{attr}']").val("#{val}")
+        else
+          $(row).find("input[data-attribute='#{attr}']").val(val)
+
   _update_member_view_table: (e) ->
     table = $(e.currentTarget).parents('.view').find('table.show')
     _.each @model.attributes, (val, attr) =>
       if _.contains @BOOLEAN_EDIT_BOXES, attr
-        val = @_bool_to_symbol(val)
+        val = @_bool_to_symbol("#{val}")
+      val = db.Helpers.clean_table_value val
       $(table).find("td[data-attribute='#{attr}']").html(val)
 
-  _update_player_view_table: (e, player_data) ->
+  _update_player_view_table: (e, player) =>
     table = $(e.currentTarget).parents('.view').find('table.show')
-    row = $(table).find("tr[data-player-id=#{player_data.id}]")
-    _.each player_data, (val, attr) =>
+    row = $(table).find("tr[data-player-id=#{player.id}]")
+    _.each player.attributes, (val, attr) =>
       if _.contains @BOOLEAN_EDIT_BOXES, attr
-        val = @_bool_to_symbol(val)
+        val = @_bool_to_symbol("#{val}")
+      val = db.Helpers.clean_table_value val
       $(row).find("td[data-attribute='#{attr}']").html(val)
 
-  _update_contact_view_table: (e, contact_data) ->
+  _update_emergency_contact_view_table: (e, emergency_contact) ->
     table = $(e.currentTarget).parents('.view').
-      find("table.show[data-contact-id=#{contact_data.id}]")
-    _.each contact_data, (val, attr) =>
+      find("table.show[data-emergency-contact-id=#{emergency_contact.id}]")
+    _.each emergency_contact.attributes, (val, attr) =>
       if _.contains @BOOLEAN_EDIT_BOXES, attr
-        val = @_bool_to_symbol(val)
+        val = @_bool_to_symbol("#{val}")
+      val = db.Helpers.clean_table_value val
       $(table).find("td[data-attribute='#{attr}']").html(val)
 
   _handle_input_change: (e) ->
@@ -143,8 +164,8 @@ class db.MemberView extends Marionette.CompositeView
         player_data = @_get_player_edit_table_data(tables.find('tr.data.edited'))
         @_submit_players(player_data, e)
       else
-        contact_data = @_get_contact_edit_table_data(tables)
-        @_submit_contacts(contact_data, e)
+        emergency_contact_data = @_get_emergency_contact_edit_table_data(tables)
+        @_submit_emergency_contacts(emergency_contact_data, e)
 
   _submit_member: (data, e) ->
     new db.Member().save data,
@@ -153,37 +174,37 @@ class db.MemberView extends Marionette.CompositeView
   _submit_players: (player_data, e) =>
     _.each player_data, (player) =>
       new db.Player().save player,
-        success: () =>  @_handle_player_submit_success(e, player),
-        error: (model, response) => @_handle_player_errors(player, response, e)
+        success: (model) =>  @_handle_player_submit_success(e, model),
+        # error: (model, response) => @_handle_player_errors(player, response, e)
 
-  _submit_contacts: (contact_data, e) ->
-    _.each contact_data, (contact) =>
-      new db.EmergencyContact().save contact,
-        success: () => @_handle_contact_submit_success(e, contact)
-
-  _handle_player_errors: (player, response, e) =>
-    _.each response.responseJSON, (response) =>
-      _.each response, (error) =>
-        _.each error, (string) =>
-          error_player = _.find(@model.get('players'), (p) -> return p.id == player.id)
+  _submit_emergency_contacts: (emergency_contact_data, e) ->
+    _.each emergency_contact_data, (emergency_contact) =>
+      new db.EmergencyContact().save emergency_contact,
+        success: (model) => @_handle_emergency_contact_submit_success(e, model)
 
   _handle_cancel: (e) =>
     table = $(e.currentTarget).parents('.view').find('table.edit')
     @_show_view_table(e)
-    @_reset_edit_table(e)
+    if $(e.currentTarget).parents('.head').attr('class').indexOf('member') > -1
+      @_reset_member_edit_table(e)
+    else if $(e.currentTarget).parents('.head').attr('class').indexOf('player') > -1
+      @_reset_player_edit_table(e)
 
-  _handle_member_submit_success: (e, model) =>
-    @model = model
+  _handle_member_submit_success: (e, member) =>
+    @model = member
+    db.members.add(member, {merge: true})
     @_show_view_table(e)
     @_update_member_view_table(e)
 
-  _handle_player_submit_success: (e, player_data) =>
+  _handle_player_submit_success: (e, player) =>
+    db.players.add(player, {merge: true})
     @_show_view_table(e)
-    @_update_player_view_table(e, player_data)
+    @_update_player_view_table(e, player)
 
-  _handle_contact_submit_success: (e, contact_data) =>
+  _handle_emergency_contact_submit_success: (e, emergency_contact) =>
+    db.emergency_contacts.add(emergency_contact, {merge: true})
     @_show_view_table(e)
-    @_update_contact_view_table(e, contact_data)
+    @_update_emergency_contact_view_table(e, emergency_contact)
 
   _handle_tdlink_click: (e) ->
     id = $(e.currentTarget).data('id')
@@ -206,11 +227,12 @@ class db.MemberView extends Marionette.CompositeView
         {attribute: attribute, value: value, model_attribute: model_attribute}
 
   _build_emergency_contacts: =>
-    _.map @model.get('emergency_contacts'), (e) =>
-      { id: e.id, contact_info: @_get_contact_info(e) }
+    if @emergency_contacts.length > 0
+      _.map @emergency_contacts.models, (e) =>
+        { id: e.id, emergency_contact_info: @_get_emergency_contact_info(e) }
 
-  _get_contact_info: (e) =>
-    _.compact _.map e, (v, k) =>
+  _get_emergency_contact_info: (e) =>
+    _.compact _.map e.attributes, (v, k) =>
       unless _.contains @IGNORED_EMERGENCY_CONTACT_HEADERS, k
         attribute = db.Helpers.map_header k
         model_attribute = k
@@ -218,17 +240,16 @@ class db.MemberView extends Marionette.CompositeView
         {attribute: attribute, value: value, model_attribute: model_attribute}
 
   _build_player_profiles: =>
-    a = _.flatten _.map @model.get('players'), (p) =>
-      if p.teams.length > 0
-        _.map p.teams, (t) =>
-          @_build_profile_row(p, t)
-      else
-        @_build_profile_row(p, [name: null])
+    unless @player_profiles
+      @player_profiles = _.map @players.models, (player) => @_build_profile_row(player)
+    return @player_profiles
 
-  _build_profile_row: (player, team) ->
-    row = {team_name: team.name, team_id: team.id}
+  _build_profile_row: (player) ->
+    team_id = player.get('team_id')
+    team_name  = if team_id then db.teams.get(team_id).get('name') else ''
+    row = {team_name: team_name, team_id: team_id}
     _.each @PLAYER_PROFILE_HEADERS, (h) =>
-      value = db.Helpers.clean_table_value player[h]
+      value = db.Helpers.clean_table_value player.get(h)
       row[h] = value
     row
 
@@ -238,10 +259,10 @@ class db.MemberView extends Marionette.CompositeView
     @model.get('nickname')
 
   _has_emergency_contacts: =>
-    @model.get('emergency_contacts').length > 0
+    @emergency_contacts.length > 0
 
   _has_player_profiles: =>
-    @model.get('players').length > 0
+    @players.length > 0
 
   # Edit table modifications
   #   Some fields on the edit table need to have extra attributes added to them
@@ -301,6 +322,9 @@ class db.MemberView extends Marionette.CompositeView
    _generate_wftda_id_mask: ->
     $("input[data-attribute='wftda_id_number']").mask('99999?9')
 
+   _generate_player_number: ->
+    $("input[data-attribute='number']").mask('9?999')
+
    _generate_year_masks: ->
     $("input[data-attribute='year_left']").mask('9999', {placeholder: 'yyyy'})
       .attr('placeholder', 'yyyy')
@@ -332,9 +356,9 @@ class db.MemberView extends Marionette.CompositeView
         attrs[key] = value
       return attrs
 
-  _get_contact_edit_table_data: (tables) ->
+  _get_emergency_contact_edit_table_data: (tables) ->
     return _.map tables, (table, idx) =>
-      attrs = id: $(table).data('contact-id')
+      attrs = id: $(table).data('emergency-contact-id')
       cells = $(table).find('.cell')
       _.each cells, (cell) =>
         key = $(cell).data('attribute')

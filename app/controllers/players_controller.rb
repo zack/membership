@@ -13,7 +13,7 @@ class PlayersController < ApplicationController
   def update
     player = Player.find(params[:player][:id])
     player.update_attributes!(player_params)
-    render status: 201, json: {player: player}
+    render status: 201, json: player
   rescue Exception => e
     render status: 422, json: {errors: e.record.errors}
   end
