@@ -32,23 +32,25 @@ class db.MemberView extends Marionette.CompositeView
   'active', 'google_doc_access']
 
   events: ->
-    'click button.edit':                '_show_edit_table'
-    'click button.create':              '_show_create_table'
-    'click button.save:not(.disabled)': '_handle_save'
-    'click button.cancel':              '_handle_cancel'
-    'click td.link':                    '_handle_tdlink_click'
-    'change input':                     '_handle_input_change' # datepicker
-    'input input':                      '_handle_input_change'
-    'keydown input':                    '_handle_input_change'
-    'input textarea':                   '_handle_input_change'
-    'keydown textarea':                 '_handle_input_change'
-    'change select':                    '_handle_select_change'
-    'focus td input':                   '_handle_td_input_focus'
-    'focus td select':                  '_handle_td_input_focus'
-    'focus td textarea':                '_handle_td_input_focus'
-    'blur td input':                    '_handle_td_input_blur'
-    'blur td select':                   '_handle_td_input_blur'
-    'blur td textarea':                 '_handle_td_input_blur'
+    'click button.edit':                         '_show_edit_table'
+    'click button.create':                       '_show_create_table'
+    'click button.save:not(.disabled)':          '_handle_save'
+    'click button.create-save:not(.disabled)':   '_handle_create_save'
+    'click .edit-table-buttons button.cancel':   '_handle_edit_cancel'
+    'click .create-table-buttons button.cancel': '_handle_create_cancel'
+    'click td.link':                             '_handle_tdlink_click'
+    'change input':                              '_handle_input_change' # datepicker
+    'input input':                               '_handle_input_change'
+    'keydown input':                             '_handle_input_change'
+    'input textarea':                            '_handle_input_change'
+    'keydown textarea':                          '_handle_input_change'
+    'change select':                             '_handle_select_change'
+    'focus td input':                            '_handle_td_input_focus'
+    'focus td select':                           '_handle_td_input_focus'
+    'focus td textarea':                         '_handle_td_input_focus'
+    'blur td input':                             '_handle_td_input_blur'
+    'blur td select':                            '_handle_td_input_blur'
+    'blur td textarea':                          '_handle_td_input_blur'
 
   initialize: ->
     @players = new db.PlayersCollection(db.players.where({member_id: @model.id}))
@@ -77,6 +79,7 @@ class db.MemberView extends Marionette.CompositeView
     $(view).find('table.show').show()
     $(view).find('button.edit').show()
     $(view).find('button.create').show()
+    $(view).find('button.save').removeClass('create-save')
     $(view).find('table.edit').hide()
     $(view).find('table.create').hide()
     $(view).find('.edit-table-buttons').hide()
@@ -95,6 +98,7 @@ class db.MemberView extends Marionette.CompositeView
 
   _show_create_table: (e) ->
     view = $(e.currentTarget).parents('.view')
+    $(view).find('button.save').addClass('create-save')
     $(view).find('button.edit').hide()
     $(view).find('button.create').hide()
     $(view).find('table.create').show()
@@ -110,14 +114,30 @@ class db.MemberView extends Marionette.CompositeView
         $(table).find("input[data-attribute='#{attr}']").val(val)
 
   _reset_player_edit_table: (e) ->
-    table = $(e.currentTarget).parents('.view').find('table.edit')
-    _.each @players.models, (player) =>
-      row = $(table).find("tr[data-player-id=#{player.id}]")
-      _.each player.attributes, (val, attr) =>
-        if _.contains @BOOLEAN_EDIT_BOXES, attr
-          $(row).find("select[data-attribute='#{attr}']").val("#{val}")
-        else
-          $(row).find("input[data-attribute='#{attr}']").val(val)
+    modified_cells = $(e.currentTarget).parents('.view')
+      .find('input.text-primary, td.text-primary select')
+    _.each modified_cells, (cell) =>
+      player_id = $(cell).parents('tr').data('player-id')
+      player = @players.get(player_id)
+      attr = $(cell).data('attribute')
+      val = player.get(attr) || ''
+      $(cell).val("#{val}")
+
+  _reset_emergency_contact_edit_tables: (e) =>
+    modified_cells = $(e.currentTarget).parents('.view').find('input.text-primary')
+    _.each modified_cells, (cell) =>
+      emergency_contact_id = $(cell).parents('table.edit').data('emergency-contact-id')
+      emergency_contact = @emergency_contacts.get(emergency_contact_id)
+      attr = $(cell).data('attribute')
+      val = emergency_contact.get(attr) || ''
+      $(cell).val(val)
+
+  _reset_create_table: (e) ->
+    table = $(e.currentTarget).parents('.view').find('table.create')
+    $(table).find('input').removeClass('error')
+    cells = $(table).find('input')
+    _.each cells, (cell) ->
+      $(cell).val('')
 
   _update_member_view_table: (e) ->
     table = $(e.currentTarget).parents('.view').find('table.show')
@@ -150,7 +170,7 @@ class db.MemberView extends Marionette.CompositeView
     @_handle_field_change(e)
 
   _handle_select_change: (e) ->
-    $(e.currentTarget).parent('td').addClass('text-primary')
+    $(e.currentTarget).parents('td').addClass('text-primary')
     @_handle_field_change(e)
 
   _handle_field_change: (e) ->
@@ -178,7 +198,20 @@ class db.MemberView extends Marionette.CompositeView
         @_submit_players(player_data, e)
       else
         emergency_contact_data = @_get_emergency_contact_edit_table_data(tables)
-        @_submit_emergency_contacts(emergency_contact_data, e)
+        @_submit_updated_emergency_contacts(emergency_contact_data, e)
+
+  _handle_create_save: ->
+    if @_should_create_emergency_contact()
+      data = @_get_emergency_contact_create_table_data()
+      @_submit_new_emergency_contact(data)
+    else
+      @_set_errors_on_new_emergency_contacts()
+
+  _set_errors_on_new_emergency_contacts: ->
+    $('.emergency-contact table.create input[data-attribute=name]').addClass('error')
+
+  _should_create_emergency_contact: ->
+    return !!$('.emergency-contact table.create input[data-attribute="name"]').val().length
 
   _submit_member: (data, e) ->
     new db.Member().save data,
@@ -188,20 +221,31 @@ class db.MemberView extends Marionette.CompositeView
     _.each player_data, (player) =>
       new db.Player().save player,
         success: (model) =>  @_handle_player_submit_success(e, model),
-        # error: (model, response) => @_handle_player_errors(player, response, e)
 
-  _submit_emergency_contacts: (emergency_contact_data, e) ->
+  _submit_updated_emergency_contacts: (emergency_contact_data, e) ->
     _.each emergency_contact_data, (emergency_contact) =>
       new db.EmergencyContact().save emergency_contact,
         success: (model) => @_handle_emergency_contact_submit_success(e, model)
 
-  _handle_cancel: (e) =>
+  _submit_new_emergency_contact: (data) =>
+      new db.EmergencyContact().save data,
+        success: (model) => @_handle_emergency_contact_create_success(model)
+
+  _handle_edit_cancel: (e) =>
     table = $(e.currentTarget).parents('.view').find('table.edit')
     @_show_view_table(e)
-    if $(e.currentTarget).parents('.head').attr('class').indexOf('member') > -1
+    head_classes = $(e.currentTarget).parents('.head').attr('class')
+    if head_classes.indexOf('member') > -1
       @_reset_member_edit_table(e)
-    else if $(e.currentTarget).parents('.head').attr('class').indexOf('player') > -1
+    else if head_classes.indexOf('player') > -1
       @_reset_player_edit_table(e)
+    else if head_classes.indexOf('emergency-contact') > -1
+      @_reset_emergency_contact_edit_tables(e)
+    @_generate_phone_mask()
+
+  _handle_create_cancel: (e) ->
+    @_show_view_table(e)
+    @_reset_create_table(e)
 
   _handle_member_submit_success: (e, member) =>
     @model = member
@@ -218,6 +262,12 @@ class db.MemberView extends Marionette.CompositeView
     db.emergency_contacts.add(emergency_contact, {merge: true})
     @_show_view_table(e)
     @_update_emergency_contact_view_table(e, emergency_contact)
+
+  _handle_emergency_contact_create_success: (emergency_contact) =>
+    db.emergency_contacts.add(emergency_contact)
+    @emergency_contacts.add(emergency_contact)
+    @render()
+    @_generate_phone_mask()
 
   _handle_tdlink_click: (e) ->
     id = $(e.currentTarget).data('id')
@@ -378,6 +428,14 @@ class db.MemberView extends Marionette.CompositeView
         value = @_get_data_from_input(cell)
         attrs[key] = value
       return attrs
+
+  _get_emergency_contact_create_table_data: ->
+    data = {member_id: @model.id}
+    _.each $('.emergency-contact table.create input'), (cell) ->
+      attr = $(cell).attr('data-attribute')
+      val = $(cell).val()
+      data[attr] = val
+    data
 
   _get_data_from_input: (i) ->
     $(i).value?() || $(i).val?()

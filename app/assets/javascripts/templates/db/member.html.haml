@@ -1,4 +1,4 @@
-.view
+.view.member
   .head.member
     .title {{nickname}}
     %button.btn.btn-primary.edit Edit
@@ -29,7 +29,7 @@
       {{/member_info}}
 
 {{#has_player_profiles}}
-.view
+.view.player
   .head.player
     .title Player Profiles
     %button.btn.btn-primary.edit Edit
@@ -102,13 +102,13 @@
 {{/has_player_profiles}}
 
 {{#has_emergency_contacts}}
-.view
+.view.emergency-contact
   .head.emergency-contact
     .title Emergency Contacts
     %button.btn.btn-primary.edit Edit
     %button.btn.btn-primary.create Create
     .create-table-buttons
-      %button.btn.btn-primary.save.emergency-contact.disabled Save
+      %button.btn.btn-primary.create-save Save
       %button.btn.btn-default.cancel Cancel
     .edit-table-buttons
       %button.btn.btn-primary.save.emergency-contact.disabled Save
