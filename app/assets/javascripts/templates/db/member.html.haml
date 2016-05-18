@@ -33,6 +33,7 @@
   .head.player
     .title Player Profiles
     %button.btn.btn-primary.edit Edit
+    %button.btn.btn-primary.create Create
     .edit-table-buttons
       %button.btn.btn-primary.save.player.disabled Save
       %button.btn.btn-default.cancel Cancel
@@ -105,11 +106,38 @@
   .head.emergency-contact
     .title Emergency Contacts
     %button.btn.btn-primary.edit Edit
+    %button.btn.btn-primary.create Create
+    .create-table-buttons
+      %button.btn.btn-primary.save.emergency-contact.disabled Save
+      %button.btn.btn-default.cancel Cancel
     .edit-table-buttons
       %button.btn.btn-primary.save.emergency-contact.disabled Save
       %button.btn.btn-default.cancel Cancel
-  {{#emergency_contacts}}
 
+  %table.create.editable.vertical
+    %tbody
+      %tr
+        %td.strong{width:'30%'} Name
+        %td.input.form-group
+          .border-div
+            %input.cell.form-control{data: {attribute: 'name'}}
+      %tr
+        %td.strong{width:'30%'} Phone Number
+        %td.input.form-group
+          .border-div
+            %input.cell.form-control{data: {attribute: 'phone_number'}}
+      %tr
+        %td.strong{width:'30%'} Address
+        %td.input.form-group
+          .border-div
+            %input.cell.form-control{data: {attribute: 'address'}}
+      %tr
+        %td.strong{width:'30%'} Relationship
+        %td.input.form-group
+          .border-div
+            %input.cell.form-control{data: {attribute: 'relationship'}}
+
+  {{#emergency_contacts}}
   %table.show.vertical.emergency-contact{data: {'emergency-contact-id' => '{{id}}'}}
     %tbody
       {{#emergency_contact_info}}
@@ -120,7 +148,7 @@
         {{/.}}
       {{/emergency_contact_info}}
 
-  %table.vertical.emergency-contact.edit{data: {'emergency-contact-id' => '{{id}}'}}
+  %table.vertical.emergency-contact.edit.editable{data: {'emergency-contact-id' => '{{id}}'}}
     %tbody
       {{#emergency_contact_info}}
       %tr

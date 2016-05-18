@@ -33,6 +33,7 @@ class db.MemberView extends Marionette.CompositeView
 
   events: ->
     'click button.edit':                '_show_edit_table'
+    'click button.create':              '_show_create_table'
     'click button.save:not(.disabled)': '_handle_save'
     'click button.cancel':              '_handle_cancel'
     'click td.link':                    '_handle_tdlink_click'
@@ -75,18 +76,30 @@ class db.MemberView extends Marionette.CompositeView
     view = $(e.currentTarget).parents('.view')
     $(view).find('table.show').show()
     $(view).find('button.edit').show()
+    $(view).find('button.create').show()
     $(view).find('table.edit').hide()
+    $(view).find('table.create').hide()
     $(view).find('.edit-table-buttons').hide()
+    $(view).find('.create-table-buttons').hide()
 
   _show_edit_table: (e) ->
     view = $(e.currentTarget).parents('.view')
     $(view).find('table.show').hide()
     $(view).find('button.edit').hide()
+    $(view).find('button.create').hide()
     $(view).find('table.edit').show()
     $(view).find('.edited').removeClass('edited')
     $(view).find('.text-primary').removeClass('text-primary')
     $(view).find('.edit-table-buttons').show()
     $(view).find('.edit-table-buttons > .save').addClass('disabled')
+
+  _show_create_table: (e) ->
+    view = $(e.currentTarget).parents('.view')
+    $(view).find('button.edit').hide()
+    $(view).find('button.create').hide()
+    $(view).find('table.create').show()
+    $(view).find('.create-table-buttons').show()
+    $(view).find('.create-table-buttons > .save').addClass('disabled')
 
   _reset_member_edit_table: (e) ->
     table = $(e.currentTarget).parents('.view').find('table.edit')
