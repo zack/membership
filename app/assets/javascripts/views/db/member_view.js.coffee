@@ -13,7 +13,7 @@ class db.MemberView extends Marionette.CompositeView
   MYSQL_MAXLENGTH: 65535
 
   #Attributes on the Member model that don't need rows in the table
-  IGNORED_MEMBER_HEADERS: ['nickname', 'id', 'emergency_contacts', 'players']
+  IGNORED_MEMBER_HEADERS: ['id', 'emergency_contacts', 'players']
 
   #Attributes on the Emergency Contact model that don't need rows in the table(s)
   IGNORED_EMERGENCY_CONTACT_HEADERS: ['id', 'member_id']
@@ -59,6 +59,12 @@ class db.MemberView extends Marionette.CompositeView
 
   onShow: =>
     @_prepare_edit_tables()
+    @_prepare_create_tables()
+
+  _render: =>
+    @render()
+    @onShow()
+    @_generate_phone_mask()
 
   _prepare_edit_tables: ->
     @_limit_input_length()
@@ -71,6 +77,9 @@ class db.MemberView extends Marionette.CompositeView
     @_generate_player_number()
     @_generate_year_masks()
     @_disable_timestamps()
+
+  _prepare_create_tables: ->
+    @_fill_team_dropdowns()
 
   # Event handlers and their helpers
 
@@ -104,6 +113,8 @@ class db.MemberView extends Marionette.CompositeView
     $(view).find('table.create').show()
     $(view).find('.create-table-buttons').show()
     $(view).find('.create-table-buttons > .save').addClass('disabled')
+    if $(e.currentTarget).attr('class').indexOf('first') > -1
+      $(window).scrollTop($(window).scrollTop()+130)
 
   _reset_member_edit_table: (e) ->
     table = $(e.currentTarget).parents('.view').find('table.edit')
@@ -135,7 +146,7 @@ class db.MemberView extends Marionette.CompositeView
   _reset_create_table: (e) ->
     table = $(e.currentTarget).parents('.view').find('table.create')
     $(table).find('input').removeClass('error')
-    cells = $(table).find('input')
+    cells = $(table).find('input, select')
     _.each cells, (cell) ->
       $(cell).val('')
 
@@ -175,7 +186,7 @@ class db.MemberView extends Marionette.CompositeView
 
   _handle_field_change: (e) ->
     $(e.currentTarget).parents('tr').addClass('edited')
-    $(e.currentTarget).parent('.input').removeClass('has-danger')
+    $(e.currentTarget).removeClass('error')
     $(e.currentTarget).parents('.view').find('button.save').removeClass('disabled')
 
   _handle_td_input_focus: (e) ->
@@ -200,15 +211,33 @@ class db.MemberView extends Marionette.CompositeView
         emergency_contact_data = @_get_emergency_contact_edit_table_data(tables)
         @_submit_updated_emergency_contacts(emergency_contact_data, e)
 
-  _handle_create_save: ->
-    if @_should_create_emergency_contact()
-      data = @_get_emergency_contact_create_table_data()
-      @_submit_new_emergency_contact(data)
-    else
-      @_set_errors_on_new_emergency_contacts()
+  _handle_create_save: (e) ->
+    view_classes = $(e.currentTarget).parents('.view').attr('class')
+    if view_classes.indexOf('player') > -1
+      if @_should_create_player()
+        data = @_get_player_create_table_data()
+        @_submit_new_player(data)
+      else
+        @_set_errors_on_new_player()
+    else if view_classes.indexOf('emergency-contact') > -1
+      if @_should_create_emergency_contact()
+        data = @_get_emergency_contact_create_table_data()
+        @_submit_new_emergency_contact(data)
+      else
+        @_set_errors_on_new_emergency_contacts()
 
   _set_errors_on_new_emergency_contacts: ->
     $('.emergency-contact table.create input[data-attribute=name]').addClass('error')
+
+  _set_errors_on_new_player: ->
+    _.each ['name', 'number'], (attr) ->
+      if $(".player table.create input[data-attribute=#{attr}]").val().length == 0
+        $(".player table.create input[data-attribute=#{attr}]").addClass('error')
+
+  _should_create_player: ->
+    name = !!$('.player table.create input[data-attribute="name"]').val().length
+    number = !!$('.player table.create input[data-attribute="number"]').val().length
+    return name && number
 
   _should_create_emergency_contact: ->
     return !!$('.emergency-contact table.create input[data-attribute="name"]').val().length
@@ -228,8 +257,12 @@ class db.MemberView extends Marionette.CompositeView
         success: (model) => @_handle_emergency_contact_submit_success(e, model)
 
   _submit_new_emergency_contact: (data) =>
-      new db.EmergencyContact().save data,
-        success: (model) => @_handle_emergency_contact_create_success(model)
+    new db.EmergencyContact().save data,
+      success: (model) => @_handle_emergency_contact_create_success(model)
+
+  _submit_new_player: (data) =>
+    new db.Player().save data,
+      success: (model) => @_handle_player_create_success(model)
 
   _handle_edit_cancel: (e) =>
     table = $(e.currentTarget).parents('.view').find('table.edit')
@@ -266,8 +299,13 @@ class db.MemberView extends Marionette.CompositeView
   _handle_emergency_contact_create_success: (emergency_contact) =>
     db.emergency_contacts.add(emergency_contact)
     @emergency_contacts.add(emergency_contact)
-    @render()
-    @_generate_phone_mask()
+    @_render()
+
+   _handle_player_create_success: (player) =>
+    db.players.add(player)
+    @players.add(player)
+    delete @player_profiles
+    @_render()
 
   _handle_tdlink_click: (e) ->
     id = $(e.currentTarget).data('id')
@@ -326,6 +364,13 @@ class db.MemberView extends Marionette.CompositeView
 
   _has_player_profiles: =>
     @players.length > 0
+
+  _fill_team_dropdowns: ->
+    _.each db.teams.models, (team) ->
+      $('table.create select.teams').append($('<option>', {
+        value: team.get('id'),
+        text: team.get('name')
+      }))
 
   # Edit table modifications
   #   Some fields on the edit table need to have extra attributes added to them
@@ -428,6 +473,14 @@ class db.MemberView extends Marionette.CompositeView
         value = @_get_data_from_input(cell)
         attrs[key] = value
       return attrs
+
+  _get_player_create_table_data: ->
+    data = {member_id: @model.id}
+    _.each $('.player table.create').find('select, input'), (cell) ->
+      attr = $(cell).attr('data-attribute')
+      val = $(cell).val()
+      data[attr] = val
+    data
 
   _get_emergency_contact_create_table_data: ->
     data = {member_id: @model.id}

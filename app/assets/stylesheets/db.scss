@@ -143,6 +143,10 @@ table {
   td {
     padding: 1px 0 1px 6px;
 
+    &.input {
+      padding: 0;
+    }
+
     &.strong {
       font-weight: bold;
     }
@@ -216,11 +220,8 @@ textarea {
     margin-bottom: -16px;
   }
 
-  .create {
-    margin-right: 10px;
-  }
-
   .edit {
+    margin-left: 10px;
     width: 69px;
   }
 

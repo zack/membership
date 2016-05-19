@@ -1,7 +1,8 @@
 .view.member
   .head.member
     .title {{nickname}}
-    %button.btn.btn-primary.edit Edit
+    .default-table-buttons
+      %button.btn.btn-primary.edit Edit
     .edit-table-buttons
       %button.btn.btn-primary.save.member.disabled Save
       %button.btn.btn-default.cancel Cancel
@@ -32,11 +33,49 @@
 .view.player
   .head.player
     .title Player Profiles
-    %button.btn.btn-primary.edit Edit
-    %button.btn.btn-primary.create Create
+    .default-table-buttons
+      %button.btn.btn-primary.edit Edit
+      %button.btn.btn-primary.create Create
+    .create-table-buttons
+      %button.btn.btn-primary.create-save Save
+      %button.btn.btn-default.cancel Cancel
     .edit-table-buttons
       %button.btn.btn-primary.save.player.disabled Save
       %button.btn.btn-default.cancel Cancel
+
+  %table.player.create
+    %thead
+      %tr
+        %th Team
+        %th Jersey
+        %th Number
+        %th Date Started
+        %th Date Ended
+        %th Active
+    %tbody
+      %tr.data{data: {player_id: '{{id}}'}}
+        %td
+          .border-div
+            %select.teams{data: {attribute: 'team_id'}}
+              %option{value: ''}
+        %td.input.form-group
+          .border-div
+            %input.cell.form-control{data: {attribute: 'name'}}
+        %td.input.form-group
+          .border-div
+            %input.cell.form-control{data: {attribute: 'number'}}
+        %td.input.form-group
+          .border-div
+            %input.cell.form-control{data: {attribute: 'date_started'}}
+        %td.input.form-group
+          .border-div
+            %input.cell.form-control{data: {attribute: 'date_ended'}}
+        %td.input.form-group
+          .border-div
+            %select.cell{value: '{{active}}', data: {attribute: 'active'}}
+              %option{value: ''}
+              %option{value: 'true'} ✓
+              %option{value: 'false'} ✗
 
   %table.player.show
     %thead
@@ -98,15 +137,57 @@
       {{/player_profiles}}
 {{/has_player_profiles}}
 {{^has_player_profiles}}
-%h2 No player Profiles
+.view.player
+  .head.player
+    .title No Player Profiles
+    .default-table-buttons
+      %button.btn.btn-primary.create.first Create
+    .create-table-buttons
+      %button.btn.btn-primary.create-save Save
+      %button.btn.btn-default.cancel Cancel
+
+  %table.player.create
+    %thead
+      %tr
+        %th Team
+        %th Jersey
+        %th Number
+        %th Date Started
+        %th Date Ended
+        %th Active
+    %tbody
+      %tr.data{data: {player_id: '{{id}}'}}
+        %td
+          .border-div
+            %select.teams{data: {attribute: 'team_id'}}
+              %option{value: ''}
+        %td.input.form-group
+          .border-div
+            %input.cell.form-control{data: {attribute: 'name'}}
+        %td.input.form-group
+          .border-div
+            %input.cell.form-control{data: {attribute: 'number'}}
+        %td.input.form-group
+          .border-div
+            %input.cell.form-control{data: {attribute: 'date_started'}}
+        %td.input.form-group
+          .border-div
+            %input.cell.form-control{data: {attribute: 'date_ended'}}
+        %td.input.form-group
+          .border-div
+            %select.cell{value: '{{active}}', data: {attribute: 'active'}}
+              %option{value: ''}
+              %option{value: 'true'} ✓
+              %option{value: 'false'} ✗
 {{/has_player_profiles}}
 
 {{#has_emergency_contacts}}
 .view.emergency-contact
   .head.emergency-contact
     .title Emergency Contacts
-    %button.btn.btn-primary.edit Edit
-    %button.btn.btn-primary.create Create
+    .default-table-buttons
+      %button.btn.btn-primary.edit Edit
+      %button.btn.btn-primary.create Create
     .create-table-buttons
       %button.btn.btn-primary.create-save Save
       %button.btn.btn-default.cancel Cancel
@@ -163,5 +244,35 @@
 {{/has_emergency_contacts}}
 
 {{^has_emergency_contacts}}
-%h2 No Emergency Contacts
+.view.emergency-contact
+  .head.emergency-contact
+    .title No Emergency Contacts
+    .default-table-buttons
+      %button.btn.btn-primary.create.first Create
+    .create-table-buttons
+      %button.btn.btn-primary.create-save Save
+      %button.btn.btn-default.cancel Cancel
+
+  %table.create.editable.vertical
+    %tbody
+      %tr
+        %td.strong{width:'30%'} Name
+        %td.input.form-group
+          .border-div
+            %input.cell.form-control{data: {attribute: 'name'}}
+      %tr
+        %td.strong{width:'30%'} Phone Number
+        %td.input.form-group
+          .border-div
+            %input.cell.form-control{data: {attribute: 'phone_number'}}
+      %tr
+        %td.strong{width:'30%'} Address
+        %td.input.form-group
+          .border-div
+            %input.cell.form-control{data: {attribute: 'address'}}
+      %tr
+        %td.strong{width:'30%'} Relationship
+        %td.input.form-group
+          .border-div
+            %input.cell.form-control{data: {attribute: 'relationship'}}
 {{/has_emergency_contacts}}
