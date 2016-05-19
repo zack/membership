@@ -22,6 +22,8 @@ for i in 1..200 # seed 200 members
     m.signed_league_bylaws = maybe() if maybe()
     m.purchased_wftda_insurance = maybe() if maybe()
     m.passed_wftda_test = maybe() if maybe()
+    m.volunteer = maybe() if maybe()
+    m.official = maybe() if maybe()
     m.active = maybe() if maybe()
     m.google_doc_access = maybe() if maybe()
     m.year_joined = year_joined if maybe()

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160517195722) do
+ActiveRecord::Schema.define(version: 20160519174312) do
 
   create_table "committee_members", force: :cascade do |t|
     t.integer  "committee_id", null: false
@@ -96,6 +96,8 @@ ActiveRecord::Schema.define(version: 20160517195722) do
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
     t.string   "government_name",              null: false
+    t.boolean  "official"
+    t.boolean  "volunteer"
   end
 
   create_table "pillars", force: :cascade do |t|

@@ -29,7 +29,7 @@ class db.MemberView extends Marionette.CompositeView
   #Attributes on the Member model that have boolean values
   BOOLEAN_EDIT_BOXES: ['signed_wftda_waiver', 'signed_wftda_confidentiality',
   'signed_league_bylaws', 'purchased_wftda_insurance', 'passed_wftda_test',
-  'active', 'google_doc_access']
+  'active', 'google_doc_access', 'volunteer', 'official']
 
   events: ->
     'click button.edit':                         '_show_edit_table'

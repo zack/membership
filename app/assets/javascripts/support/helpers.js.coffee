@@ -24,6 +24,8 @@ db.Helpers =
       when 'phone_number'                 then 'Phone Number'
       when 'primary_insurance'            then 'Primary Insurance'
       when 'purchased_wftda_insurance'    then 'Purchased WFTDA Insurance'
+      when 'volunteer'                    then 'Volunteer'
+      when 'official'                     then 'Official'
       when 'reason_left'                  then 'Reason Left'
       when 'relationship'                 then 'Relationship'
       when 'signed_league_bylaws'         then 'Signed League Bylaws'
@@ -63,6 +65,8 @@ db.Helpers =
       'date_of_birth',
       'wftda_id_number',
       'primary_insurance',
+      'volunteer',
+      'official',
       'purchased_wftda_insurance',
       'signed_wftda_waiver',
       'signed_wftda_confidentiality',
