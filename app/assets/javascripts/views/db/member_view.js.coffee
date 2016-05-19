@@ -34,10 +34,9 @@ class db.MemberView extends Marionette.CompositeView
   events: ->
     'click button.edit':                         '_show_edit_table'
     'click button.create':                       '_show_create_table'
-    'click button.save:not(.disabled)':          '_handle_save'
+    'click button.save:not(.disabled)':          '_handle_edit_save'
     'click button.create-save:not(.disabled)':   '_handle_create_save'
-    'click .edit-table-buttons button.cancel':   '_handle_edit_cancel'
-    'click .create-table-buttons button.cancel': '_handle_create_cancel'
+    'click button.cancel':                       '_render'
     'click td.link':                             '_handle_tdlink_click'
     'change input':                              '_handle_input_change' # datepicker
     'input input':                               '_handle_input_change'
@@ -83,17 +82,6 @@ class db.MemberView extends Marionette.CompositeView
 
   # Event handlers and their helpers
 
-  _show_view_table: (e) ->
-    view = $(e.currentTarget).parents('.view')
-    $(view).find('table.show').show()
-    $(view).find('button.edit').show()
-    $(view).find('button.create').show()
-    $(view).find('button.save').removeClass('create-save')
-    $(view).find('table.edit').hide()
-    $(view).find('table.create').hide()
-    $(view).find('.edit-table-buttons').hide()
-    $(view).find('.create-table-buttons').hide()
-
   _show_edit_table: (e) ->
     view = $(e.currentTarget).parents('.view')
     $(view).find('table.show').hide()
@@ -116,66 +104,6 @@ class db.MemberView extends Marionette.CompositeView
     if $(e.currentTarget).attr('class').indexOf('first') > -1
       $(window).scrollTop($(window).scrollTop()+130)
 
-  _reset_member_edit_table: (e) ->
-    table = $(e.currentTarget).parents('.view').find('table.edit')
-    _.each @model.attributes, (val, attr) =>
-      if _.contains @BOOLEAN_EDIT_BOXES, attr
-        $(table).find("select[data-attribute='#{attr}']").val("#{val}")
-      else
-        $(table).find("input[data-attribute='#{attr}']").val(val)
-
-  _reset_player_edit_table: (e) ->
-    modified_cells = $(e.currentTarget).parents('.view')
-      .find('input.text-primary, td.text-primary select')
-    _.each modified_cells, (cell) =>
-      player_id = $(cell).parents('tr').data('player-id')
-      player = @players.get(player_id)
-      attr = $(cell).data('attribute')
-      val = player.get(attr) || ''
-      $(cell).val("#{val}")
-
-  _reset_emergency_contact_edit_tables: (e) =>
-    modified_cells = $(e.currentTarget).parents('.view').find('input.text-primary')
-    _.each modified_cells, (cell) =>
-      emergency_contact_id = $(cell).parents('table.edit').data('emergency-contact-id')
-      emergency_contact = @emergency_contacts.get(emergency_contact_id)
-      attr = $(cell).data('attribute')
-      val = emergency_contact.get(attr) || ''
-      $(cell).val(val)
-
-  _reset_create_table: (e) ->
-    table = $(e.currentTarget).parents('.view').find('table.create')
-    $(table).find('input').removeClass('error')
-    cells = $(table).find('input, select')
-    _.each cells, (cell) ->
-      $(cell).val('')
-
-  _update_member_view_table: (e) ->
-    table = $(e.currentTarget).parents('.view').find('table.show')
-    _.each @model.attributes, (val, attr) =>
-      if _.contains @BOOLEAN_EDIT_BOXES, attr
-        val = @_bool_to_symbol("#{val}")
-      val = db.Helpers.clean_table_value val
-      $(table).find("td[data-attribute='#{attr}']").html(val)
-
-  _update_player_view_table: (e, player) =>
-    table = $(e.currentTarget).parents('.view').find('table.show')
-    row = $(table).find("tr[data-player-id=#{player.id}]")
-    _.each player.attributes, (val, attr) =>
-      if _.contains @BOOLEAN_EDIT_BOXES, attr
-        val = @_bool_to_symbol("#{val}")
-      val = db.Helpers.clean_table_value val
-      $(row).find("td[data-attribute='#{attr}']").html(val)
-
-  _update_emergency_contact_view_table: (e, emergency_contact) ->
-    table = $(e.currentTarget).parents('.view').
-      find("table.show[data-emergency-contact-id=#{emergency_contact.id}]")
-    _.each emergency_contact.attributes, (val, attr) =>
-      if _.contains @BOOLEAN_EDIT_BOXES, attr
-        val = @_bool_to_symbol("#{val}")
-      val = db.Helpers.clean_table_value val
-      $(table).find("td[data-attribute='#{attr}']").html(val)
-
   _handle_input_change: (e) ->
     $(e.currentTarget).addClass('text-primary')
     @_handle_field_change(e)
@@ -197,7 +125,7 @@ class db.MemberView extends Marionette.CompositeView
     tr = $(e.currentTarget).parents('tr')
     tr.removeClass('focus')
 
-  _handle_save: (e) =>
+  _handle_edit_save: (e) =>
     tables = $(e.currentTarget).parents('.view').find('table.edit')
     data_els = $(tables).find('.edited .cell')
     if db.TableValidator.table_is_valid(data_els)
@@ -249,7 +177,7 @@ class db.MemberView extends Marionette.CompositeView
   _submit_players: (player_data, e) =>
     _.each player_data, (player) =>
       new db.Player().save player,
-        success: (model) =>  @_handle_player_submit_success(e, model),
+        success: (model) => @_handle_player_submit_success(e, model),
 
   _submit_updated_emergency_contacts: (emergency_contact_data, e) ->
     _.each emergency_contact_data, (emergency_contact) =>
@@ -264,37 +192,18 @@ class db.MemberView extends Marionette.CompositeView
     new db.Player().save data,
       success: (model) => @_handle_player_create_success(model)
 
-  _handle_edit_cancel: (e) =>
-    table = $(e.currentTarget).parents('.view').find('table.edit')
-    @_show_view_table(e)
-    head_classes = $(e.currentTarget).parents('.head').attr('class')
-    if head_classes.indexOf('member') > -1
-      @_reset_member_edit_table(e)
-    else if head_classes.indexOf('player') > -1
-      @_reset_player_edit_table(e)
-    else if head_classes.indexOf('emergency-contact') > -1
-      @_reset_emergency_contact_edit_tables(e)
-    @_generate_phone_mask()
-
-  _handle_create_cancel: (e) ->
-    @_show_view_table(e)
-    @_reset_create_table(e)
-
   _handle_member_submit_success: (e, member) =>
     @model = member
     db.members.add(member, {merge: true})
-    @_show_view_table(e)
-    @_update_member_view_table(e)
+    @_render()
 
   _handle_player_submit_success: (e, player) =>
     db.players.add(player, {merge: true})
-    @_show_view_table(e)
-    @_update_player_view_table(e, player)
+    @_render()
 
   _handle_emergency_contact_submit_success: (e, emergency_contact) =>
     db.emergency_contacts.add(emergency_contact, {merge: true})
-    @_show_view_table(e)
-    @_update_emergency_contact_view_table(e, emergency_contact)
+    @_render()
 
   _handle_emergency_contact_create_success: (emergency_contact) =>
     db.emergency_contacts.add(emergency_contact)
