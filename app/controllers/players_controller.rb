@@ -1,9 +1,15 @@
 class PlayersController < ApplicationController
   helper_method :players
+  before_action :user_is_admin?, only: [:create, :update]
+
   respond_to :html
 
   def index
     respond_with players
+  end
+
+  def user_is_admin?
+    current_user.username == 'admin'
   end
 
   def players

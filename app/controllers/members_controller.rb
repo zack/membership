@@ -1,8 +1,13 @@
 class MembersController < ApplicationController
   helper_method :members
+  before_action :user_is_admin?, only: [:create, :update]
 
   def index
     respond_with members
+  end
+
+  def user_is_admin?
+    current_user.username == 'admin'
   end
 
   def members

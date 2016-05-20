@@ -23,7 +23,12 @@ class DbController < ApplicationController
   end
 
   def all_members
-    Member.all.to_json
+    if @admin_privileges
+      Member.all.to_json
+    else
+      columns = Member.attribute_names - ['government_name']
+      Member.select(columns).to_json
+    end
   end
 
   def all_teams

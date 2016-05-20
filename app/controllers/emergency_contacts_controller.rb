@@ -1,8 +1,13 @@
 class EmergencyContactsController < ApplicationController
   helper_method :emergency_contacts
+  before_action :user_is_admin?, only: [:create, :update]
 
   def index
     respond_with emergency_contacts
+  end
+
+  def user_is_admin?
+    current_user.username == 'admin'
   end
 
   def emergency_contacts
