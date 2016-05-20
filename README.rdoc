@@ -1,3 +1,10 @@
+== Current Status
+This project will no longer be receiving significant development resources.
+I will be starting a new version of this project with a much more directed
+focus, tests, and CI. I frontloaded a lot of the work (see the database I'll
+never use) and made a lot of mistakes. I'm going to take that knowledge and
+remake this in Elixir and Elm. I'll add a link to that repo once I start.
+
 == History
 Created as a membership tracking application for Boston Roller Derby.
 
