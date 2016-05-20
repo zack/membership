@@ -2,6 +2,7 @@ class db.MemberView extends Marionette.CompositeView
   template: ich.member
   className: 'member-view'
   templateHelpers: ->
+    is_admin: db.admin
     member_info: @_build_member_info
     nickname: @_get_member_name
     has_emergency_contacts: @_has_emergency_contacts

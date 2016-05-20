@@ -2,7 +2,17 @@ class DbController < ApplicationController
   respond_to :html
 
   def index
-    setup_frontend_data
+    if user_signed_in?
+      set_user_privileges
+      setup_frontend_data
+    else
+      redirect_to new_user_session_path
+    end
+  end
+
+  def set_user_privileges
+    user_is_admin = current_user.username == 'admin'
+    @admin_privileges = user_is_admin
   end
 
   def setup_frontend_data

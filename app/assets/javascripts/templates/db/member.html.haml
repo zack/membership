@@ -1,11 +1,13 @@
 .view.member
   .head.member
     .title {{nickname}}
+    {{#is_admin}}
     .default-table-buttons
       %button.btn.btn-primary.edit Edit
     .edit-table-buttons
       %button.btn.btn-primary.save.member.disabled Save
       %button.btn.btn-default.cancel Cancel
+    {{/is_admin}}
 
   %table.vertical.member.show
     %tbody
@@ -33,6 +35,7 @@
 .view.player
   .head.player
     .title Player Profiles
+    {{#is_admin}}
     .default-table-buttons
       %button.btn.btn-primary.edit Edit
       %button.btn.btn-primary.create Create
@@ -42,6 +45,7 @@
     .edit-table-buttons
       %button.btn.btn-primary.save.player.disabled Save
       %button.btn.btn-default.cancel Cancel
+    {{/is_admin}}
 
   %table.player.create
     %thead
@@ -140,11 +144,13 @@
 .view.player
   .head.player
     .title No Player Profiles
+    {{#is_admin}}
     .default-table-buttons
       %button.btn.btn-primary.create.first Create
     .create-table-buttons
       %button.btn.btn-primary.create-save Save
       %button.btn.btn-default.cancel Cancel
+    {{/is_admin}}
 
   %table.player.create
     %thead
@@ -185,6 +191,7 @@
 .view.emergency-contact
   .head.emergency-contact
     .title Emergency Contacts
+    {{#is_admin}}
     .default-table-buttons
       %button.btn.btn-primary.edit Edit
       %button.btn.btn-primary.create Create
@@ -194,6 +201,7 @@
     .edit-table-buttons
       %button.btn.btn-primary.save.emergency-contact.disabled Save
       %button.btn.btn-default.cancel Cancel
+    {{/is_admin}}
 
   %table.create.editable.vertical
     %tbody
@@ -247,11 +255,13 @@
 .view.emergency-contact
   .head.emergency-contact
     .title No Emergency Contacts
+    {{#is_admin}}
     .default-table-buttons
       %button.btn.btn-primary.create.first Create
     .create-table-buttons
       %button.btn.btn-primary.create-save Save
       %button.btn.btn-default.cancel Cancel
+    {{/is_admin}}
 
   %table.create.editable.vertical
     %tbody

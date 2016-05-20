@@ -12,6 +12,7 @@ gem 'sass-rails',                '5.0.2'
 gem 'uglifier',                  '2.5.3'
 gem 'underscore-rails',          '~> 1.0'
 gem 'maskedinput-rails',         '~> 1.4'
+gem 'devise'
 
 group :development, :test do
   gem 'sqlite3',                 '1.3.9'

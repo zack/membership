@@ -2,3 +2,5 @@
 .navbar
   %a.member-nav.nav{href: '/members'} Members
   %a.team-nav.nav{href: '/teams'} Teams
+  .sign_out
+    = link_to 'Sign Out', destroy_user_session_path, :method => :delete

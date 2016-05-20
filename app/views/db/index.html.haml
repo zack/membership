@@ -1,3 +1,7 @@
+- if @admin_privileges
+  :javascript
+    db.admin = true
+
 - if @members
   :javascript
     db.members = new db.MembersCollection(#{raw @members})
