@@ -98,6 +98,23 @@ table {
     font-size: 12px;
     background-color: $grey;
     text-align: center;
+
+    a {
+      cursor: pointer;
+
+      &.asc::after {
+        content: '▲';
+      }
+
+      &.desc::after {
+        content: '▼';
+      }
+
+      &.sorting {
+        text-decoration: underline;
+      }
+    }
+
   }
 
   tr {
@@ -163,6 +180,7 @@ table {
         background-color: $table-link-hover-blue;
       }
     }
+
   }
 
   &.vertical {

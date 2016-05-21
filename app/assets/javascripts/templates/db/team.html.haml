@@ -2,10 +2,12 @@
 
 %h3 Current Players
 
-%table
+%table.current
   %thead
-    %th Name
-    %th Number
+    %th
+      %a.name.asc.sorting Name
+    %th
+      %a.number.asc Number
     %th Date Joined
     %th Active
     %th Member Name
@@ -23,10 +25,13 @@
 
 %h3 Previous Players
 
-%table
+%table.previous
   %thead
-    %th Name
-    %th Number
+    %th
+      %a.name.asc.sorting Name
+      %span.glyphicon.glyphicon-chevron-down
+    %th
+      %a.number.asc Number
     %th Date Joined
     %th Date Left
     %th Member Name
