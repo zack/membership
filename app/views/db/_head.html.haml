@@ -1,6 +1,9 @@
 %h1 Boston Roller Derby Membership Database
 .navbar
-  %a.member-nav.nav{href: '/members'} Members
+  %a.member-nav.nav{href: '/members'} All Members
+  %a.member-nav.nav{href: '/active'} Active Members
+  %a.member-nav.nav{href: '/officials'} Officials
+  %a.member-nav.nav{href: '/volunteers'} Volunteers
   %a.team-nav.nav{href: '/teams'} Teams
   .sign_out
     = link_to 'Sign Out', destroy_user_session_path, :method => :delete
