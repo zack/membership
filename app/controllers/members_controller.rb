@@ -7,7 +7,9 @@ class MembersController < ApplicationController
   end
 
   def user_is_admin?
-    current_user.username == 'admin'
+    unless current_user.username == 'admin'
+      redirect_to root_path
+    end
   end
 
   def members
