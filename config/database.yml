@@ -1,21 +1,21 @@
 development:
-   adapter: sqlite3
-   pool: 5
-   timeout: 5000
-   database: db/development.sqlite3
+  adapter: sqlite3
+  pool: 5
+  timeout: 5000
+  database: db/development.sqlite3
 
- test:
-   adapter: sqlite3
-   pool: 5
-   timeout: 5000
-   database: db/test.sqlite3
+test:
+  adapter: sqlite3
+  pool: 5
+  timeout: 5000
+  database: db/test.sqlite3
 
- production:
-   adapter: postgresql
-   encoding: unicode
-   pool: 5
-   timeout: 5000
-   host: localhost
-   database: membership_production
-   username: rails
-   password: <%= ENV['MEMBERSHIP_APP_DATABASE_PASSWORD'] %>
+production:
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  timeout: 5000
+  host: localhost
+  database: membership_production
+  username: rails
+  password: <%= ENV['MEMBERSHIP_APP_DATABASE_PASSWORD'] %>
