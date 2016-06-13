@@ -6,6 +6,7 @@
 /log/*
 !/log/.keep
 /tmp
+/pids/
 
 .*.swp
 .*.swo
