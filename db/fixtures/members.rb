@@ -10,6 +10,7 @@ for i in 1..200 # seed 200 members
     m.government_name = name
     m.street_name = name
     m.nickname = name.split(" ")[0]
+    m.pronouns = ['she/her/hers', 'they/them/theirs', ''].sample if maybe()
     m.phone_number = Faker::Number.number(10) if maybe()
     m.forum_handle = name + Faker::Lorem.word if maybe()
     m.address = "#{Faker::Address.street_address}, #{Faker::Address.city}, "\

@@ -23,6 +23,7 @@ db.Helpers =
       when 'passed_wftda_test'            then 'Passed WFTDA Test'
       when 'phone_number'                 then 'Phone Number'
       when 'primary_insurance'            then 'Primary Insurance'
+      when 'pronouns'                     then 'Pronouns'
       when 'purchased_wftda_insurance'    then 'Purchased WFTDA Insurance'
       when 'volunteer'                    then 'Volunteer'
       when 'official'                     then 'Official'
@@ -59,6 +60,7 @@ db.Helpers =
       'nickname',
       'government_name',
       'street_name',
+      'pronouns',
       'forum_handle',
       'phone_number',
       'address',
