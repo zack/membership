@@ -4,9 +4,12 @@ class db.MembersCollection extends Backbone.Collection
   url: '/members/'
 
   comparator: (a, b)->
-    if a.get('nickname') < b.get('nickname')
+    a_name = a.get('nickname').toLowerCase()
+    b_name = b.get('nickname').toLowerCase()
+
+    if a_name < b_name
       return -1
-    else if a.get('nickname') > b.get('nickname')
+    else if a_name > b_name
       return 1
     else
       return 0
