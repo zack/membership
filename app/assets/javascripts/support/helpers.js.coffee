@@ -13,6 +13,7 @@ db.Helpers =
       when 'date_ended'                   then 'Date Ended'
       when 'date_of_birth'                then 'Date Of Birth'
       when 'date_started'                 then 'Date Started'
+      when 'email_address'                then 'Email Address'
       when 'forum_handle'                 then 'Forum Handle'
       when 'google_doc_access'            then 'Google Doc Access'
       when 'name'                         then 'Name'
@@ -61,6 +62,7 @@ db.Helpers =
       'government_name',
       'street_name',
       'pronouns',
+      'email_address',
       'forum_handle',
       'phone_number',
       'address',
