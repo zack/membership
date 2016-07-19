@@ -3,6 +3,7 @@ class db.MemberIndexView extends Marionette.CompositeView
   className: 'member-index'
   childViewContainer: 'tbody'
   templateHelpers: ->
+    is_admin: db.admin
     table_headers: @TABLE_HEADERS
 
   TABLE_ATTRS: ['nickname', 'street_name', 'wftda_id_number',
