@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160613134909) do
+ActiveRecord::Schema.define(version: 20160803132652) do
 
   create_table "committee_members", force: :cascade do |t|
     t.integer  "committee_id", null: false
@@ -99,6 +99,7 @@ ActiveRecord::Schema.define(version: 20160613134909) do
     t.boolean  "official"
     t.boolean  "volunteer"
     t.string   "pronouns"
+    t.string   "email_address"
   end
 
   create_table "pillars", force: :cascade do |t|
@@ -120,7 +121,7 @@ ActiveRecord::Schema.define(version: 20160613134909) do
   end
 
   add_index "players", ["member_id"], name: "index_players_on_member_id"
-  add_index "players", ["name", "number"], name: "index_players_on_name_and_number", unique: true
+  add_index "players", ["name", "number", "team_id"], name: "index_players_on_name_and_number_and_team_id", unique: true
 
   create_table "teams", force: :cascade do |t|
     t.string   "name",         null: false
